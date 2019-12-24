@@ -24,7 +24,6 @@ cdef class Interval:
         if start > end:
             raise ValueError(
                 'Start cannot be greater than end. trying to construct an interval using {}-{}'.format(start, end))
-            return
         self.start = start
         self.end = end
         self.data = data
