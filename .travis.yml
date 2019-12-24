@@ -82,16 +82,17 @@ install:
     # version is the same.
   - source "$HOME/miniconda/etc/profile.d/conda.sh"
   - hash -r
+
+  # Replace dep1 dep2 ... with your dependencies
+  - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION dep1 dep2 ...
+  - conda activate test-environment
+  -
   # Configure conda and get a few essentials
   - hash -r
   - conda config --set always_yes yes --set changeps1 no
   - conda update -q conda
   # Useful for debugging any issues with conda
   - conda info -a
-
-  # Replace dep1 dep2 ... with your dependencies
-  - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION dep1 dep2 ...
-  - conda activate test-environment
 
 
   # Set the version info from the git tag
