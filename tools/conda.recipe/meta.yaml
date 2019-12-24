@@ -1,0 +1,39 @@
+package:
+  version: "{{ PROJECT_VERSION }}"
+  name: 'quicksectx'
+
+source:
+  path: ../../
+
+build:
+  script_env:
+   - PROJECT_VERSION
+  number: 0
+  script: python setup.py install
+
+requirements:
+  build:
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+  host:
+    - python
+    - cython >=0.24.1
+    - setuptools
+    - nose
+  run:
+    - numpy
+test:
+  requires:
+    - python
+    - nose
+  commands:
+    - conda inspect linkages pycydemo
+    - nosetests -v --detailed-errors pycydemo 
+
+about:
+  description: extended src project
+  home: https://github.com/jianlins/quicksect
+  license: MIT
+
+extra:
+  recipe-maintainers: Jianlin Shi <jianlinshi.cn@gmail.com>
