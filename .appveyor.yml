@@ -8,7 +8,6 @@ environment:
       secure: DSzxL+E2GvWGke6uW8uWEV/uP64DsQNwYDpUBR7MlX78FwQEiqU7omy35owa0P1L
     PYPI_PASSWORD:
       secure: m4olevjgBYrOI3NszBfruw==
-
     PYPI_USERNAME:
       secure: EkGNlmHz2mKKKpCQ0e5pdQ==
 
@@ -16,21 +15,8 @@ environment:
     GITHUB_REPO_NAME: jianlins/quicksectx
 
   matrix:
-    - ONNX_ML: 1
-      ONNXPY_DIR: C:\Python36
-      CONDA_PREFIX: C:\Miniconda36
-
-    - ONNX_ML: 1
-      ONNXPY_DIR: C:\Python36-x64
-      CONDA_PREFIX: C:\Miniconda36-x64
-
-    - ONNX_ML: 1
-      ONNXPY_DIR: C:\Python37
-      CONDA_PREFIX: C:\Miniconda37
-
-    - ONNX_ML: 1
-      ONNXPY_DIR: C:\Python37-x64
-      CONDA_PREFIX: C:\Miniconda37-x64
+    - PYTHON_VERSION: 3.6
+      CONDA: C:\Miniconda36
 
 version: '{build}'
 image: Visual Studio 2015
