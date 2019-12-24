@@ -33,7 +33,7 @@ setup(name='quicksectx',
       packages=['src', 'src.tests'],
       ext_modules=cythonize([Extension(
           'quicksectx.extension',
-          sources=['quicksectx/quicksect.pyx', 'quicksectx/quicksectx.pyx'],
+          sources=['src/quicksect.pyx', 'src/quicksectx.pyx'],
           include_dirs=include_dirs,
       )], language_level=3),
       zip_safe=False,
