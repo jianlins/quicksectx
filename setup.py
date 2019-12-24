@@ -1,4 +1,4 @@
-import Cython
+from Cython.Build import cythonize
 from setuptools.extension import Extension
 from setuptools import setup
 import os
@@ -28,14 +28,14 @@ setup(name='quicksectx',
       author="Brent Pedersen,Jianlin Shi",
       author_email="bpederse@gmail.com, jianlinshi.cn@gmail.com",
       url='https://github.com/jianlins/quickset',
-      cmdclass={'build_ext': Cython.Build.build_ext},
+      # cmdclass={'build_ext': Cython.Build.build_ext},
       package_dir={'src': 'src'},
       packages=['src', 'src.tests'],
-      ext_modules=[Extension(
+      ext_modules=cythonize([Extension(
           'quicksectx.extension',
-          sources=['quicksectx/quicksect.pyx','quicksectx/quicksectx.pyx'],
+          sources=['quicksectx/quicksect.pyx', 'quicksectx/quicksectx.pyx'],
           include_dirs=include_dirs,
-      )],
+      )], language_level=3),
       zip_safe=False,
       setup_requires=['cython>=0.24.1'],
       install_requires=['cython>=0.24.1'],
