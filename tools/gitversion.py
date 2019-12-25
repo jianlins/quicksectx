@@ -10,7 +10,7 @@ def get_version():
 
     """
     try:
-        with open('../src/version.py', 'r') as f:
+        with open('../quicksectx/version.py', 'r') as f:
             return f.read().split('=')[-1].replace('\'', '').strip()
     except IOError:
         return "0.0.0a1"

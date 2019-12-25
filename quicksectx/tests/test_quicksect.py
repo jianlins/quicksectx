@@ -1,14 +1,12 @@
 import pyximport
+
 pyximport.install()
 
-import sys
-sys.path.append("../")
-sys.path.append("src")
+
 import unittest
-# from src import IntervalNode as IntervalNodeX, Interval as IntervalX, IntervalTree as IntervalTreeX
-from quicksectx import IntervalNode, Interval, IntervalTree, distance
 
 
+from quicksectx import IntervalNode, IntervalTree, distance,Interval
 
 try:
     from cPickle import dumps, loads
@@ -16,7 +14,6 @@ except ImportError:
     from pickle import dumps, loads
 import operator
 import random
-
 
 class NeighborTestCase(unittest.TestCase):
 
@@ -31,17 +28,18 @@ class NeighborTestCase(unittest.TestCase):
 
     def test_left(self):
         iv = self.intervals
-        # print(iv.left(Interval(60, 70)))
+        print(iv.left(Interval(60,70)))
         self.assertEqual(str(iv.left(Interval(60, 70), n=2)), str([Interval(50, 59), Interval(40, 49)]))
 
         for i in range(10, 100, 10):
             f = Interval(i, i)
             r = iv.left(f, max_dist=10, n=1)
-            self.assertEqual(r[0].end, i - 1)
+            self.assertEqual(r[0].end,  i - 1)
 
     def test_toomany(self):
         iv = self.intervals
-        self.assertEqual(len(iv.left(Interval(60, 70), n=200)), 6)
+        self.assertEqual(len(iv.left(Interval(60, 70), n=200)) , 6)
+
 
     def test_right(self):
         iv = self.intervals
@@ -59,6 +57,7 @@ class NeighborTestCase(unittest.TestCase):
             f = Interval(i - 1, i - 1)
             r = iv.right(f, max_dist=10, n=1)
             self.assertEqual(r[0].start, i)
+
 
     def test_n(self):
         iv = self.intervals
@@ -90,7 +89,7 @@ class RelativeTestCase(unittest.TestCase):
         iv = self.tree
         for i in range(11, 20000, 25):
             for zz in range(random.randint(2, 5)):
-                s1 = random.randint(i + 1, i + 20)
+                s1 = random.randint(i + 1, i + 20 )
                 f = Interval(s1, s1)
 
                 bf = brute_force_find_left(self.intervals, f, max_dist, n)
@@ -99,10 +98,12 @@ class RelativeTestCase(unittest.TestCase):
                     assert len(bf) == 0, bf
                     continue
 
+
                 mdist = max(distance(f, t) for t in tf)
                 self.assertTrue(set(bf).issuperset(tf))
                 diff = set(bf).difference(tf)
                 self.assertTrue(len(diff) == 0, (diff))
+
 
     def test_right(self):
         max_dist = 200
@@ -110,7 +111,7 @@ class RelativeTestCase(unittest.TestCase):
         iv = self.tree
         for i in range(11, 20000, 25):
             for zz in range(random.randint(1, 6)):
-                s1 = random.randint(i + 1, i + 20)
+                s1 = random.randint(i + 1, i + 20 )
                 f = Interval(s1, s1)
 
                 bf = brute_force_find_right(self.intervals, f, max_dist, n)
@@ -118,6 +119,7 @@ class RelativeTestCase(unittest.TestCase):
                 if len(tf) == 0:
                     assert len(bf) == 0, bf
                     continue
+
 
                 mdist = max(distance(f, t) for t in tf)
                 self.assertTrue(set(bf).issuperset(tf))
@@ -127,7 +129,6 @@ class RelativeTestCase(unittest.TestCase):
 
 class LotsaTestCase(unittest.TestCase):
     """ put lotsa data in the tree and make sure it works"""
-
     def setUp(self):
         iv = IntervalNode(Interval(1, 2))
         self.max = 1000000
@@ -139,15 +140,18 @@ class LotsaTestCase(unittest.TestCase):
             iv = iv.insert(Interval(0, 1))
         self.intervals = iv
 
+
+
     def test_count(self):
         iv = self.intervals
 
         r = iv.right(Interval(1, 1), n=33)
-        # print(len(r))
+        print(len(r))
         self.assertEqual(len(r), 33)
 
         l = iv.left(Interval(1, 1), n=33)
         self.assertEqual(len(l), 1)
+
 
     def test_max_dist(self):
         iv = self.intervals
@@ -166,57 +170,51 @@ class LotsaTestCase(unittest.TestCase):
 
         for t in range(250):
             start = random.randint(0, self.max - 10000)
-            stop = start + random.randint(100, 10000)
+            stop  = start + random.randint(100, 10000)
 
             results = iv.find(start, stop)
             for feat in results:
                 self.assertTrue(
-                    (feat.end >= start and feat.end <= stop)
-                    or
-                    (feat.start <= stop and feat.start >= start)
-                )
+                        (feat.end >= start and feat.end <= stop)
+                            or
+                        (feat.start <= stop and feat.start >= start)
+                        )
             bf = brute_force_find(intervals, start, stop)
             assert len(results) == len(bf)
 
-
 def brute_force_find(intervals, start, stop):
-    return [i for i in intervals if i.end > start and i.start < stop]
-
+    return [i for i in intervals if i.end >= start and i.start <= stop]
 
 def brute_force_find_left(intervals, f, max_dist, n):
-    r = [x for x in brute_force_find(intervals, 0, f.start) \
-         if x.end < f.start and distance(x, f) <= max_dist]
+    r = [x for x in brute_force_find(intervals, 0, f.start)\
+               if x.end < f.start and distance(x, f) <= max_dist]
     r.sort(key=operator.attrgetter('end'), reverse=True)
     if len(r) <= n: return r
     i = n
-    # print(len(r))
-    while i < len(r) and (
-            distance(r[i], f) == distance(r[i - 1], f) or (distance(r[i], f) < 1 and distance(r[i - 1], f) < 1)):
-        # print(i, i - 1)
+    while distance(r[i], f) == distance(r[i - 1], f):
         i += 1
     return r[:i]
 
 
+
 def brute_force_find_right(intervals, f, max_dist, n):
-    r = [x for x in brute_force_find(intervals, f.end, 99999999999) \
-         if x.start > f.start and distance(x, f) <= max_dist]
+    r = [x for x in brute_force_find(intervals, f.end, 99999999999)\
+               if x.start > f.start and distance(x, f) <= max_dist]
     r.sort(key=operator.attrgetter('start'))
     if len(r) <= n: return r
     i = n
-    while i < len(r) and (
-            distance(r[i], f) == distance(r[i - 1], f) or (distance(r[i], f) < 1 and distance(r[i - 1], f) < 1)):
+    while distance(r[i], f) == distance(r[i - 1], f):
         i += 1
     return r[:i]
 
 
 class PickleTestCase(unittest.TestCase):
     """ test pickling."""
-
     def setUp(self):
         pass
 
     def test_feature_pickle(self):
-        f = Interval(22, 38, data={'a': 22})
+        f = Interval(22, 38, data={'a':22})
         g = loads(dumps(f))
         self.assertEqual(f.start, g.start)
         self.assertEqual(g.data['a'], 22)
@@ -225,7 +223,7 @@ class PickleTestCase(unittest.TestCase):
         a = IntervalTree()
         for ichr in range(5):
             for i in range(10, 100, 6):
-                f = Interval(i - 4, i + 4)
+                f = Interval(i -4, i + 4)
                 a.insert(f)
 
         a.dump('a.pkl')
@@ -234,7 +232,7 @@ class PickleTestCase(unittest.TestCase):
         b.load('a.pkl')
         for ichr in range(5):
             for i in range(10, 100, 6):
-                f = Interval(i - 4, i + 4)
+                f = Interval(i -4, i + 4)
                 af = sorted(a.find(f), key=operator.attrgetter('start'))
                 bf = sorted(b.find(f), key=operator.attrgetter('start'))
 
@@ -242,7 +240,6 @@ class PickleTestCase(unittest.TestCase):
                 self.assertEqual(len(af), len(bf))
                 self.assertEqual(af[0].start, bf[0].start)
                 self.assertEqual(af[-1].start, bf[-1].start)
-
 
 class EmptyTreeTestCase(unittest.TestCase):
     """ test search on an empty tree."""
@@ -270,101 +267,16 @@ class TestIssue9(unittest.TestCase):
         self.tree4.insert(Interval(22, 33, data='example2'))
 
     def test_right(self):
-        self.assertEqual(0, len(self.tree4.right(Interval(44, 55))))
-        self.assertEqual(2, len(self.tree4.right(Interval(11, 12))))
+        self.assertEqual(0, len(self.tree4.right(Interval(44,55))))
+        self.assertEqual(2, len(self.tree4.right(Interval(11,12))))
 
     def test_left(self):
-        self.assertEqual(2, len(self.tree4.left(Interval(44, 55))))
-        self.assertEqual(0, len(self.tree4.left(Interval(11, 12))))
-
-
-class SpecialTestCase(unittest.TestCase):
-    def test_1(self):
-        tree = IntervalTree()
-        tree.add(1, 3, 1.0)
-        tree.add(3, 5, 2.0)
-        tree.add(5, 7, 3.0)
-        self.assertEqual(str(tree.search(3, 4)), '[Inv(3, 5, d=2.0)]')
-        print(tree.search(2, 4))
-        self.assertTrue('Inv(1, 3, d=1.0)' in str(tree.search(2, 4)))
-        self.assertTrue('Inv(3, 5, d=2.0)' in str(tree.search(2, 4)))
-        self.assertEqual(len(tree.search(2, 4)), 2)
-        self.assertEqual(str(tree.search(5, 7)), '[Inv(5, 7, d=3.0)]')
-
-    def test_2(self):
-        tree = IntervalTree()
-        tree.add(1, 3, 1.0)
-        tree.add(2, 3, 2.0)
-        tree.add(3, 4, 3.0)
-        tree.add(3, 5, 4.0)
-        tree.add(4, 5, 5.0)
-        tree.add(5, 6, 5.0)
-        tree.add(2, 6, 6.0)
-        print(tree.pretty_print())
-        self.assertEqual(len(tree.search(4, 4)), 3)
-        self.assertEqual(len(tree.search(3, 3)), 3)
-        self.assertEqual(len(tree.search(4, 6)), 4)
-
-    def test_error(self):
-        with self.assertRaises(ValueError):
-            Interval(3, 1)
-
-    def test_duplicates(self):
-        tree = IntervalTree()
-        tree.add(1, 3, 1.0)
-        tree.add(1, 3, 1.0)
-        self.assertEqual(len(tree.search(1, 1.5)), 2)
-
-
-class RemovalTestCases(unittest.TestCase):
-    def setUp(self) -> None:
-        intervals = []
-        for i in range(0, 30, 5):
-            intervals.append(Interval(i, i + 7))
-        iv = IntervalTree()
-        for f in intervals:
-            iv.insert(f)
-        self.intervals = intervals
-        self.tree = iv
-        pass
-
-    def test_1(self):
-        print(self.tree.pretty_print())
-        self.tree.remove(Interval(5, 12))
-        print(self.tree.pretty_print())
-        pass
-
-    def test_p(self):
-        print(self.tree.pretty_print())
-        print(len(self.tree.search(1, 220)))
-        # self.assertEqual(len(self.tree.search(1, 220)), 16)
-        print(len(self.tree.search(0, 220)))
-        print(self.tree.pretty_print())
-        invs = []
-        for i in range(0, 20, 5):
-            invs.append(Interval(i, i + 7))
-        print(len(invs))
-
-        for i in invs:
-            self.tree.remove(i)
-            print("remove: {}".format(i))
-            # print(self.tree.search(0, 220))
-        print(self.tree.search(0, 220))
-        # print(self.tree.remove(Interval(11, 18)))
-        print(len(self.tree.search(0, 220)))
-
-    def test_error(self):
-        iv = IntervalTree()
-        iv.add(10, 17)
-        iv.add(25, 32)
-        iv.add(15, 22)
-        iv.add(20, 27)
-        print(iv.pretty_print())
-        print(iv.search(0, 220))
-
+        self.assertEqual(2, len(self.tree4.left(Interval(44,55))))
+        self.assertEqual(0, len(self.tree4.left(Interval(11,12))))
 
 def main():
     unittest.main()
+
 
 
 if __name__ == "__main__":

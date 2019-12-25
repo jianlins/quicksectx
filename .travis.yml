@@ -98,7 +98,7 @@ install:
   # Set the version info from the git tag
   - git fetch origin --tags &&
     export PROJECT_VERSION=$(python tools/gitversion.py) &&
-    python tools/gitversion.py python > src/version.py;
+    python tools/gitversion.py python > quicksectx/version.py;
 
   # Get a list of all build and runtime dependencies.
   # This should become easier, without the copy to conda.recipe.ugly.

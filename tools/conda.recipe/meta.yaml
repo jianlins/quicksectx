@@ -31,7 +31,7 @@ test:
     - nosetests -v --detailed-errors pycydemo 
 
 about:
-  description: extended src project
+  description: extended quicksectx project
   home: https://github.com/jianlins/quicksect
   license: MIT
 
