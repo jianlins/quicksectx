@@ -49,8 +49,8 @@ install:
 # Load the conda root environment, configure and install some packages
 - '"%CONDA%\Scripts\activate.bat"'
 - conda config --set always_yes yes --set changeps1 no
-- conda update -q conda
-- conda install conda-build anaconda-client cython nose
+- conda update -y -q conda
+- conda install -y conda-build anaconda-client cython nose
 # Install codecov tool for uploading coverage reports
 - pip install codecov coverage
 # Show conda info for debugging
