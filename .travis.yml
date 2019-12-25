@@ -84,13 +84,13 @@ install:
   - hash -r
 
   # Replace dep1 dep2 ... with your dependencies
-  - conda create -y -q -n test-environment python=${MYCONDAPY} pip
+  - conda create -y -q -n test-environment python=${MYCONDAPY} pip conda
   - conda activate test-environment
   -
   # Configure conda and get a few essentials
   - hash -r
   - conda config --set always_yes yes --set changeps1 no
-  - conda update -y -q conda
+  - conda update -q conda
   # Useful for debugging any issues with conda
   - conda info -a
 
