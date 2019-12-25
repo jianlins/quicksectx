@@ -1,8 +1,6 @@
 import pyximport
 
 pyximport.install()
-import os,sys
-sys.path.append("../../")
 
 import unittest
 
