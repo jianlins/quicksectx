@@ -29,7 +29,7 @@ setup(name='quicksectx',
       author_email="bpederse@gmail.com, jianlinshi.cn@gmail.com",
       url='https://github.com/jianlins/quickset',
       # cmdclass={'build_ext': Cython.Build.build_ext},
-      package_dir={'quicksectx': 'quicksectx/'},
+      package_dir={'quicksectx': 'quicksectx'},
       packages=['quicksectx', 'quicksectx.tests'],
       ext_modules=cythonize([Extension(
           'quicksectx.extension',
