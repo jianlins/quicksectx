@@ -84,7 +84,7 @@ install:
   - hash -r
 
   # Replace dep1 dep2 ... with your dependencies
-  - conda create -q -n test-environment python=MYCONDAPY pip
+  - conda create -q -n test-environment python=${MYCONDAPY} pip
   - conda activate test-environment
   -
   # Configure conda and get a few essentials
