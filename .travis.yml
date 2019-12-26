@@ -84,7 +84,6 @@ install:
   - hash -r
 
   # Replace dep1 dep2 ... with your dependencies
-  - conda create -y -q -n test-environment python=${MYCONDAPY} pip conda
   - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION pkg_name --file dev-requirements.txt
   - conda activate test-environment
   -
