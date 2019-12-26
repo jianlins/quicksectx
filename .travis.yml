@@ -85,6 +85,7 @@ install:
 
   # Replace dep1 dep2 ... with your dependencies
   - conda create -y -q -n test-environment python=${MYCONDAPY} pip conda
+  - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION pkg_name --file dev-requirements.txt
   - conda activate test-environment
   -
   # Configure conda and get a few essentials
@@ -100,13 +101,18 @@ install:
     export PROJECT_VERSION=$(python tools/gitversion.py) &&
     python tools/gitversion.py python > quicksectx/version.py;
 
+
+  - conda build -q conda-recipe --python=$TRAVIS_PYTHON_VERSION --output-folder bld-dir
+  # Add the built package as a channel with highest priority
+  - conda config --add channels "file://`pwd`/bld-dir"
+  -
   # Get a list of all build and runtime dependencies.
   # This should become easier, without the copy to conda.recipe.ugly.
 #  - conda render -f tools/conda.recipe/meta.yaml tools/conda.recipe
-  - CONDA_DEPENDENCIES=$(python -c "from yaml import load;
-      req1 = load(open('tools/conda.recipe/meta.yaml'))['requirements'];
-      deps = req1['build'] + req1['run'] + req1['host'];
-      print(' '.join(set(dep.split()[0] for dep in deps)))")
+#  - CONDA_DEPENDENCIES=$(python -c "from yaml import load;
+#      req1 = load(open('tools/conda.recipe/meta.yaml'))['requirements'];
+#      deps = req1['build'] + req1['run'] + req1['host'];
+#      print(' '.join(set(dep.split()[0] for dep in deps)))")
 
   # Get the right python version for building. This only does something for 3.5.
   # Install extra package needed to make things work. Most things can be listed as
@@ -128,25 +134,25 @@ install:
 script:
 # Static linting
 # --------------
-- if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
-    cardboardlinter --refspec $TRAVIS_BRANCH -f static;
-  fi
+#- if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
+#    cardboardlinter --refspec $TRAVIS_BRANCH -f static;
+#  fi
 
 # Unit tests and dynamic linting
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- if [[ $TRAVIS_TAG ]]; then
-    conda build -q tools/conda.recipe;
-  else
-    python setup.py build_ext -i --define CYTHON_TRACE_NOGIL &&
-    nosetests ${PROJECT_NAME}
-         -v --detailed-errors --with-coverage --cover-package=${PROJECT_NAME}
-         --cover-tests --cover-inclusive --cover-branches &&
-    coverage xml -i &&
-
-    if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
-       cardboardlinter --refspec $TRAVIS_BRANCH -f 'dynamic';
-    fi
-  fi
+#- if [[ $TRAVIS_TAG ]]; then
+#    conda build -q tools/conda.recipe;
+#  else
+#    python setup.py build_ext -i --define CYTHON_TRACE_NOGIL &&
+#    nosetests ${PROJECT_NAME}
+#         -v --detailed-errors --with-coverage --cover-package=${PROJECT_NAME}
+#         --cover-tests --cover-inclusive --cover-branches &&
+#    coverage xml -i &&
+#
+#    if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
+#       cardboardlinter --refspec $TRAVIS_BRANCH -f 'dynamic';
+#    fi
+#  fi
 
 # Make CPP and PY source package for github deployment
 - if [[ $TRAVIS_TAG ]]; then
