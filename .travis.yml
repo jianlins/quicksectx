@@ -102,7 +102,7 @@ install:
 
   # Get a list of all build and runtime dependencies.
   # This should become easier, without the copy to conda.recipe.ugly.
-  - conda render -f tools/conda.recipe/meta.yaml tools/conda.recipe
+#  - conda render -f tools/conda.recipe/meta.yaml tools/conda.recipe
   - CONDA_DEPENDENCIES=$(python -c "from yaml import load;
       req1 = load(open('tools/conda.recipe/meta.yaml'))['requirements'];
       deps = req1['build'] + req1['run'] + req1['host'];
@@ -112,7 +112,7 @@ install:
   # Install extra package needed to make things work. Most things can be listed as
   # dependencies on meta.yaml and setup.py, unless setup.py already imports them.
   # Install conda tools for packaging and uploading
-  - conda install -y -q python=${MYCONDAPY} anaconda-client numpy setuptools cython
+  - conda install -y -q python=${MYCONDAPY} anaconda-client setuptools cython
   - if ! [[ $TRAVIS_TAG ]]; then
       conda install -y -q ${CONDA_DEPENDENCIES};
       pip install --upgrade pylint codecov coverage pycodestyle pydocstyle;
@@ -121,9 +121,9 @@ install:
   - conda info -a
 
   # Install the latest cardboardlinter
-  - if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
-      pip install --upgrade git+https://github.com/theochem/cardboardlint.git@master#egg=cardboardlint;
-    fi
+#  - if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
+#      pip install --upgrade git+https://github.com/theochem/cardboardlint.git@master#egg=cardboardlint;
+#    fi
 
 script:
 # Static linting
