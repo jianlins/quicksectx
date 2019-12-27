@@ -1,6 +1,7 @@
 from Cython.Build import cythonize,build_ext
 from setuptools.extension import Extension
 from setuptools import setup
+from setuptools_cythonize import get_cmdclass
 import os
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -23,6 +24,7 @@ def get_version():
 
 setup(name='quicksectx',
       version=get_version(),
+      cmdclass=get_cmdclass(),
       description="fast, simple interval intersection",
       long_description=open('README.rst').read(),
       author="Brent Pedersen,Jianlin Shi",
