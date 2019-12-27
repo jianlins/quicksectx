@@ -1,5 +1,3 @@
-import pyximport
-pyximport.install()
 from quicksectx import IntervalNodeX, IntervalTreeX, distancex,IntervalX
 import unittest
 # tree = IntervalTreeX()
