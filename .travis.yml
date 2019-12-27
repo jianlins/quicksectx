@@ -1,0 +1,173 @@
+env:
+  matrix:
+    - MYCONDAPY=3.6
+    - MYCONDAPY=3.7
+  global:
+    - secure: P6c1spkY+mxyZKX+OIaUzcoJLLfZCxBEj6e/ZVThO6u4IGOoFajceQ/iXsaXLtoBhSqkbVMNs1YWqGFD8MLhBvrTY3DRQAKvavT38Z1tM5Vd91KzSgZkNRbNMswRu09STop2Eb0rl9iK81i+Hgsq3KTXtbOMrMCqJtpKOlWasvF5ZrMmwS6DXyIPW4ow671O4s2yKtkfXt3NGiX+GBlTE4ed6BJcrZ072HVR2uCg4vb1kPB5CH3Mz+r7bbVU7EY8QsUke20ZtHX1c3NErN5RSHrbLKujIeo21gdntv8nVldVX5iYMbzStqJyBJ8tmesstv3XUfMkAHnB0CRdVLm1O2fVMDnYehEWxbtGbBBpcrOG/T3U4FPKffB3Ao0uIh+k2uqPBdP4mEcqd6rEo7PdSlC/p6zNnw+JpqdQ0utHwBhIbeELCi1pytKRbHI4G+7UlJZE+Tmw/BHnPDzQs9HjZVyzDjVarfS2xpdhrogGJlCkpxz3eXWN8WbsTdUExZaiFGeZ41TgIyaGaEkrMXA3iLJRzI3VfUAueSUt1VVq8KKHLa1qKt2vn0Dx/3oXTTRz4Nl9Z5sayi68XccVbyjbvv/0SDGQAvd/7/ZhlidW9xPbJtjc6CG6UWRTRkm6bSJQhQ1lq1VsYmPtzCqXqIVNXKINS/j3CvvKla0PejQp9U4=
+    - secure: 22S/8zpvjldEjolbeMBLnq/0iXBKMVjFVqVYVEzZbBgdvnbhTWwa9B9mLVHhOwnl8RNFB2P0qTI+5pz8SqL9tf4G+hw/h0bG7OW8cSnMwyp07yNbZrn/9cxzrWhlQn3mLxeOFiNDM1eZ5BmTFJca3roF4KrZ3OVq59ibmCAhe8KY+TqOuf5600nGmDHtVtEQxApyIUUm9VQAKrj1Y0ihJGLF5RLSXODKXTGn2nEfRxrDDf2JYgZWrQ9cCkRC/NpNGpaaXyPC8SXp1UtPAKsDrfVjnh5iejMRLxWTy7oFkrM3DP8wCBCGeiVTyF02mOR0U5ykzd8ydkBeWgSQx1fCXKHXXyzzkqgLvYcnpfPY3UEXqjEO1OnWDsA8rbzgyvQzvuWDP35Yt221t6bo7uqcySMZl1QA+XEnXFVgAroY//7Owy5PNlX5HCWIl0xRBktBNfsZIy/Ff56eqglqL8nE5V4cqISqF5FYQwsO+kQWBFynQit2uUvphEc6ptJPng6qeOtDEd8roo5YcapfuVzphNzwQh713B8cfnAwFrgkfgOo52Ok1Qtn2/4t/97XghFe1Ui9oXgdQ++VZ4KiJgA/dlmXSTyWUI2+nTxSOjNVlv0VZodza85wF7dDFbLLYtziCqx+g+LQdaJFB3ww/ro/W9yLM9ze89xlxDfdR92Rz0M=
+    - secure: oGZRRq2qRwO8UDimsfTwxiAhWYDKM/tR81AmTUaypra6qKJ/fU6dWjYrfQ7tw4BvRyR7wOCr2dV0J2D20G1e/QbtVASJzyU4crNcmz8p7Xe1ClVn6dPOEtp9cLjif4A0tMGZOxhEnb4gvv+yXKPUQRcSC3vgfPKVbHQJQuFGa87VpmXdwsKIIMNmq35rrjHdMbAhAsRaLYfXdeJynSvsshrmG1B5AvcIIQgTIHl+524500caX852O88vzzbyidP2eWTWz4ea3p+fpNtUahLHiQPi+oLjmqECbVdMi92qEuzySnIhjcxdItgwSa2IHCfStW+yPxvrcH7UWtOcjX9lM5+gPYsi0t6l6wuVObPVqigY9qCOfMhQtw2DZN9qRoVwQQeC9sGmyivK+hGYXSahtuGF+9C3AVT7SIsgRGqVWPh73r+laMCRnSfi1+hyBy7gKTsboT5hx+rFSVAzuNCoXooJTrMeM1QQEGOgfHNPrYR8idUnLRq2xMtsAgSN2NU0zQxDJV+CJFEZRq9Ly0JQCylLFtMRUDfH16jb6VMwtdkvfpMoDslkZ9me5p126J8vdSlgr7ceH1sM3wul8uILFT4ZVPNeVRyqFP1OFNQpa3YA+sXMzMzshEVDw4NVdolQcMoBC83UkzSsLJQUnOUEVh1mhuFdyVnQuWykndPS7Ac=
+    - PROJECT_NAME=quicksectx
+    - GITHUB_REPO_NAME=jianlins/quicksectx
+    - CONDA_PKG_NAME_PY=quicksectx
+    - PYPI_LOGIN=jianlins
+
+
+# test trigger build
+####
+# EVERYTHING BELOW THIS LINE WILL BE COPIED INTO OTHER YMLs
+####
+# v1.0
+
+# Do not use Travis Python to save some time.
+language: generic
+os:
+  - linux
+  - osx
+dist: trusty
+sudo: false
+
+matrix:
+  # We only test on Linux with one specific Python version, unless we make a release. All
+  # other cases are allowed to fail and will exit early. With the fast_finish option,
+  # travis will send a status update to github as soon as the non-allowed-to-fail has
+  # finished. This speeds up testing in PRs.
+  #
+  # This is not ideal. It would be better to run just one item from the build matrix when
+  # not preparing a release. This is not possible on Travis. There are several tickets on
+  # travis-ci related to this limitation.
+  #
+  #    https://github.com/travis-ci/travis-ci/issues/7451
+  #    https://github.com/travis-ci/travis-ci/issues/7149
+  #    https://github.com/travis-ci/travis-ci/issues/2778
+  #    ...
+  fast_finish: true
+  allow_failures:
+    - os: osx
+
+
+cache:
+  directories:
+    - $HOME/download # Sufficient to add miniconda.sh to TRAVIS cache.
+    - $HOME/miniconda # Add the installation to TRAVIS cache.
+
+before_cache:
+  - if ! [[ $TRAVIS_TAG ]]; then rm -rf $HOME/miniconda/conda-bld; fi
+  - rm -rf $HOME/miniconda/locks $HOME/miniconda/pkgs $HOME/miniconda/var $HOME/miniconda/conda-meta/history
+#- pip uninstall -y cardboardlint # Cardboardlint always installs even if no changes are made.
+
+branches:
+  only:
+    - master
+    - /^[0-9]+\.[0-9]+(\.[0-9]+)?([ab][0-9]+)?$/
+
+before_install:
+  - if ! [[ $TRAVIS_TAG || $TRAVIS_OS_NAME == "linux" && $MYCONDAPY == "3.6" ]]; then exit 0; fi
+  # Get miniconda. Take the right version, so re-installing python is hopefully not needed.
+  - if test -e $HOME/miniconda/bin; then
+    echo "miniconda already installed.";
+    else
+    echo "Installing miniconda.";
+    rm -rf $HOME/miniconda;
+    mkdir -p $HOME/download;
+    if [[ -d $HOME/download/miniconda.sh ]]; then rm -rf $HOME/download/miniconda.sh; fi;
+    if [ "${TRAVIS_OS_NAME}" = "linux" ]; then
+    wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O $HOME/download/miniconda.sh;
+    else
+    wget https://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -O $HOME/download/miniconda.sh;
+    fi;
+    bash $HOME/download/miniconda.sh -b -p $HOME/miniconda;
+    fi
+
+
+install:
+  - source $HOME/miniconda/bin/activate
+  - hash -r
+  # Configure conda and get a few essentials
+  - conda config --set always_yes yes
+  - conda config --add channels theochem
+  - conda install -q conda conda-build conda-verify
+
+  # Set the version info from the git tag
+  - export PROJECT_VERSION=$(python ${PROJECT_NAME}/version.py);
+
+  # Get the right python version for building. This only does something for 3.5.
+  # Install extra package needed to make things work. Most things can be listed as
+  # dependencies on meta.yaml and setup.py, unless setup.py already imports them.
+  # Install conda tools for packaging and uploading
+  - conda install -q python=${MYCONDAPY} anaconda-client numpy setuptools cython
+  - if ! [[ $TRAVIS_TAG ]]; then
+    conda install -q ${CONDA_DEPENDENCIES};
+    pip install --upgrade pylint codecov coverage pycodestyle pydocstyle;
+    fi
+  # Show conda info for debugging
+  - conda info -a
+
+  # Install the latest cardboardlinter
+  - if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
+    pip install --upgrade git+https://github.com/theochem/cardboardlint.git@master#egg=cardboardlint;
+    fi
+
+script:
+  # Static linting
+  # --------------
+  - if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
+    cardboardlinter --refspec $TRAVIS_BRANCH -f static;
+    fi
+
+  # Unit tests and dynamic linting
+  # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  - if [[ $TRAVIS_TAG ]]; then
+    conda build -q tools/conda.recipe;
+    else
+    python setup.py build_ext -i --define CYTHON_TRACE_NOGIL &&
+    nosetests ${PROJECT_NAME}
+    -v --detailed-errors --with-coverage --cover-package=${PROJECT_NAME}
+    --cover-tests --cover-inclusive --cover-branches &&
+    coverage xml -i &&
+
+    if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
+    cardboardlinter --refspec $TRAVIS_BRANCH -f 'dynamic';
+    fi
+    fi
+
+  # Make CPP and PY source package for github deployment
+  - if [[ $TRAVIS_TAG ]]; then
+    python setup.py sdist;
+    fi
+
+  # Some other stuff
+  # ----------------
+
+  # Compile documentation
+  - if [[ -e doc ]]; then
+    (cd doc; make html);
+    fi
+
+after_success:
+  # Upload the coverage analysis
+  - codecov -f coverage.xml
+
+before_deploy:
+  # Try to set some env vars to configure deployment.
+  # Please keep the following lines. They will be used again as soon as it is supported on
+  # travis. See https://github.com/travis-ci/dpl/issues/613
+  #- export IS_PRERELEASE=$(python -c 'import os; tt=os.environ["TRAVIS_TAG"]; print("true" if ("a" in tt or "b" in tt) else "false")')
+  #- echo ${IS_PRERELEASE}
+  - export ANACONDA_LABEL=$(python -c 'import os; tt=os.environ["TRAVIS_TAG"]; print("dev" if ("a" in tt) else ("test" if "b" in tt else "main"))')
+  - echo ${ANACONDA_LABEL}
+
+# In deployment, the env var TRAVIS_TAG contains the name of the current version, if any.
+deploy:
+  provider: pypi
+  user: __token__
+  password:
+    secure: lwm3hk0SbDAHXNz8oHRhfD9DJlR1UJguU7KaB6sJlnRIqmHV5dleEy2FrFCKVUlanzWVVnV08AOSMpHx3n8ebnlaWt61IV9Y3yyZBs5ye/UoZGPCduse9AwefMvBUA+LR1SAtHe+fmV3+g/DnY4LEWbOXR6njK79q6+Qza7VtU5lqvQmlN86Foipb5wdKgT7zz3WCzjnXn/CJLPFkHqvM2W/9mG2+3zTHXNA7Ext5JXGOI+3qpQ5eQkgekbQqUK0ZDJBo9zk/BbiNIv1sT9O7qb1on2Jmy/nOZFpEL2x6EIffDEF7Pk2Ve117/r0ubGUPek2qIl0X/sbqJNnfmpDlYgHieR2006XAWzouitCyDsESUJAwST4atoAMyMnCkwZl0j/9vrX1b/czHdW98KPEr4riCsKN7UsmxIU0bSKrXxDy8WR8IAJDZMJwaGxiRQzazAGkaC6rdGWv8oVNPy9ynE/479RAXSbUHO2HxfOATNcS6IX72+aO8n8E0ChK5L39v4REUexq77xxrRydT6EVZA5edIZCr+PXbUqy1MI4ICnuzwhJiKSZ/R7uaUTDb8yu8NgpTQv2xTNiHt2sSRZmRa8yQw5qRO8NhHij9Ex5sInNoOLrHP1tskTovaxMJn7+dnaH4gF3R57b3sNX7d60ljZgfaBxJMMdgmtPRvbLRU=
+  on:
+    repo: ${GITHUB_REPO_NAME}
+    condition: "$TRAVIS_TAG != *[ab]* && $MYCONDAPY == 3.6 && $TRAVIS_OS_NAME == linux"
+  skip_existing: true
+
+
+
+after_failure:
+  - cat *.failure.txt

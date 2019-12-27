@@ -22,11 +22,11 @@ License is MIT.
 Installation
 ------------
 
-    pip install quicksect
+    pip install quicksectx
 
 or
 
-    conda install -c bioconda quicksect
+    conda install -c bioconda quicksectx
 
 Use
 ---
