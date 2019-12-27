@@ -16,6 +16,7 @@ def get_version():
     """
     try:
         with open('quicksectx/version.py', 'r') as f:
+            print('version', f.read().split('=')[-1].replace('\'', '').strip())
             return f.read().split('=')[-1].replace('\'', '').strip()
     except IOError:
         return "0.0.0a1"
