@@ -1,4 +1,4 @@
-from Cython.Build import cythonize
+from Cython.Build import cythonize,build_ext
 from setuptools.extension import Extension
 from setuptools import setup
 import os
@@ -42,6 +42,6 @@ setup(name='quicksectx',
       install_requires=['cython>=0.24.1'],
       test_suite='nose.collector',
       tests_require='nose',
-      package_data={'': ['*.pyx', '*.pxd']},
+      package_data={'': ['*.pyx', '*.pxd', '*.so', '*.dll']},
       include_dirs=["."],
       )
