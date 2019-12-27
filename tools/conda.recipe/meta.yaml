@@ -1,5 +1,5 @@
 package:
-  version: "{{ PROJECT_VERSION }}"
+  version: 0.2.3
   name: 'quicksectx'
 
 source:
@@ -7,7 +7,7 @@ source:
 
 build:
   script_env:
-   - PROJECT_VERSION
+   - 0.2.3
   number: 0
   script: python setup.py install
 
@@ -27,8 +27,8 @@ test:
     - python
     - nose
   commands:
-    - conda inspect linkages pycydemo
-    - nosetests -v --detailed-errors pycydemo 
+    - conda inspect linkages
+    - nosetests -v --detailed-errors
 
 about:
   description: extended quicksectx project
