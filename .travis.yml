@@ -52,7 +52,7 @@ install:
   - pip install setuptools-cythonize
 script:
   - if [[ $TRAVIS_TAG ]]; then
-      python setup.py bdist --cythonize &&
+      python setup.py build_ext -i --define CYTHON_TRACE_NOGIL &&
       nosetests ${PROJECT_NAME}
         -v --detailed-errors --with-coverage --cover-package=${PROJECT_NAME}
         --cover-tests --cover-inclusive --cover-branches &&

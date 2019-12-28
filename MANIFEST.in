@@ -2,5 +2,4 @@ include README.rst
 include LICENSE
 include tests/*
 include src/*
-include quicksectx/*.so
-include quicksectx/*.dll
+include quicksectx/*
