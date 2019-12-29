@@ -26,7 +26,7 @@ before_install:
     /opt/python/${PY36}/bin/pip install --upgrade pip &&
     /opt/python/${PY36}/bin/pip  install -r dev-requirements.txt &&
     /opt/python/${PY36}/bin/python setup.py build_ext -i &&
-    /opt/python/${PY36}/bin/python setup.py bdist_wheel -d /wheelhouse &&
+    /opt/python/${PY36}/bin/python setup.py bdist_wheel -w /wheelhouse &&
     ls && echo '\tInside wheelhouse:'
     ls /wheehouse/ &&
     auditwheel repair /wheelhouse/quicksectx-${VERSION}-${PY36}-linux_x86_64.whl -w /wheelhouse"
