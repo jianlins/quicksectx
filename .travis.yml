@@ -28,6 +28,8 @@ install:
     /opt/python/${PY36}/bin/pip  install Cython &&
     /opt/python/${PY36}/bin/python setup.py build_ext -i &&
     /opt/python/${PY36}/bin/python setup.py bdist_wheel -d /wheelhouse &&
+    ls && echo '\tInside wheelhouse:'
+    ls /wheehouse &&
     auditwheel repair /wheelhouse/quicksectx-${VERSION}-${PY36}-linux_x86_64.whl -w /wheelhouse"
   - docker cp aaa:/wheelhouse/quicksectx-${VERSION}-${PY36}-manylinux1_x86_64.whl ./
 script:
