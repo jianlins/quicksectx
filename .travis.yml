@@ -33,6 +33,8 @@ before_install:
   - pip install cython
   - mkdir dist
   - docker cp aaa:/wheelhouse/quicksectx-${VERSION}-${PY36}-manylinux1_x86_64.whl ./dist/
+  - echo 'build finished!!!!'
+  - ls ./dist/
 script:
   - ls
   - ls ./dist/
