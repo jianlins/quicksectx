@@ -15,8 +15,8 @@ env:
 install:
   - docker pull quay.io/pypa/manylinux1_x86_64
   - docker run --name "aaa" quay.io/pypa/manylinux1_x86_64 /bin/sh -c "cd && yum update -y && mkdir /wheelhouse &&
-    yum install zlib-devel libxml2-devel -y && pwd && ls &&
-    git clone git@github.com:jianlins/quicksectx.git && cd quicksectx && ls &&
+    yum install zlib-devel libxml2-devel -y && pwd &&
+    git clone https://github.com/jianlins/quicksectx.git && cd quicksectx && ls &&
     /opt/python/${PY36}/bin/pip wheel . -w /wheelhouse &&
     auditwheel repair /wheelhouse/quicksectx-${VERSION}-${PY36}-linux_x86_64.whl -w /wheelhouse"
   - docker cp aaa:/wheelhouse/quicksectx-${VERSION}-${PY36}-manylinux1_x86_64.whl ./
