@@ -1,8 +1,10 @@
 from Cython.Build import cythonize,build_ext
 from setuptools.extension import Extension
 from setuptools import setup
-import os
+# from distutils.core import setup
 
+import os
+from pathlib import Path
 dir_path = os.path.dirname(os.path.realpath(__file__))
 include_dirs = [dir_path + "/quicksectx", dir_path]
 
@@ -21,16 +23,17 @@ def get_version():
         return "0.0.0a1"
 
 
+
 setup(name='quicksectx',
       version=get_version(),
       description="fast, simple interval intersection",
-      long_description=open('README.rst').read(),
+      long_description=open(Path(dir_path,'README.rst').absolute()).read(),
       author="Brent Pedersen,Jianlin Shi",
       author_email="bpederse@gmail.com, jianlinshi.cn@gmail.com",
       url='https://github.com/jianlins/quickset',
       # cmdclass={'build_ext': Cython.Build.build_ext},
       package_dir={'quicksectx': 'quicksectx'},
-      packages=['quicksectx', 'quicksectx.tests'],
+      packages=['quicksectx'],
       ext_modules=cythonize([Extension(
           'quicksectx.extension',
           sources=['quicksectx/quicksect1.pyx', 'quicksectx/quicksect2.pyx'],
