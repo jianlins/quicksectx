@@ -37,17 +37,4 @@ before_install:
 script:
   - ls
   - ls ./dist/
-before_deploy:
-  - pwd
-  - ls ./dist/
-deploy:
-  provider: pypi
-  user: __token__
-  password:
-    secure: lwm3hk0SbDAHXNz8oHRhfD9DJlR1UJguU7KaB6sJlnRIqmHV5dleEy2FrFCKVUlanzWVVnV08AOSMpHx3n8ebnlaWt61IV9Y3yyZBs5ye/UoZGPCduse9AwefMvBUA+LR1SAtHe+fmV3+g/DnY4LEWbOXR6njK79q6+Qza7VtU5lqvQmlN86Foipb5wdKgT7zz3WCzjnXn/CJLPFkHqvM2W/9mG2+3zTHXNA7Ext5JXGOI+3qpQ5eQkgekbQqUK0ZDJBo9zk/BbiNIv1sT9O7qb1on2Jmy/nOZFpEL2x6EIffDEF7Pk2Ve117/r0ubGUPek2qIl0X/sbqJNnfmpDlYgHieR2006XAWzouitCyDsESUJAwST4atoAMyMnCkwZl0j/9vrX1b/czHdW98KPEr4riCsKN7UsmxIU0bSKrXxDy8WR8IAJDZMJwaGxiRQzazAGkaC6rdGWv8oVNPy9ynE/479RAXSbUHO2HxfOATNcS6IX72+aO8n8E0ChK5L39v4REUexq77xxrRydT6EVZA5edIZCr+PXbUqy1MI4ICnuzwhJiKSZ/R7uaUTDb8yu8NgpTQv2xTNiHt2sSRZmRa8yQw5qRO8NhHij9Ex5sInNoOLrHP1tskTovaxMJn7+dnaH4gF3R57b3sNX7d60ljZgfaBxJMMdgmtPRvbLRU=
-  on:
-    repo: ${GITHUB_REPO_NAME}
-    #    tags: true
-#    condition: "$TRAVIS_TAG != *[ab]* && $MYCONDAPY == 3.6 && $TRAVIS_OS_NAME == linux"
-  skip_existing: true
-  distributions: "sdist bdist_wheel"
+  - python3 -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*
