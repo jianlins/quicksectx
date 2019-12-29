@@ -3,14 +3,11 @@ set -e -x
 
 # Install a system package required by our library
 yum install -y atlas-devel
-
-PYS=(/opt/python/cp36-cp36m/bin /opt/python/cp37-cp37m/bin)
+PYBIN=/opt/python/$1/bin
+PLAT=$2
 # Compile wheels
-for PYBIN in ${PYS}; do
-    "${PYBIN}/pip" install -r /io/dev-requirements.txt
-    "${PYBIN}/pip" wheel /io/ -w wheelhouse/
-done
-
+"${PYBIN}/pip" install -r /io/dev-requirements.txt
+"${PYBIN}/pip" wheel /io/ -w wheelhouse/
 
 # Bundle external shared libraries into the wheels
 for whl in wheelhouse/*.whl; do
