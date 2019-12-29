@@ -1,3 +1,4 @@
+language: python
 sudo: required
 services:
   - docker
@@ -32,5 +33,5 @@ deploy:
   on:
     repo: ${GITHUB_REPO_NAME}
     #    tags: true
-    condition: "$TRAVIS_TAG != *[ab]* && $MYCONDAPY == 3.6 && $TRAVIS_OS_NAME == linux"
+#    condition: "$TRAVIS_TAG != *[ab]* && $MYCONDAPY == 3.6 && $TRAVIS_OS_NAME == linux"
   skip_existing: true
