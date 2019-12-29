@@ -18,7 +18,7 @@ env:
     - PY37="cp37-cp37m"
     - PY38="cp38-cp38"
     - VERSION='0.2.2a7'
-install:
+before_install:
   - docker pull quay.io/pypa/manylinux1_x86_64
   - docker run --name "aaa" quay.io/pypa/manylinux1_x86_64 /bin/sh -c "cd && yum update -y && mkdir /wheelhouse &&
     yum install zlib-devel libxml2-devel -y && pwd && ls /opt/python/ && ls && echo '\n\n' && ls &&
@@ -35,6 +35,7 @@ install:
   - docker cp aaa:/wheelhouse/quicksectx-${VERSION}-${PY36}-manylinux1_x86_64.whl ./dist/
 script:
   - ls
+  - ls ./dist/
 deploy:
   provider: pypi
   user: __token__
