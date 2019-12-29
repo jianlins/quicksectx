@@ -1,15 +1,13 @@
 #!/bin/bash
 set -e -x
 
-echo ${PYVER}
-
 # Install a system package required by our library
-git clone https://github.com/jianlins/quicksect
+yum install -y atlas-devel
+
 # Compile wheels
 for PYBIN in /opt/python/*/bin; do
     "${PYBIN}/pip" install -r /io/dev-requirements.txt
-    "${PYBIN}/python" setup.py build_ext -i
-    "${PYBIN}/python" setup.py bdist_wheel
+    "${PYBIN}/pip" wheel /io/ -w wheelhouse/
 done
 
 # Bundle external shared libraries into the wheels
