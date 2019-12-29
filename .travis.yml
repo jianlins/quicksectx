@@ -1,7 +1,24 @@
+notifications:
+  email: false
 env:
   matrix:
-    - MYCONDAPY=3.6
-    - MYCONDAPY=3.7
+    include:
+      - sudo: required
+        services:
+          - docker
+        env: DOCKER_IMAGE=quay.io/pypa/manylinux1_x86_64
+          PLAT=manylinux1_x86_64
+      - sudo: required
+        services:
+          - docker
+        env: DOCKER_IMAGE=quay.io/pypa/manylinux1_i686
+          PRE_CMD=linux32
+          PLAT=manylinux1_i686
+      - sudo: required
+        services:
+          - docker
+        env: DOCKER_IMAGE=quay.io/pypa/manylinux2010_x86_64
+          PLAT=manylinux2010_x86_64
   global:
     - secure: P6c1spkY+mxyZKX+OIaUzcoJLLfZCxBEj6e/ZVThO6u4IGOoFajceQ/iXsaXLtoBhSqkbVMNs1YWqGFD8MLhBvrTY3DRQAKvavT38Z1tM5Vd91KzSgZkNRbNMswRu09STop2Eb0rl9iK81i+Hgsq3KTXtbOMrMCqJtpKOlWasvF5ZrMmwS6DXyIPW4ow671O4s2yKtkfXt3NGiX+GBlTE4ed6BJcrZ072HVR2uCg4vb1kPB5CH3Mz+r7bbVU7EY8QsUke20ZtHX1c3NErN5RSHrbLKujIeo21gdntv8nVldVX5iYMbzStqJyBJ8tmesstv3XUfMkAHnB0CRdVLm1O2fVMDnYehEWxbtGbBBpcrOG/T3U4FPKffB3Ao0uIh+k2uqPBdP4mEcqd6rEo7PdSlC/p6zNnw+JpqdQ0utHwBhIbeELCi1pytKRbHI4G+7UlJZE+Tmw/BHnPDzQs9HjZVyzDjVarfS2xpdhrogGJlCkpxz3eXWN8WbsTdUExZaiFGeZ41TgIyaGaEkrMXA3iLJRzI3VfUAueSUt1VVq8KKHLa1qKt2vn0Dx/3oXTTRz4Nl9Z5sayi68XccVbyjbvv/0SDGQAvd/7/ZhlidW9xPbJtjc6CG6UWRTRkm6bSJQhQ1lq1VsYmPtzCqXqIVNXKINS/j3CvvKla0PejQp9U4=
     - secure: 22S/8zpvjldEjolbeMBLnq/0iXBKMVjFVqVYVEzZbBgdvnbhTWwa9B9mLVHhOwnl8RNFB2P0qTI+5pz8SqL9tf4G+hw/h0bG7OW8cSnMwyp07yNbZrn/9cxzrWhlQn3mLxeOFiNDM1eZ5BmTFJca3roF4KrZ3OVq59ibmCAhe8KY+TqOuf5600nGmDHtVtEQxApyIUUm9VQAKrj1Y0ihJGLF5RLSXODKXTGn2nEfRxrDDf2JYgZWrQ9cCkRC/NpNGpaaXyPC8SXp1UtPAKsDrfVjnh5iejMRLxWTy7oFkrM3DP8wCBCGeiVTyF02mOR0U5ykzd8ydkBeWgSQx1fCXKHXXyzzkqgLvYcnpfPY3UEXqjEO1OnWDsA8rbzgyvQzvuWDP35Yt221t6bo7uqcySMZl1QA+XEnXFVgAroY//7Owy5PNlX5HCWIl0xRBktBNfsZIy/Ff56eqglqL8nE5V4cqISqF5FYQwsO+kQWBFynQit2uUvphEc6ptJPng6qeOtDEd8roo5YcapfuVzphNzwQh713B8cfnAwFrgkfgOo52Ok1Qtn2/4t/97XghFe1Ui9oXgdQ++VZ4KiJgA/dlmXSTyWUI2+nTxSOjNVlv0VZodza85wF7dDFbLLYtziCqx+g+LQdaJFB3ww/ro/W9yLM9ze89xlxDfdR92Rz0M=
@@ -10,62 +27,65 @@ env:
     - GITHUB_REPO_NAME=jianlins/quicksectx
     - CONDA_PKG_NAME_PY=quicksectx
     - PYPI_LOGIN=jianlins
-language: generic
-os:
-  - linux
-  - osx
-dist: trusty
-sudo: false
-matrix:
-  fast_finish: true
-  allow_failures:
-    - os: osx
-cache:
-  directories:
-    - "$HOME/download"
-    - "$HOME/miniconda"
-before_cache:
-  - if ! [[ $TRAVIS_TAG ]]; then rm -rf $HOME/miniconda/conda-bld; fi
-  - rm -rf $HOME/miniconda/locks $HOME/miniconda/pkgs $HOME/miniconda/var $HOME/miniconda/conda-meta/history
-  - pip uninstall -y cardboardlint
-branches:
-  only:
-    - master
-    - "/^[0-9]+\\.[0-9]+(\\.[0-9]+)?([ab][0-9]+)?$/"
-before_install:
-  - if test -e $HOME/miniconda/bin; then echo "miniconda already installed."; else echo
-    "Installing miniconda."; rm -rf $HOME/miniconda; mkdir -p $HOME/download; if [[
-    -d $HOME/download/miniconda.sh ]]; then rm -rf $HOME/download/miniconda.sh; fi;
-    if [ "${TRAVIS_OS_NAME}" = "linux" ]; then wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
-    -O $HOME/download/miniconda.sh; else wget https://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh
-    -O $HOME/download/miniconda.sh; fi; bash $HOME/download/miniconda.sh -b -p $HOME/miniconda;
-    fi
+#language: generic
+#os:
+#  - linux
+#  - osx
+#dist: trusty
+#sudo: false
+#matrix:
+#  fast_finish: true
+#  allow_failures:
+#    - os: osx
+#cache:
+#  directories:
+#    - "$HOME/download"
+#    - "$HOME/miniconda"
+#before_cache:
+#  - if ! [[ $TRAVIS_TAG ]]; then rm -rf $HOME/miniconda/conda-bld; fi
+#  - rm -rf $HOME/miniconda/locks $HOME/miniconda/pkgs $HOME/miniconda/var $HOME/miniconda/conda-meta/history
+#  - pip uninstall -y cardboardlint
+#branches:
+#  only:
+#    - master
+#    - "/^[0-9]+\\.[0-9]+(\\.[0-9]+)?([ab][0-9]+)?$/"
+#before_install:
+#  - if test -e $HOME/miniconda/bin; then echo "miniconda already installed."; else echo
+#    "Installing miniconda."; rm -rf $HOME/miniconda; mkdir -p $HOME/download; if [[
+#    -d $HOME/download/miniconda.sh ]]; then rm -rf $HOME/download/miniconda.sh; fi;
+#    if [ "${TRAVIS_OS_NAME}" = "linux" ]; then wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+#    -O $HOME/download/miniconda.sh; else wget https://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh
+#    -O $HOME/download/miniconda.sh; fi; bash $HOME/download/miniconda.sh -b -p $HOME/miniconda;
+#    fi
 install:
-  - source "$HOME/miniconda/etc/profile.d/conda.sh"
-  - hash -r
-  - conda config --set always_yes yes --set changeps1 no
-  - conda create -q -n test-environment python=${MYCONDAPY} pip cython anaconda-client setuptools
-  - conda activate test-environment
-  - if ! [[ $TRAVIS_TAG ]]; then conda install -y -q ${CONDA_DEPENDENCIES}; pip install
-    --upgrade pylint codecov coverage pycodestyle pydocstyle; fi
-  - conda info -a
+  - docker pull $DOCKER_IMAGE
+#  - source "$HOME/miniconda/etc/profile.d/conda.sh"
+#  - hash -r
+#  - conda config --set always_yes yes --set changeps1 no
+#  - conda create -q -n test-environment python=${MYCONDAPY} pip cython anaconda-client setuptools
+#  - conda activate test-environment
+#  - if ! [[ $TRAVIS_TAG ]]; then conda install -y -q ${CONDA_DEPENDENCIES}; pip install
+#    --upgrade pylint codecov coverage pycodestyle pydocstyle; fi
+#  - conda info -a
 script:
-  - if [[ $TRAVIS_TAG ]]; then
-      python setup.py build_ext -i &&
-      python setup.py bdist_wheel &&
-      nosetests ${PROJECT_NAME}
-        -v --detailed-errors --with-coverage --cover-package=${PROJECT_NAME}
-        --cover-tests --cover-inclusive --cover-branches &&
-      coverage xml -i &&
-
-      if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
-        cardboardlinter --refspec $TRAVIS_BRANCH -f 'dynamic';
-      fi
-    fi
-  - if [[ -e doc ]]; then (cd doc; make html); fi
-
-after_success:
-  - codecov -f coverage.xml
+  - docker run --rm -e PLAT=$PLAT -v `pwd`:/io $DOCKER_IMAGE $PRE_CMD /io/travis/build-wheels.sh
+  - ls wheelhouse/
+#  - if [[ $TRAVIS_TAG ]]; then
+#      python setup.py build_ext -i &&
+#      python setup.py bdist_wheel &&
+#      nosetests ${PROJECT_NAME}
+#        -v --detailed-errors --with-coverage --cover-package=${PROJECT_NAME}
+#        --cover-tests --cover-inclusive --cover-branches &&
+#      coverage xml -i &&
+#
+#      if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
+#        cardboardlinter --refspec $TRAVIS_BRANCH -f 'dynamic';
+#      fi
+#    fi
+#  - if [[ -e doc ]]; then (cd doc; make html); fi
+#
+#after_success:
+#  - codecov -f coverage.xml
 deploy:
   provider: pypi
   user: __token__
