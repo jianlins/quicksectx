@@ -13,7 +13,7 @@ env:
     - PYPI_LOGIN=jianlins
 #    - VERSION="0.7.1.post6"
     - PY36="cp36-cp36m"
-before_install:
+install:
   - docker pull quay.io/pypa/manylinux1_x86_64
   - docker run --name "aaa" quay.io/pypa/manylinux1_x86_64 /bin/sh -c "cd && yum update -y && mkdir /wheelhouse &&
     yum install zlib-devel libxml2-devel -y &&
