@@ -37,7 +37,7 @@ matrix:
         PLAT=manylinux2010_x86_64
 
 install:
-  - pip install twine
+  - /opt/python/3.6.7/bin/pip install twine
   - docker pull $DOCKER_IMAGE
 
 script:
@@ -46,4 +46,4 @@ script:
 
 
 after_success:
-  - python3 -m twine upload -u ${PYPI_LOGIN} -p ${PYPI_PWD} --repository-url https://test.pypi.org/legacy/ wheelhouse/*
+  - /opt/python/3.6.7/bin/python -m twine upload -u ${PYPI_LOGIN} -p ${PYPI_PWD} --repository-url https://test.pypi.org/legacy/ wheelhouse/*
