@@ -8,7 +8,7 @@ yum install -y atlas-devel
 for PYBIN in /opt/python/*/bin; do
     "${PYBIN}/pip" install -r /io/dev-requirements.txt
     "${PYBIN}/python" setup.py build_ext -i
-    "${PYBIN}/pip" wheel /io/ -w wheelhouse/
+    "${PYBIN}/python" setup.py bdist_wheel
 done
 
 # Bundle external shared libraries into the wheels
