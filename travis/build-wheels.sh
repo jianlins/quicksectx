@@ -17,5 +17,5 @@ done
 # Install packages and test
 for PYBIN in ${PYS}; do
     "${PYBIN}/pip" install python-manylinux-demo --no-index -f /io/wheelhouse
-    (cd "$HOME"; "${PYBIN}/nosetests" pymanylinuxdemo)
+    (cd "$HOME"; "${PYBIN}/nosetests" quicksectx)
 done
