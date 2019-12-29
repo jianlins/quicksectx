@@ -4,7 +4,7 @@ set -e -x
 # Install a system package required by our library
 yum install -y atlas-devel
 
-PYS=(/opt/python/cp36-cp36m/bin, /opt/python/cp37-cp37m/bin)
+PYS=(/opt/python/cp36-cp36m/bin /opt/python/cp37-cp37m/bin)
 # Compile wheels
 for PYBIN in ${PYS}; do
     "${PYBIN}/pip" install -r /io/dev-requirements.txt
