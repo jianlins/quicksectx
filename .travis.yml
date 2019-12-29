@@ -11,14 +11,12 @@ env:
     - GITHUB_REPO_NAME=jianlins/quicksectx
     - CONDA_PKG_NAME_PY=quicksectx
     - PYPI_LOGIN=jianlins
-#    - VERSION="0.7.1.post6"
     - PY36="cp36-cp36m"
 install:
   - docker pull quay.io/pypa/manylinux1_x86_64
   - docker run --name "aaa" quay.io/pypa/manylinux1_x86_64 /bin/sh -c "cd && yum update -y && mkdir /wheelhouse &&
     yum install zlib-devel libxml2-devel -y &&
     mv /usr/lib/libxml2.a /usr/lib/libxml2.a.org && mv /usr/lib64/libxml2.a /usr/lib64/libxml2.a.org &&
-#    git clone -b ${VERSION} git://github.com/igraph/python-igraph && cd python-igraph &&
     git clone git@github.com:jianlins/quicksectx.git && cd quicksectx &&
     /opt/python/${PY36}/bin/pip wheel . -w /wheelhouse &&
     auditwheel repair /wheelhouse/quicksectx-${VERSION}-${PY36}-linux_x86_64.whl -w /wheelhouse"
