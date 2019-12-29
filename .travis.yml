@@ -76,6 +76,7 @@ deploy:
 #    tags: true
     condition: "$TRAVIS_TAG != *[ab]* && $MYCONDAPY == 3.6 && $TRAVIS_OS_NAME == linux"
   skip_existing: true
+  distributions: "sdist bdist_wheel"
 
 #- provider: script
 #  skip_cleanup: true
