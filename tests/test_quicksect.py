@@ -181,7 +181,7 @@ def brute_force_find_left(intervals, f, max_dist, n):
     r.sort(key=operator.attrgetter('end'), reverse=True)
     if len(r) <= n: return r
     i = n
-    while distance(r[i], f) == distance(r[i - 1], f):
+    while i < len(r) and distance(r[i], f) == distance(r[i - 1], f):
         i += 1
     return r[:i]
 
@@ -192,7 +192,7 @@ def brute_force_find_right(intervals, f, max_dist, n):
     r.sort(key=operator.attrgetter('start'))
     if len(r) <= n: return r
     i = n
-    while distance(r[i], f) == distance(r[i - 1], f):
+    while i < len(r) and distance(r[i], f) == distance(r[i - 1], f):
         i += 1
     return r[:i]
 
