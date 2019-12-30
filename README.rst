@@ -1,4 +1,4 @@
-QuicksectX
+Quicksect
 =========
 
 Description
@@ -15,17 +15,20 @@ tree.
 
 Extended with removal operations and allows pretty print to display tree structure (By Jianlin)
 
+
 License is MIT.
 
 Installation
 ------------
 
-    pip install quicksectx
+    pip install quicksect
 
+or
+
+    conda install -c bioconda quicksect
 
 Use
 ---
-What's new
 
 To use extended quicksect(quicksectx):
 
@@ -71,7 +74,6 @@ Most common use will be via IntervalTree:
 Thats pretty much everything you need to know about the tree.
 
 
-
 Test
 ----
 
@@ -93,3 +95,4 @@ the nodes of the tree:
 
     >>> inter.right(Interval(34, 35), n=1)
     [Interval(44, 55)]
+
