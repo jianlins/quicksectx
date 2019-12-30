@@ -26,7 +26,9 @@ install:
 
 
 # Skip .NET project specific build phase.
-build: off
+build:
+    - "%PYTHON%\\python.exe setup.py build_ext -i"
+
 
 test_script:
     # Not much of a real test yet, just try to build myself...
@@ -58,5 +60,4 @@ on_success:
     # If this build is because of a tag make the conda package and upload it.
 #    - cmd: if "%APPVEYOR_REPO_TAG%"=="true" anaconda -t %BINSTAR_TOKEN% upload -u astropy %BUILT_PACKAGE%
 deploy_script:
-  - "%PYTHON%\\python.exe  -m twine upload -u %PYPI_LOGIN% -p %PYPI_PWD% --repository-url https://test.pypi.org/legacy/ dist/*.whl"
-  -
+#  - "%PYTHON%\\python.exe  -m twine upload -u %PYPI_LOGIN% -p %PYPI_PWD% --repository-url https://test.pypi.org/legacy/ dist/*.whl"
