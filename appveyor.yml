@@ -19,10 +19,10 @@ environment:
 # We always use a 64-bit machine, but can build x86 distributions
 # with the TARGET_ARCH variable.
 platform:
-    - x64
+  - x64
 
 install:
-    - "%PYTHON%\\python.exe -m pip install -q wheel twine cython"
+  - "%PYTHON%\\python.exe -m pip install -q wheel twine cython"
 
 
 # Skip .NET project specific build phase.
@@ -30,10 +30,10 @@ build: off
 
 
 test_script:
-    # Not much of a real test yet, just try to build myself...
-#    - "%CMD_IN_ENV% conda build extruder.recipe"
-    - "%PYTHON%\\python.exe setup.py build_ext -i"
-    - "%PYTHON%\\python.exe setup.py test"
+  # Not much of a real test yet, just try to build myself...
+  #    - "%CMD_IN_ENV% conda build extruder.recipe"
+  - "%PYTHON%\\python.exe setup.py build_ext -i"
+  - "%PYTHON%\\python.exe setup.py test"
 
 after_test:
   # This step builds your wheels.
@@ -47,18 +47,17 @@ artifacts:
   - path: dist\*
 
 on_success:
-    - echo %APPVEYOR_REPO_TAG%
-    # Write the output file location to a file...cannot simply use conda build --output
-    # because astropy_helpers prints out a message when it is freezing the version number during setup.
-#    - python -c "from conda_build.api import get_output_file_path; p=get_output_file_path('extruder.recipe'); f=open('to_upload.txt', 'wb');f.write(p)"
-    # ...so that we can set a variable to the name of that output file.
-    - set /P BUILT_PACKAGE=<to_upload.txt
-    - echo %BUILT_PACKAGE%
-    - dir quicksect
-    - dir quicksectx
-    - dir dist
-    -
-    # If this build is because of a tag make the conda package and upload it.
-#    - cmd: if "%APPVEYOR_REPO_TAG%"=="true" anaconda -t %BINSTAR_TOKEN% upload -u astropy %BUILT_PACKAGE%
+  - echo %APPVEYOR_REPO_TAG%
+  # Write the output file location to a file...cannot simply use conda build --output
+  # because astropy_helpers prints out a message when it is freezing the version number during setup.
+  #    - python -c "from conda_build.api import get_output_file_path; p=get_output_file_path('extruder.recipe'); f=open('to_upload.txt', 'wb');f.write(p)"
+  # ...so that we can set a variable to the name of that output file.
+  - echo %BUILT_PACKAGE%
+  - dir dist
+  - # If this build is because of a tag make the conda package and upload it.
+  #    - cmd: if "%APPVEYOR_REPO_TAG%"=="true" anaconda -t %BINSTAR_TOKEN% upload -u astropy %BUILT_PACKAGE%
 deploy_script:
   - "%PYTHON%\\python.exe  -m twine upload -u %PYPI_LOGIN% -p %PYPI_PWD% --repository-url https://test.pypi.org/legacy/ dist/*.whl"
+  - echo "uploaded to pypi"
+    on:
+      APPVEYOR_REPO_TAG: true
