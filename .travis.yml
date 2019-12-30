@@ -53,30 +53,32 @@ script:
 
   -
 deploy:
+  # deploy develop to the staging environment
   - provider: script
-      script: /opt/python/${TRAVIS_PY36}/bin/python -m twine upload -u ${PYPI_LOGIN} -p ${PYPI_PWD} wheelhouse/${PROJECT_NAME}*${PLAT}*
+    script: /opt/python/${TRAVIS_PY36}/bin/python -m twine upload -u ${PYPI_LOGIN} -p ${PYPI_PWD} wheelhouse/${PROJECT_NAME}*${PLAT}*
     on:
       repo: ${GITHUB_REPO_NAME}
-      tags: true
-      condition: "$DEPLOY_TEST == false"
+  #      tags: true
+      condition: "$DEPLOY_TEST=false"
 
   - provider: script
-      script: /opt/python/${TRAVIS_PY36}/bin/python setup.py sdist && /opt/python/${TRAVIS_PY36}/bin/python -m twine upload -u ${PYPI_LOGIN} -p ${PYPI_PWD} dist/${PROJECT_NAME}*tar.gz
+    script: /opt/python/${TRAVIS_PY36}/bin/python setup.py sdist && /opt/python/${TRAVIS_PY36}/bin/python -m twine upload -u ${PYPI_LOGIN} -p ${PYPI_PWD} dist/${PROJECT_NAME}*tar.gz
     on:
       repo: ${GITHUB_REPO_NAME}
-      tags: true
-      condition: "$PLAT == manylinux1_x86_64 && $TRAVIS_OS_NAME == linux && $DEPLOY_TEST == false"
+      #      tags: true
+      condition: "$PLAT == manylinux1_x86_64 && $TRAVIS_OS_NAME == linux && $DEPLOY_TEST=false"
+
+  # deploy develop to the test staging environment
+  - provider: script
+    script: /opt/python/${TRAVIS_PY36}/bin/python -m twine upload -u ${PYPI_LOGIN} -p ${PYPI_PWD} --repository-url https://test.pypi.org/legacy/ wheelhouse/${PROJECT_NAME}*${PLAT}*
+    on:
+      repo: ${GITHUB_REPO_NAME}
+      #      tags: true
+      condition: "$DEPLOY_TEST=true"
 
   - provider: script
-      script: /opt/python/${TRAVIS_PY36}/bin/python -m twine upload -u ${PYPI_LOGIN} -p ${PYPI_PWD} --repository-url https://test.pypi.org/legacy/ wheelhouse/${PROJECT_NAME}*${PLAT}*
+    script: /opt/python/${TRAVIS_PY36}/bin/python setup.py sdist && /opt/python/${TRAVIS_PY36}/bin/python -m twine upload -u ${PYPI_LOGIN} -p ${PYPI_PWD} --repository-url https://test.pypi.org/legacy/ dist/${PROJECT_NAME}*tar.gz
     on:
       repo: ${GITHUB_REPO_NAME}
-      tags: true
-      condition: "$DEPLOY_TEST == true"
-
-  - provider: script
-      script: /opt/python/${TRAVIS_PY36}/bin/python setup.py sdist && /opt/python/${TRAVIS_PY36}/bin/python -m twine upload -u ${PYPI_LOGIN} -p ${PYPI_PWD} --repository-url https://test.pypi.org/legacy/ dist/${PROJECT_NAME}*tar.gz
-    on:
-      repo: ${GITHUB_REPO_NAME}
-      tags: true
-      condition: "$PLAT == manylinux1_x86_64 && $TRAVIS_OS_NAME == linux && $DEPLOY_TEST == true"
+      #      tags: true
+      condition: "$PLAT == manylinux1_x86_64 && $TRAVIS_OS_NAME == linux && $DEPLOY_TEST=true"
