@@ -54,7 +54,7 @@ script:
 deploy:
   # deploy wheels
   - provider: script
-      script: /opt/python/${TRAVIS_PY36}/bin/python -m twine upload -u ${PYPI_LOGIN} -p ${PYPI_PWD} wheelhouse/${PROJECT_NAME}*${PLAT}*
+      script: /opt/python/${TRAVIS_PY36}/bin/python -m twine upload -u ${PYPI_LOGIN} -p ${PYPI_PWD} --repository-url https://pypi.org/legacy/ wheelhouse/${PROJECT_NAME}*${PLAT}*
     #    script: /opt/python/${TRAVIS_PY36}/bin/python -m twine upload -u ${PYPI_LOGIN} -p ${PYPI_PWD} --repository-url https://test.pypi.org/legacy/ wheelhouse/${PROJECT_NAME}*${PLAT}*
     on:
       repo: ${GITHUB_REPO_NAME}
@@ -62,8 +62,8 @@ deploy:
 
   # deploy source code tar.gz
   - provider: script
-       script: /opt/python/${TRAVIS_PY36}/bin/python setup.py sdist && /opt/python/${TRAVIS_PY36}/bin/python -m twine upload -u ${PYPI_LOGIN} -p ${PYPI_PWD} dist/${PROJECT_NAME}*tar.gz
-#    script: /opt/python/${TRAVIS_PY36}/bin/python setup.py sdist && /opt/python/${TRAVIS_PY36}/bin/python -m twine upload -u ${PYPI_LOGIN} -p ${PYPI_PWD} --repository-url https://test.pypi.org/legacy/ dist/${PROJECT_NAME}*tar.gz
+      script: /opt/python/${TRAVIS_PY36}/bin/python setup.py sdist && /opt/python/${TRAVIS_PY36}/bin/python -m twine upload -u ${PYPI_LOGIN} -p ${PYPI_PWD} --repository-url https://pypi.org/legacy/ dist/${PROJECT_NAME}*tar.gz
+    #    script: /opt/python/${TRAVIS_PY36}/bin/python setup.py sdist && /opt/python/${TRAVIS_PY36}/bin/python -m twine upload -u ${PYPI_LOGIN} -p ${PYPI_PWD} --repository-url https://test.pypi.org/legacy/ dist/${PROJECT_NAME}*tar.gz
     on:
       repo: ${GITHUB_REPO_NAME}
       tags: true
