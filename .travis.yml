@@ -54,7 +54,7 @@ script:
 
 
 
-#deploy:
+deploy:
   # deploy develop to pypi.org
   - provider: script
     script: /opt/python/${TRAVIS_PY36}/bin/python -m twine upload -u ${PYPI_LOGIN} -p ${PYPI_PWD} wheelhouse/${PROJECT_NAME}*${PLAT}*
