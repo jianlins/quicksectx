@@ -58,7 +58,9 @@ on_success:
   #    - cmd: if "%APPVEYOR_REPO_TAG%"=="true" anaconda -t %BINSTAR_TOKEN% upload -u astropy %BUILT_PACKAGE%
 deploy_script:
   - provider: Environment
-    - "%PYTHON%\\python.exe  -m twine upload -u %PYPI_LOGIN% -p %PYPI_PWD% --repository-url https://test.pypi.org/legacy/ dist/*.whl"
-    - echo "uploaded to pypi"
+    name: pypi
+    website_name: Site-A
+      - "%PYTHON%\\python.exe  -m twine upload -u %PYPI_LOGIN% -p %PYPI_PWD% --repository-url https://test.pypi.org/legacy/ dist/*.whl"
+      - echo "uploaded to pypi"
     on:
       APPVEYOR_REPO_TAG: true
