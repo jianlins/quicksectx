@@ -4,12 +4,6 @@ environment:
   # Appveyor machines come with miniconda already installed.
   CONDA_INSTALL_LOCN: "C:\\Miniconda-x64"
 
-  # Need this to set up compilation on Windows.
-  CMD_IN_ENV: cmd /E:ON /V:ON /C Obvious-CI\scripts\obvci_appveyor_python_build_env.cmd
-
-  BINSTAR_TOKEN:
-    secure: In551w7v371boSMxAcNcHccXMbcLyVImifhayYopb02ZqkUGYV8QyDu1tjVbKaJz
-
   matrix:
     # Unfortunately, compiler/SDK configuration for 64 bit builds depends on
     # python version. Right now conda build does not configure the SDK, and
@@ -34,14 +28,14 @@ build: off
 test_script:
     # Not much of a real test yet, just try to build myself...
 #    - "%CMD_IN_ENV% conda build extruder.recipe"
-    - "build.cmd %PYTHON%\\python.exe setup.py test"
+    - "%PYTHON%\\python.exe setup.py test"
     -
 after_test:
   # This step builds your wheels.
   # Again, you only need build.cmd if you're building C extensions for
   # 64-bit Python 3.3/3.4. And you need to use %PYTHON% to get the correct
   # interpreter
-  - "build.cmd %PYTHON%\\python.exe setup.py bdist_wheel"
+  - "%PYTHON%\\python.exe setup.py bdist_wheel"
 
 artifacts:
   # bdist_wheel puts your built wheel in the dist directory
