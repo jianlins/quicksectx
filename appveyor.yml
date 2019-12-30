@@ -22,7 +22,7 @@ platform:
   - x64
 
 install:
-  - "%PYTHON%\\python.exe -m pip install -q wheel twine cython"
+  - "%PYTHON%\\python.exe -m pip install -q twine cython"
 
 
 # Skip .NET project specific build phase.
