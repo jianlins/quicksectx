@@ -2,7 +2,10 @@
 
 environment:
   # Appveyor machines come with miniconda already installed.
-  CONDA_INSTALL_LOCN: "C:\\Miniconda-x64"
+  PYPI_LOGIN: jianlins
+  PYPI_PWD:
+    secure: m4olevjgBYrOI3NszBfruw==
+
 
   matrix:
     # Unfortunately, compiler/SDK configuration for 64 bit builds depends on
@@ -51,5 +54,9 @@ on_success:
     - echo %BUILT_PACKAGE%
     - dir
     - dir dist
+    -
     # If this build is because of a tag make the conda package and upload it.
 #    - cmd: if "%APPVEYOR_REPO_TAG%"=="true" anaconda -t %BINSTAR_TOKEN% upload -u astropy %BUILT_PACKAGE%
+deploy_script:
+  - "%PYTHON%\\python.exe  -m twine upload -u %PYPI_LOGIN% -p %PYPI_PWD% --repository-url https://test.pypi.org/legacy/ dist/*.whl"
+  -
