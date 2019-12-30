@@ -15,16 +15,9 @@ environment:
     # python version. Right now conda build does not configure the SDK, and
     # the appveyor setup only sets up the SDK once, so separate by python
     # versions.
-    - TARGET_ARCH: "x64"
-      PYTHON_BUILD_RESTRICTIONS: "3.6*"
-      CONDA_PY: "36"
-    - TARGET_ARCH: "x64"
-      PYTHON_BUILD_RESTRICTIONS: "3.7*"
-      CONDA_PY: "37"
-    # For 32 bit builds there are no compiler issues, let Obvious-CI
-    # handle the matrix.
-    # - TARGET_ARCH: "x86"
-    #   PYTHON_BUILD_RESTRICTIONS: "2.7*|>=3.4"
+    - PYTHON: "C:\\Python36-x64"
+    - PYTHON: "C:\\Python37-x64"
+    - PYTHON: "C:\\Python38-x64"
 
 # We always use a 64-bit machine, but can build x86 distributions
 # with the TARGET_ARCH variable.
@@ -32,24 +25,7 @@ platform:
     - x64
 
 install:
-    # Clone simply to get the script for setting up Windows build environment.
-#    - cmd: git clone https://github.com/pelson/Obvious-CI.git
-
-    # No need to install miniconda because appveyor comes with it.
-    - cmd: SET PATH=%CONDA_INSTALL_LOCN%;%CONDA_INSTALL_LOCN%\Scripts;%PATH%
-
-    - cmd: conda config --set always_yes true
-    - cmd: conda update --quiet conda
-
-    - cmd:  conda install -q -c anaconda cython
-
-  # Add for ruamel.yaml
-    - cmd: conda config --add channels conda-forge
-    - cmd: conda install -q conda-build anaconda-client
-    - cmd: dir c:\
-    - cmd: python -m pip install wheel
-
-#    - "%PYTHON%\\python.exe -m pip install wheel"
+    - "%PYTHON%\\python.exe -m pip install wheel twine cython"
 
 
 # Skip .NET project specific build phase.
