@@ -38,7 +38,8 @@ matrix:
         PLAT=manylinux2010_x86_64
 
 install:
-    - /opt/python/${TRAVIS_PY36}/bin/pip install twine
+  - /opt/python/${TRAVIS_PY36}/bin/pip install twine
+  - /opt/python/${TRAVIS_PY36}/bin/pip install -r dev-requirements.txt
   - docker pull $DOCKER_IMAGE
 
 script:
@@ -60,8 +61,8 @@ deploy:
 #      tags: true
 
   - provider: script
-#    script: /opt/python/${TRAVIS_PY36}/bin/python setup.py sdist && /opt/python/${TRAVIS_PY36}/bin/python -m twine upload -u ${PYPI_LOGIN} -p ${PYPI_PWD} wheelhouse/${PROJECT_NAME}*${PLAT}*tar.gz
-    script: /opt/python/${TRAVIS_PY36}/bin/pip install -r dev-requirements.txt && /opt/python/${TRAVIS_PY36}/bin/python setup.py sdist && /opt/python/${TRAVIS_PY36}/bin/python -m twine upload -u ${PYPI_LOGIN} -p ${PYPI_PWD} --repository-url https://test.pypi.org/legacy/ dist/${PROJECT_NAME}*${PLAT}*tar.gz
+#    script: /opt/python/${TRAVIS_PY36}/bin/pip install -r dev-requirements.txt && /opt/python/${TRAVIS_PY36}/bin/python setup.py sdist && /opt/python/${TRAVIS_PY36}/bin/python -m twine upload -u ${PYPI_LOGIN} -p ${PYPI_PWD} dist/${PROJECT_NAME}*${PLAT}*tar.gz
+    script: /opt/python/${TRAVIS_PY36}/bin/python setup.py sdist && /opt/python/${TRAVIS_PY36}/bin/python -m twine upload -u ${PYPI_LOGIN} -p ${PYPI_PWD} --repository-url https://test.pypi.org/legacy/ dist/${PROJECT_NAME}*tar.gz
     on:
       repo: ${GITHUB_REPO_NAME}
 #      tags: true
