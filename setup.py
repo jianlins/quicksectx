@@ -7,7 +7,7 @@ import os
 from pathlib import Path
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
-include_dirs = [dir_path + "/quicksectx", dir_path]
+include_dirs = [dir_path + "/quicksectx", dir_path, dir_path + "/quicksect"]
 
 
 def get_version():
@@ -26,13 +26,13 @@ def get_version():
 
 extensions = [
     Extension(
-        'quicksectx.quicksect1',
-        sources=['quicksectx/quicksect1.pyx'],
+        'quicksect.quicksect',
+        sources=['quicksect/quicksect.pyx'],
         include_dirs=include_dirs,
     ),
     Extension(
-        'quicksectx.quicksect2',
-        sources=['quicksectx/quicksect2.pyx'],
+        'quicksectx.quicksectx',
+        sources=['quicksectx/quicksectx.pyx'],
         include_dirs=include_dirs,
     )
 ]

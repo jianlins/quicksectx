@@ -1,8 +1,5 @@
-Quicksect
+QuicksectX
 =========
-
-.. image:: https://img.shields.io/badge/install%20with-bioconda-brightgreen.png
-    :target: http://bioconda.github.io/recipes/quicksect/README.html
 
 Description
 -----------
@@ -16,6 +13,7 @@ with his improvements.
 I have brought this project back from the dead because I want a fast, simple, no-dependencies Interval
 tree.
 
+Extended with removal operations and allows pretty print to display tree structure (By Jianlin)
 
 License is MIT.
 
@@ -24,13 +22,34 @@ Installation
 
     pip install quicksectx
 
-or
-
-    conda install -c bioconda quicksectx
 
 Use
 ---
-    >>> from quicksectx import IntervalNode, Interval, IntervalTree
+What's new
+
+To use extended quicksect(quicksectx):
+
+    >>> from quicksectx import IntervalNode, IntervalTree, Interval
+    >>> tree = IntervalTree()
+    >>> tree.add(1, 3, 100)
+    >>> tree.add(3, 7, 110)
+    >>> tree.add(2, 5, 120)
+    >>> tree.add(4, 6, 130)
+    >>> print(tree.pretty_print())
+    Inv(1, 3, d=100)
+    r:  Inv(3, 7, d=110)
+    l:    Inv(2, 5, d=120)
+    r:    Inv(4, 6, d=130)
+    >>> print(tree.find(Interval(2, 5)))
+    [Inv(1, 3, d=100), Inv(3, 7, d=110), Inv(2, 5, d=120), Inv(4, 6, d=130)]
+    >>> tree.remove(Interval(2, 5))
+    >>> print(tree.find(Interval(2, 5)))
+    [Inv(1, 3, d=100), Inv(3, 7, d=110), Inv(4, 6, d=130)]
+    
+
+To use traditional quicksect, you can still using the same syntax:
+
+    >>> from quicksect import IntervalNode, Interval, IntervalTree
 
             Most common use will be via IntervalTree:
 
@@ -183,6 +202,9 @@ Most common use will be via IntervalTree:
     (88, 444)
 
 Thats pretty much everything you need to know about the tree.
+
+
+
 
 
 Test

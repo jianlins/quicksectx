@@ -1,6 +1,7 @@
 *.so
-src/*.c
+*.c
 *.pyc
 build
 .idea
 *.pkl
+*.egg-info

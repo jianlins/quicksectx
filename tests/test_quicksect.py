@@ -1,6 +1,6 @@
 import unittest
 
-from quicksectx import IntervalNode, IntervalTree, distance, Interval
+from quicksect import IntervalNode, IntervalTree, distance, Interval
 
 try:
     from cPickle import dumps, loads

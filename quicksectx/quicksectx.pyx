@@ -17,7 +17,7 @@ cdef extern from "stdlib.h":
     int strlen(char *)
     int iabs(int)
 
-cdef class IntervalX:
+cdef class Interval:
     cdef public int start, end
     cdef public object data
     def __init__(self, int start, int end, data=None):
@@ -49,7 +49,7 @@ cdef class IntervalX:
     def __str__(self):
         return self.__repr__()
 
-cpdef int positioning(IntervalX f1, IntervalX f2):
+cpdef int positioning(Interval f1, Interval f2):
     if f1.start < f2.start:
         return 1
     if f1.start > f2.start:
@@ -60,7 +60,7 @@ cpdef int positioning(IntervalX f1, IntervalX f2):
         return -1
     return 0
 
-cpdef int overlaps(IntervalX f1, IntervalX f2):
+cpdef int overlaps(Interval f1, Interval f2):
     if f1.end < f2.start or f2.end < f1.start:
         return 1
     elif f1.start == f2.start and f1.end == f2.end:
@@ -68,7 +68,7 @@ cpdef int overlaps(IntervalX f1, IntervalX f2):
     else:
         return -1
 
-cpdef int distancex(IntervalX f1, IntervalX f2):
+cpdef int distancex(Interval f1, Interval f2):
     """\
     Distance between 2 features. The integer result is always positive or zero.
     If the features overlap or touch, it is zero.
@@ -92,27 +92,27 @@ cpdef int distancex(IntervalX f1, IntervalX f2):
     else:
         return -1
 
-cdef class IntervalTreeX:
-    cdef IntervalNodeX root
+cdef class IntervalTree:
+    cdef IntervalNode root
 
     def __init__(self):
         self.root = None
 
-    cpdef insert(self, IntervalX interval):
+    cpdef insert(self, Interval interval):
 
         if self.root is None:
-            self.root = IntervalNodeX(interval)
+            self.root = IntervalNode(interval)
         else:
             self.root = self.root.insert(interval)
 
     def add(self, int start, int end, other=None):
-        return self.insert(IntervalX(start, end, other))
+        return self.insert(Interval(start, end, other))
 
-    cpdef remove(self, IntervalX interval):
+    cpdef remove(self, Interval interval):
         self.root = self._remove(self.root, interval)
         pass
 
-    cpdef _remove(self, IntervalNodeX h, IntervalX interval):
+    cpdef _remove(self, IntervalNode h, Interval interval):
         if h is None:
             return None
         cdef dist = positioning(h.interval, interval)
@@ -133,7 +133,7 @@ cdef class IntervalTreeX:
             h = EmptyNode
         return h
 
-    cpdef join_lr(self, IntervalNodeX a, IntervalNodeX b):
+    cpdef join_lr(self, IntervalNode a, IntervalNode b):
         if a is None or a == EmptyNode:
             return b
         if b is None or b == EmptyNode:
@@ -160,13 +160,13 @@ cdef class IntervalTreeX:
         else:
             return self.root.intersect(start, end)
 
-    def left(self, IntervalX f, int n=1, int max_dist=25000):
+    def left(self, Interval f, int n=1, int max_dist=25000):
         if self.root is None:
             return []
         else:
             return self.root.left(f, n, max_dist)
 
-    def right(self, IntervalX f, int n=1, int max_dist=25000):
+    def right(self, Interval f, int n=1, int max_dist=25000):
         if self.root is None:
             return []
         else:
@@ -202,7 +202,7 @@ cdef class IntervalTreeX:
         return self.root
 
     @root.setter
-    def root(self, IntervalNodeX node):
+    def root(self, IntervalNode node):
         self.root = node
 
     def pretty_print(self):
@@ -236,7 +236,7 @@ cdef inline int imin2(int a, int b):
 
 cdef float nlog = -1.0 / log(0.5)
 
-cdef class IntervalNodeX:
+cdef class IntervalNode:
     """\
     Data structure for performing intersect and neighbor queries on a
     set of intervals. Algorithm uses a segment/interval tree to perform
@@ -244,18 +244,18 @@ cdef class IntervalNodeX:
 
     Usage
     =====
-    >>> from quicksectx import IntervalNodeX, IntervalX
-    >>> tree = IntervalNodeX(IntervalX(0, 10))
+    >>> from quicksectx import IntervalNode, Interval
+    >>> tree = IntervalNode(Interval(0, 10))
 
     Add intervals, the only requirement is that the interval have integer
     start and end attributes. Optional arguments are strand, name, and info.
 
-    >>> IntervalX(1, 22, info={'chr':12, 'anno': 'anything'})
+    >>> Interval(1, 22, info={'chr':12, 'anno': 'anything'})
 
 
-    >>> tree = tree.insert(IntervalX(3, 7, 1))
-    >>> tree = tree.insert(IntervalX(3, 40, -1))
-    >>> tree = tree.insert(IntervalX(13, 50, 1))
+    >>> tree = tree.insert(Interval(3, 7, 1))
+    >>> tree = tree.insert(Interval(3, 40, -1))
+    >>> tree = tree.insert(Interval(13, 50, 1))
 
     Queries
     -------
@@ -264,7 +264,7 @@ cdef class IntervalNodeX:
     ++++
 
     >>> tree.find(2, 5)
-    [Interval(3, 7), IntervalX(3, 40), Interval(0, 10)]
+    [Interval(3, 7), Interval(3, 40), Interval(0, 10)]
     >>> tree.find(11, 100)
     [Interval(13, 50), Interval(3, 40)]
     >>> tree.find(100, 200)
@@ -282,34 +282,34 @@ cdef class IntervalNodeX:
 
     """
     cdef float priority
-    cdef public IntervalX interval
+    cdef public Interval interval
     cdef public int start, end
     cdef int minstop, maxstop, minstart
-    cdef IntervalNodeX cleft, cright, croot
+    cdef IntervalNode cleft, cright, croot
 
     @property
     def left_node(self):
         return self.cleft if self.cleft is not EmptyNode else None
     @left_node.setter
-    def left_node(self, IntervalNodeX node):
+    def left_node(self, IntervalNode node):
         self.cleft = node
     @property
     def right_node(self):
         return self.cright if self.cright is not EmptyNode else None
     @right_node.setter
-    def right_node(self, IntervalNodeX node):
+    def right_node(self, IntervalNode node):
         self.cright = node
     @property
     def root_node(self):
         return self.croot if self.croot is not EmptyNode else None
     @root_node.setter
-    def root_node(self, IntervalNodeX node):
+    def root_node(self, IntervalNode node):
         self.croot = node
 
     def __repr__(self):
-        return "IntervalNodeX(%i, %i)" % (self.start, self.end)
+        return "IntervalNode(%i, %i)" % (self.start, self.end)
 
-    def __cinit__(IntervalNodeX self, IntervalX interval):
+    def __cinit__(IntervalNode self, Interval interval):
         # Python lacks the binomial distribution, so we convert a
         # uniform into a binomial because it naturally scales with
         # tree size.  Also, python's uniform is perfect since the
@@ -328,15 +328,15 @@ cdef class IntervalNodeX:
     def insert(self, interval):
         return self._insert(interval)
 
-    cdef IntervalNodeX _insert(IntervalNodeX self, IntervalX interval):
-        cdef IntervalNodeX croot = self
+    cdef IntervalNode _insert(IntervalNode self, Interval interval):
+        cdef IntervalNode croot = self
         if interval.start > self.start:
 
             # insert to cright tree
             if self.cright is not EmptyNode:
                 self.cright = self.cright._insert(interval)
             else:
-                self.cright = IntervalNodeX(interval)
+                self.cright = IntervalNode(interval)
             # rebalance tree
             if self.priority < self.cright.priority:
                 croot = self.rotate_left()
@@ -346,7 +346,7 @@ cdef class IntervalNodeX:
             if self.cleft is not EmptyNode:
                 self.cleft = self.cleft._insert(interval)
             else:
-                self.cleft = IntervalNodeX(interval)
+                self.cleft = IntervalNode(interval)
             # rebalance tree
             if self.priority < self.cleft.priority:
                 croot = self.rotate_right()
@@ -356,15 +356,15 @@ cdef class IntervalNodeX:
         self.cright.croot = croot
         return croot
 
-    cdef IntervalNodeX rotate_right(IntervalNodeX self):
-        cdef IntervalNodeX croot = self.cleft
+    cdef IntervalNode rotate_right(IntervalNode self):
+        cdef IntervalNode croot = self.cleft
         self.cleft = self.cleft.cright
         croot.cright = self
         self.set_stops()
         return croot
 
-    cdef IntervalNodeX rotate_left(IntervalNodeX self):
-        cdef IntervalNodeX croot = self.cright
+    cdef IntervalNode rotate_left(IntervalNode self):
+        cdef IntervalNode croot = self.cright
         self.cright = self.cright.cleft
         croot.cleft = self
         self.set_stops()
@@ -373,7 +373,7 @@ cdef class IntervalNodeX:
     def setstops(self):
         self.set_stops()
 
-    cdef inline void set_stops(IntervalNodeX self):
+    cdef inline void set_stops(IntervalNode self):
         if self.cright is not EmptyNode and self.cleft is not EmptyNode:
             self.maxstop = imax3(self.end, self.cright.maxstop, self.cleft.maxstop)
             self.minstop = imin3(self.end, self.cright.minstop, self.cleft.minstop)
@@ -398,7 +398,7 @@ cdef class IntervalNodeX:
 
     find = intersect
 
-    cdef void _intersect(IntervalNodeX self, int start, int stop, list results):
+    cdef void _intersect(IntervalNode self, int start, int stop, list results):
         # to have starts, stops be non-inclusive, replace <= with <  and >= with >
         #if start <= self.end and stop >= self.start: results.append(self.interval)
         # print(self, start, stop, results)
@@ -413,7 +413,7 @@ cdef class IntervalNodeX:
             # print('go right')
             self.cright._intersect(start, stop, results)
 
-    cdef void _seek_left(IntervalNodeX self, int position, list results, int n, int max_dist):
+    cdef void _seek_left(IntervalNode self, int position, list results, int n, int max_dist):
         # we know we can bail in these 2 cases.
         if self.maxstop + max_dist < position: return
         if self.minstart > position: return
@@ -432,7 +432,7 @@ cdef class IntervalNodeX:
         if self.cleft is not EmptyNode:
             self.cleft._seek_left(position, results, n, max_dist)
 
-    cdef void _seek_right(IntervalNodeX self, int position, list results, int n, int max_dist):
+    cdef void _seek_right(IntervalNode self, int position, list results, int n, int max_dist):
         # we know we can bail in these 2 cases.
         if self.maxstop < position: return
         if self.minstart - max_dist > position: return
@@ -450,19 +450,19 @@ cdef class IntervalNodeX:
         if self.cright is not EmptyNode:
             self.cright._seek_right(position, results, n, max_dist)
 
-    def neighbors(self, IntervalX f, int n=1, int max_dist=25000):
+    def neighbors(self, Interval f, int n=1, int max_dist=25000):
         cdef list neighbors = []
 
-        cdef IntervalNodeX right = self.cright
+        cdef IntervalNode right = self.cright
         while right.cleft is not EmptyNode:
             right = right.cleft
 
-        cdef IntervalNodeX left = self.cleft
+        cdef IntervalNode left = self.cleft
         while left.cright is not EmptyNode:
             left = left.cright
         return [left, right]
 
-    cpdef left(self, IntervalX f, int n=1, int max_dist=25000):
+    cpdef left(self, Interval f, int n=1, int max_dist=25000):
         """find n features with a start > than f.end
         f: a Interval object
         n: the number of features to return
@@ -482,7 +482,7 @@ cdef class IntervalNodeX:
             n += 1
         return r[:n]
 
-    cpdef right(self, IntervalX f, int n=1, int max_dist=25000):
+    cpdef right(self, Interval f, int n=1, int max_dist=25000):
         """find n features with a stop < than f.start
         f: a Interval object
         n: the number of features to return
@@ -514,7 +514,7 @@ cdef class IntervalNodeX:
     def traverse(self, func):
         self._traverse(func)
 
-    cdef void _traverse(IntervalNodeX self, object func):
+    cdef void _traverse(IntervalNode self, object func):
         if self.cleft is not EmptyNode: self.cleft._traverse(func)
         func(self.interval)
         if self.cright is not EmptyNode: self.cright._traverse(func)
@@ -530,4 +530,4 @@ cdef class IntervalNodeX:
     def __str__(self):
         return self._str()
 
-cdef IntervalNodeX EmptyNode = IntervalNodeX(IntervalX(0, 0))
+cdef IntervalNode EmptyNode = IntervalNode(Interval(0, 0))
