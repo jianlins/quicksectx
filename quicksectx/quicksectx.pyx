@@ -183,6 +183,7 @@ cdef class IntervalTree:
         fh = open(fn, "wb")
         for f in l:
             cPickle.dump(f, fh)
+        fh.close()
 
     def load(self, fn):
         try:
@@ -196,6 +197,7 @@ cdef class IntervalTree:
                 self.insert(feature)
             except EOFError:
                 break
+        fh.close()
 
     @property
     def root(self):
