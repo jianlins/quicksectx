@@ -46,6 +46,7 @@ install:
   # Add for ruamel.yaml
     - cmd: conda config --add channels conda-forge
     - cmd: conda install -q conda-build anaconda-client
+    - "%PYTHON%\\python.exe -m pip install wheel"
 
 
 # Skip .NET project specific build phase.
@@ -54,6 +55,18 @@ build: off
 test_script:
     # Not much of a real test yet, just try to build myself...
 #    - "%CMD_IN_ENV% conda build extruder.recipe"
+    - "build.cmd %PYTHON%\\python.exe setup.py test"
+    -
+after_test:
+  # This step builds your wheels.
+  # Again, you only need build.cmd if you're building C extensions for
+  # 64-bit Python 3.3/3.4. And you need to use %PYTHON% to get the correct
+  # interpreter
+  - "build.cmd %PYTHON%\\python.exe setup.py bdist_wheel"
+
+artifacts:
+  # bdist_wheel puts your built wheel in the dist directory
+  - path: dist\*
 
 on_success:
     - echo %APPVEYOR_REPO_TAG%
@@ -64,5 +77,6 @@ on_success:
     - set /P BUILT_PACKAGE=<to_upload.txt
     - echo %BUILT_PACKAGE%
     - dir
+    - dir dist
     # If this build is because of a tag make the conda package and upload it.
 #    - cmd: if "%APPVEYOR_REPO_TAG%"=="true" anaconda -t %BINSTAR_TOKEN% upload -u astropy %BUILT_PACKAGE%
