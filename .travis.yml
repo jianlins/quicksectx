@@ -42,9 +42,15 @@ install:
   - docker pull $DOCKER_IMAGE
 
 script:
-  - docker run --name "aaa" -v `pwd`:/io $DOCKER_IMAGE $PRE_CMD /bin/sh -c "chmod 775 /io/travis/build-wheels.sh && /io/travis/build-wheels.sh ${PY36} $PLAT"
+  - docker run --name "aaa36" -v `pwd`:/io $DOCKER_IMAGE $PRE_CMD /bin/sh -c "chmod 775 /io/travis/build-wheels.sh && /io/travis/build-wheels.sh ${PY36} $PLAT"
+  - docker run --name "aaa37" -v `pwd`:/io $DOCKER_IMAGE $PRE_CMD /bin/sh -c "chmod 775 /io/travis/build-wheels.sh && /io/travis/build-wheels.sh ${PY37} $PLAT"
   - ls wheelhouse/
 
 
-after_success:
-  - /opt/python/${TRAVIS_PY36}/bin/python -m twine upload -u ${PYPI_LOGIN} -p ${PYPI_PWD} --repository-url https://test.pypi.org/legacy/ wheelhouse/${PROJECT_NAME}*${PLAT}*
+  -
+deploy:
+  # deploy develop to the staging environment
+  - provider: script
+    script: /opt/python/${TRAVIS_PY36}/bin/python -m twine upload -u ${PYPI_LOGIN} -p ${PYPI_PWD} --repository-url https://test.pypi.org/legacy/ wheelhouse/${PROJECT_NAME}*${PLAT}*
+    on:
+      repo: ${GITHUB_REPO_NAME}
