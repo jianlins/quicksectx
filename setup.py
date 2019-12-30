@@ -54,5 +54,5 @@ setup(name='quicksectx',
       install_requires=['cython>=0.24.1'],
       test_suite='nose.collector',
       tests_require='nose',
-      package_data={'': ['*.pyx', '*.pxd', '*.so', '*.dll','*.lib']},
+      package_data={'': ['*.pyx', '*.pxd', '*.so', '*.dll', '*.lib', '*.cpp', '*.c']},
       )
