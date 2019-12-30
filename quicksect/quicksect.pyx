@@ -6,6 +6,7 @@ chromosomes.
 import operator
 
 #@cdef extern from "math.h":
+import cython
 cdef extern from "stdlib.h":
     int ceil(float f)
     float log(float f)
@@ -215,6 +216,7 @@ cdef class IntervalNode:
     def __repr__(self):
         return "IntervalNode(%i, %i)" % (self.start, self.end)
 
+    @cython.cdivision(True)
     def __cinit__(IntervalNode self, Interval interval):
         # Python lacks the binomial distribution, so we convert a
         # uniform into a binomial because it naturally scales with
