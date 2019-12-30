@@ -46,7 +46,7 @@ install:
   # Add for ruamel.yaml
     - cmd: conda config --add channels conda-forge
     - cmd: conda install -q conda-build anaconda-client
-    - cmd: dir c:\\
+    - cmd: dir c:\
     - cmd: python -m pip install wheel
 
 #    - "%PYTHON%\\python.exe -m pip install wheel"
