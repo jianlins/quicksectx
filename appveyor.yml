@@ -3,6 +3,7 @@
 environment:
   # Appveyor machines come with miniconda already installed.
   PYPI_LOGIN: jianlins
+  DEPLOY_TEST: true
   PYPI_PWD:
     secure: m4olevjgBYrOI3NszBfruw==
 
@@ -55,4 +56,5 @@ on_success:
   - echo %BUILT_PACKAGE%
   - dir dist
   - # If this build is because of a tag make the conda package and upload it.
-  - cmd: if "%APPVEYOR_REPO_TAG%"=="true" (%PYTHON%\\python.exe  -m twine upload -u %PYPI_LOGIN% -p %PYPI_PWD% --repository-url https://test.pypi.org/legacy/ dist/*.whl) else (echo "Not deploying because not a tagged commit.")
+  - cmd: if ("%APPVEYOR_REPO_TAG%"=="true"  AND "%DEPLOY_TEST%"=="true") (%PYTHON%\\python.exe  -m twine upload -u %PYPI_LOGIN% -p %PYPI_PWD% --repository-url https://test.pypi.org/legacy/ dist/*.whl) else (echo "Not deploying because not a tagged commit.")
+  - cmd: if ("%APPVEYOR_REPO_TAG%"=="true"  AND "%DEPLOY_TEST%"=="false") (%PYTHON%\\python.exe  -m twine upload -u %PYPI_LOGIN% -p %PYPI_PWD% dist/*.whl) else (echo "Not deploying because not a tagged commit.")
