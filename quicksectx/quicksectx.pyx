@@ -329,6 +329,22 @@ cdef class IntervalNode:
         self.cright = EmptyNode
         self.croot = EmptyNode
 
+    @property
+    def get_start(self):
+        return self.start
+
+    @get_start.setter
+    def get_start(self, int start):
+        self.start = start
+
+    @property
+    def get_end(self):
+        return self.end
+
+    @get_end.setter
+    def get_end(self, int end):
+        self.end = end
+
     def insert(self, interval):
         return self._insert(interval)
 
@@ -406,7 +422,8 @@ cdef class IntervalNode:
         # to have starts, stops be non-inclusive, replace <= with <  and >= with >
         #if start <= self.end and stop >= self.start: results.append(self.interval)
         # print(self, start, stop, results)
-        if not (self.end <= start or self.start >= stop) or (start == stop and self.start == start): results.append(
+        if not (self.get_end <= start or self.get_start >= stop) or (start == stop and self.get_start == start) or (
+                self.get_start == self.get_end and self.get_start == start): results.append(
             self.interval)
         #if self.cleft is not EmptyNode and start <= self.cleft.maxstop:
         if self.cleft is not EmptyNode and not self.cleft.maxstop < start:

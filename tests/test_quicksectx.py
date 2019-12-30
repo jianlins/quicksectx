@@ -171,7 +171,8 @@ class LotsaTestCase(unittest.TestCase):
 
 
 def brute_force_find(intervals, start, stop):
-    return [i for i in intervals if i.end > start and i.start < stop]
+    return [i for i in intervals if (i.end > start and i.start < stop) or (start == stop and i.start == start) or (
+                i.start == i.end and i.start == start)]
 
 
 def brute_force_find_left(intervals, f, max_dist, n):
@@ -295,6 +296,12 @@ class SpecialTestCase(unittest.TestCase):
         self.assertEqual(len(tree.search(4, 4)), 3)
         self.assertEqual(len(tree.search(3, 3)), 3)
         self.assertEqual(len(tree.search(4, 6)), 4)
+
+    def test_3(self):
+        tree = IntervalTree()
+        tree.add(1, 1, 1.0)
+        print(tree.pretty_print())
+        print((tree.search(1, 3)))
 
     def test_error(self):
         with self.assertRaises(ValueError):
