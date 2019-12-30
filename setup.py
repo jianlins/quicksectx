@@ -1,10 +1,11 @@
-from Cython.Build import cythonize,build_ext
+from Cython.Build import cythonize, build_ext
 from setuptools.extension import Extension
 from setuptools import setup
 # from distutils.core import setup
 
 import os
 from pathlib import Path
+
 dir_path = os.path.dirname(os.path.realpath(__file__))
 include_dirs = [dir_path + "/quicksectx", dir_path]
 
@@ -23,22 +24,30 @@ def get_version():
         return "0.0.0a1"
 
 
+extensions = [
+    Extension(
+        'quicksectx.quicksect1',
+        sources=['quicksectx/quicksect1.pyx'],
+        include_dirs=include_dirs,
+    ),
+    Extension(
+        'quicksectx.quicksect2',
+        sources=['quicksectx/quicksect2.pyx'],
+        include_dirs=include_dirs,
+    )
+]
 
 setup(name='quicksectx',
       version=get_version(),
       description="fast, simple interval intersection",
-      long_description=open(Path(dir_path,'README.rst').absolute()).read(),
+      long_description=open(Path(dir_path, 'README.rst').absolute()).read(),
       author="Brent Pedersen,Jianlin Shi",
       author_email="bpederse@gmail.com, jianlinshi.cn@gmail.com",
       url='https://github.com/jianlins/quickset',
       # cmdclass={'build_ext': Cython.Build.build_ext},
       package_dir={'quicksectx': 'quicksectx'},
       packages=['quicksectx'],
-      ext_modules=cythonize([Extension(
-          'quicksectx.extension',
-          sources=['quicksectx/quicksect1.pyx', 'quicksectx/quicksect2.pyx'],
-          include_dirs=include_dirs,
-      )], language_level=3),
+      ext_modules=cythonize(extensions, language_level=3),
       license='The MIT License',
       zip_safe=False,
       setup_requires=['cython>=0.24.1'],

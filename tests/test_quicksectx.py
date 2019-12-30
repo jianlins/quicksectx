@@ -1,9 +1,5 @@
-import pyximport
-pyximport.install()
 from quicksectx import IntervalNodeX, IntervalX, IntervalTreeX, distancex
 import unittest
-
-
 
 try:
     from cPickle import dumps, loads
