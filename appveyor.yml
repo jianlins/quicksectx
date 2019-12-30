@@ -46,7 +46,10 @@ install:
   # Add for ruamel.yaml
     - cmd: conda config --add channels conda-forge
     - cmd: conda install -q conda-build anaconda-client
-    - "%PYTHON%\\python.exe -m pip install wheel"
+    - cmd: dir c:\\
+    - cmd: python -m pip install wheel
+
+#    - "%PYTHON%\\python.exe -m pip install wheel"
 
 
 # Skip .NET project specific build phase.
