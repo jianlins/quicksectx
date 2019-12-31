@@ -51,6 +51,7 @@ script:
   - docker run --name "aaa37" -v `pwd`:/io $DOCKER_IMAGE $PRE_CMD /bin/sh -c "/io/travis/build-wheels.sh ${PY37} $PLAT"
   - docker run --name "aaa38" -v `pwd`:/io $DOCKER_IMAGE $PRE_CMD /bin/sh -c "/io/travis/build-wheels.sh ${PY38} $PLAT"
   - ls wheelhouse/
+  - echo "password length ${#PYPI_PWD}"
 
 
 
