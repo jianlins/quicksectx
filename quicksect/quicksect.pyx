@@ -303,7 +303,7 @@ cdef class IntervalNode:
         self._intersect(start, stop, results)
         return results
 
-
+    find = intersect
         
     cdef void _intersect(IntervalNode self, int start, int stop, list results):
         # to have starts, stops be non-inclusive, replace <= with <  and >= with >
