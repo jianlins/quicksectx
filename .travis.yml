@@ -58,17 +58,17 @@ script:
 deploy:
   # deploy develop to pypi.org
   - provider: script
-    script: /opt/python/${TRAVIS_PY36}/bin/python -m twine upload -u ${PYPI_LOGIN} -p ${PYPI_PWD} wheelhouse/${PROJECT_NAME}*${PLAT}*
+    script: ls wheelhouse && /opt/python/${TRAVIS_PY36}/bin/python -m twine upload -u ${PYPI_LOGIN} -p ${PYPI_PWD} wheelhouse/${PROJECT_NAME}*${PLAT}*
     on:
       repo: ${GITHUB_REPO_NAME}
-      tags: true
+      tags: false
       condition: "$TRAVIS_OS_NAME == linux && $DEPLOY_TEST == false"
 
   - provider: script
     script: /opt/python/${TRAVIS_PY36}/bin/python setup.py sdist && /opt/python/${TRAVIS_PY36}/bin/python -m twine upload -u ${PYPI_LOGIN} -p ${PYPI_PWD} dist/${PROJECT_NAME}*tar.gz
     on:
       repo: ${GITHUB_REPO_NAME}
-      tags: true
+      tags: false
       condition: "$PLAT == manylinux1_x86_64 && $TRAVIS_OS_NAME == linux && $DEPLOY_TEST == false"
 
   # deploy develop to test.pypi.org
