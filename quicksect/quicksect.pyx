@@ -1,4 +1,5 @@
-#!/usr/bin/python2.5
+#!/usr/bin/python3
+# distutils: language = c++
 """
 Intersects ... faster.  Suports GenomicInterval datatype and multiple
 chromosomes.
@@ -302,7 +303,7 @@ cdef class IntervalNode:
         self._intersect(start, stop, results)
         return results
 
-    find = intersect
+
         
     cdef void _intersect(IntervalNode self, int start, int stop, list results):
         # to have starts, stops be non-inclusive, replace <= with <  and >= with >

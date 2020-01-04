@@ -1,4 +1,5 @@
-from quicksectx import IntervalNode, IntervalTree, distancex,Interval
+
+from quicksectx import IntervalTree, Interval
 import unittest
 tree = IntervalTree()
 tree.add(0, 3, 100)
@@ -11,6 +12,7 @@ tree.add(17, 19, 160)
 tree.add(26, 26, 160)
 tree.add(25, 30, 160)
 tree.add(16, 21, 160)
+print(tree.search(3,15))
 print(tree.pretty_print())
 print('\n\n---\n\n\n')
 tree = IntervalTree()
