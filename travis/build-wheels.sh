@@ -7,7 +7,7 @@ PYBIN=/opt/python/$1/bin
 PLAT=$2
 # Compile wheels
 "${PYBIN}/pip" install -r /io/dev-requirements.txt
-"${PYBIN}/python" setup.py test
+"${PYBIN}/python" /io/setup.py test
 "${PYBIN}/pip" wheel /io/ -w wheelhouse/
 
 # Bundle external shared libraries into the wheels
