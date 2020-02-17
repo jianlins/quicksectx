@@ -21,11 +21,7 @@ License is MIT.
 Installation
 ------------
 
-    pip install quicksect
-
-or
-
-    conda install -c bioconda quicksect
+    pip install quicksectx
 
 Use
 ---
