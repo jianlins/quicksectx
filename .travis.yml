@@ -113,7 +113,7 @@ before_install:
 
 install:
   - python -c 'import sys; print("Python %s" % (sys.version,))'
-  - pip install -r dev-requirements.txt $( [ -z "${TRAVIS_PYTHON_VERSION##pypy*}" -o -z "${TRAVIS_PYTHON_VERSION##3.[4789]*}" ] || echo " -r dev-requirements.txt" ) ; fi
+  - pip install -r dev-requirements.txt
 #  - CFLAGS="-O2 -ggdb -Wall -Wextra $(python -c 'import sys; print("-fno-strict-aliasing" if sys.version_info[0] == 2 else "")')" python setup.py build
 
 before_script: ccache -s || true
