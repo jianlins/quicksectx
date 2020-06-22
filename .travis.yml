@@ -4,9 +4,6 @@ language: python
 addons:
   apt:
     packages:
-      - gcc-4.8
-      - g++-4.8
-      - unixodbc-dev
       - gdb
       - python-dbg
       - python3-dbg
@@ -83,6 +80,7 @@ branches:
 before_install:
 #   - |
 #     if [ "$TRAVIS_OS_NAME" == "linux" ]; then
+#         sudo apt-get -y install gcc-4.8 g++-4.8
       # adding apt repos in travis is really fragile => retry a couple of times.
 #       for i in {1..10}; do travis_retry sudo apt-add-repository --yes 'ppa:ubuntu-toolchain-r/test' && break; sleep 2; done
 #       for i in {1..10}; do travis_retry sudo apt-get update && travis_retry sudo apt-get install --yes gcc-8  $(echo -n "g++-8";) && break; sleep 2; done
