@@ -87,6 +87,14 @@ before_install:
       sudo update-alternatives --set gcc /usr/bin/gcc-8
       export CC=gcc
       sudo update-alternatives --set g++ /usr/bin/g++-8; export CXX=g++;
+      wget -o patchelf.zip https://github.com/NixOS/patchelf/archive/0.11.zip
+      unzip patchelf.zip
+      cd patchelf
+      ./bootstrap.sh
+      ./configure
+      make
+      sudo make install
+      make check
     fi
 
   - |
