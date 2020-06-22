@@ -23,6 +23,7 @@ env:
     - USE_CCACHE=1
     - CCACHE_SLOPPINESS=pch_defines,time_macros
     - CCACHE_COMPRESS=1
+    - PROJECT_NAME=quicksectx
     - CCACHE_MAXSIZE=250M
     - PATH="/usr/lib/ccache:$HOME/miniconda/bin:$PATH"
 #     - BACKEND=c,cpp
@@ -115,14 +116,15 @@ script:
   - pwd; ls;
 #   - if [ ! -d "../wheelhouse" ]; mkdir ../wheelhouse; fi
   - pip wheel ./ -w ../wheelhouse/; ls ../wheelhouse;
-  - PYTHON_DBG="python$( python -c 'import sys; print("%d.%d" % sys.version_info[:2])' )-dbg"
-  - if [ "$TEST_CODE_STYLE" = "1" ]; then
-       STYLE_ARGS="--no-unit --no-doctest --no-file --no-pyregr --no-examples";
-    else
-      STYLE_ARGS=--no-code-style;
-      if [ -z "${BACKEND##*cpp*}" -a -n "${TRAVIS_PYTHON_VERSION##*-dev}" ]; then pip install pythran; fi;
-      if [ "$BACKEND" != "cpp" -a -n "${TRAVIS_PYTHON_VERSION##2*}"  -a -n "${TRAVIS_PYTHON_VERSION##pypy*}" -a -n "${TRAVIS_PYTHON_VERSION##*-dev}" -a -n "${TRAVIS_PYTHON_VERSION##*3.4}" ]; then pip install mypy; fi;
-    fi
+  - nosetests" ${PROJECT_NAME}
+#   - PYTHON_DBG="python$( python -c 'import sys; print("%d.%d" % sys.version_info[:2])' )-dbg"
+#   - if [ "$TEST_CODE_STYLE" = "1" ]; then
+#        STYLE_ARGS="--no-unit --no-doctest --no-file --no-pyregr --no-examples";
+#     else
+#       STYLE_ARGS=--no-code-style;
+#       if [ -z "${BACKEND##*cpp*}" -a -n "${TRAVIS_PYTHON_VERSION##*-dev}" ]; then pip install pythran; fi;
+#       if [ "$BACKEND" != "cpp" -a -n "${TRAVIS_PYTHON_VERSION##2*}"  -a -n "${TRAVIS_PYTHON_VERSION##pypy*}" -a -n "${TRAVIS_PYTHON_VERSION##*-dev}" -a -n "${TRAVIS_PYTHON_VERSION##*3.4}" ]; then pip install mypy; fi;
+#     fi
 # Need to clear the ccache? Try something like this:
 #  - if [ -n "${BACKEND##*cpp*}" -a -z "${TRAVIS_PYTHON_VERSION##*3.4}" ]; then ccache -C || true; fi
 #   - if [ "$COVERAGE" != "1" ]; then CFLAGS="-O2 -ggdb -Wall -Wextra $(python -c 'import sys; print("-fno-strict-aliasing" if sys.version_info[0] == 2 else "")')" python setup.py build_ext -i $(python -c 'import sys; print("-j5" if sys.version_info >= (3,5) else "")'); fi
