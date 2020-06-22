@@ -7,14 +7,23 @@ ARGS=("$@")
 
 PLAT=${ARGS[0]}
 PROJECT_NAME=${ARGS[1]}
-PYBINS=${ARGS[@]:2}
+PYBIN=${ARGS[2]}
+if [ PYBIN ==  '3.5' ]; then
+  PYBIN='cp35-cp35m'
+elif [ PYBIN ==  '3.7' ]; then
+  PYBIN='cp38-cp38'
+elif [ PYBIN ==  '3.8' ]; then
+  PYBIN='cp37-cp37m'
+else
+  PYBIN='cp36-cp36m'
+
 # Compile wheels
-echo "${PYBINS[@]}"
-for PYBIN in ${PYBINS[@]};do
-  PYBIN="/opt/python/${PYBIN}/bin"
-  "${PYBIN}/pip" install -q -r /io/dev-requirements.txt
-  "${PYBIN}/pip" wheel /io/ -w wheelhouse/
-done
+which python
+PYBIN="/opt/python/${PYBIN}/bin"
+echo "${PYBINS}"
+"${PYBIN}/pip" install -q -r /io/dev-requirements.txt
+"${PYBIN}/pip" wheel /io/ -w wheelhouse/
+
 
 # Bundle external shared libraries into the wheels
 for whl in wheelhouse/*.whl; do
@@ -26,9 +35,6 @@ for whl in wheelhouse/*.whl; do
 done
 
 ls /io/wheelhouse -l
+"${PYBIN}/pip" install ${PROJECT_NAME} --no-index -f /io/wheelhouse
+(cd "$HOME";ls -l; "${PYBIN}/nosetests" ${PROJECT_NAME})
 # Install packages and test
-for PYBIN in ${PYBINS[@]}; do
-    PYBIN="/opt/python/${PYBIN}/bin"
-    "${PYBIN}/pip" install ${PROJECT_NAME} --no-index -f /io/wheelhouse
-    (cd "$HOME";ls -l; "${PYBIN}/nosetests" ${PROJECT_NAME})
-done
