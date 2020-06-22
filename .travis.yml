@@ -95,6 +95,7 @@ before_install:
       make
       sudo make install
       make check
+      cd ..
     fi
 
   - |
