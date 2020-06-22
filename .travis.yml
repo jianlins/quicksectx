@@ -122,7 +122,7 @@ script:
   - pwd; ls;
 #   - if [ ! -d "../wheelhouse" ]; mkdir ../wheelhouse; fi
   - pip wheel ./ -w ../wheelhouse/; ls ../wheelhouse;
-  - if [ "$TRAVIS_OS_NAME" == "linux" ]; auditwheel repair ./wheelhouse/${PROJECT_NAME}*whl -w ../wheelhouse; ls ../wheelhouse; fi
+  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then auditwheel repair ./wheelhouse/${PROJECT_NAME}*whl -w ../wheelhouse; ls ../wheelhouse; fi
   - pip install ${PROJECT_NAME} --no-index -f ../wheelhouse
   - cp -R tests "$HOME"/tests; cd "$HOME"; ls tests; nosetests tests;
 #   - PYTHON_DBG="python$( python -c 'import sys; print("%d.%d" % sys.version_info[:2])' )-dbg"
