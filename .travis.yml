@@ -112,7 +112,8 @@ install:
 before_script: ccache -s || true
 
 script:
-  - pwd; ls; wheel ./ -w wheelhouse/; ls /io/wheelhouse -l;
+  - pwd; ls;
+#   - wheel ./ -w wheelhouse/; ls /io/wheelhouse -l;
   - PYTHON_DBG="python$( python -c 'import sys; print("%d.%d" % sys.version_info[:2])' )-dbg"
   - if [ "$TEST_CODE_STYLE" = "1" ]; then
        STYLE_ARGS="--no-unit --no-doctest --no-file --no-pyregr --no-examples";
