@@ -122,6 +122,7 @@ script:
   - pwd; ls;
 #   - if [ ! -d "../wheelhouse" ]; mkdir ../wheelhouse; fi
   - pip wheel ./ -w ../wheelhouse/; ls ../wheelhouse;
+  - pip install ${PROJECT_NAME} --no-index -f ../wheelhouse
   - nosetests ${PROJECT_NAME}
 #   - PYTHON_DBG="python$( python -c 'import sys; print("%d.%d" % sys.version_info[:2])' )-dbg"
 #   - if [ "$TEST_CODE_STYLE" = "1" ]; then
