@@ -1,4 +1,4 @@
 cython>=0.29
 nose
 auditwheel
-patchelf >= 0.9
+patchelf
