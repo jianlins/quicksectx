@@ -81,21 +81,21 @@ before_install:
   - |
     if [ "$TRAVIS_OS_NAME" == "linux" ]; then
       # adding apt repos in travis is really fragile => retry a couple of times.
-      for i in {1..10}; do travis_retry sudo apt-add-repository --yes 'ppa:ubuntu-toolchain-r/test' && break; sleep 2; done
-      for i in {1..10}; do travis_retry sudo apt-get update && travis_retry sudo apt-get install --yes gcc-8  $(echo -n "g++-8";) && break; sleep 2; done
-      sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 60 $(echo " --slave /usr/bin/g++ g++ /usr/bin/g++-8";)
-      sudo update-alternatives --set gcc /usr/bin/gcc-8
-      export CC=gcc
-      sudo update-alternatives --set g++ /usr/bin/g++-8; export CXX=g++;
-      wget -O patchelf.zip https://github.com/NixOS/patchelf/archive/0.11.zip
-      unzip patchelf.zip
-      cd patchelf-0.11
-      ./bootstrap.sh
-      ./configure
-      make
-      sudo make install
-      make check
-      cd ..
+#       for i in {1..10}; do travis_retry sudo apt-add-repository --yes 'ppa:ubuntu-toolchain-r/test' && break; sleep 2; done
+#       for i in {1..10}; do travis_retry sudo apt-get update && travis_retry sudo apt-get install --yes gcc-8  $(echo -n "g++-8";) && break; sleep 2; done
+#       sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 60 $(echo " --slave /usr/bin/g++ g++ /usr/bin/g++-8";)
+#       sudo update-alternatives --set gcc /usr/bin/gcc-8
+#       export CC=gcc
+#       sudo update-alternatives --set g++ /usr/bin/g++-8; export CXX=g++;
+#       wget -O patchelf.zip https://github.com/NixOS/patchelf/archive/0.11.zip
+#       unzip patchelf.zip
+#       cd patchelf-0.11
+#       ./bootstrap.sh
+#       ./configure
+#       make
+#       sudo make install
+#       make check
+#       cd ..
     fi
 
   - |
