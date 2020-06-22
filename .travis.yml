@@ -4,6 +4,9 @@ language: python
 addons:
   apt:
     packages:
+      - gcc-4.8
+      - g++-4.8
+      - unixodbc-dev
       - gdb
       - python-dbg
       - python3-dbg
