@@ -1,3 +1,5 @@
 cython>=0.29
 nose
+patchelf-wrapper
+auditwheel
 twine
