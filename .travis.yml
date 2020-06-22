@@ -14,8 +14,8 @@ cache:
     - $HOME/.ccache
 
 python:
-  - 3.8
-  - 3.7
+#   - 3.8
+#   - 3.7
   - 3.6
 
 env:
@@ -26,9 +26,9 @@ env:
     - CCACHE_MAXSIZE=250M
     - PATH="/usr/lib/ccache:$HOME/miniconda/bin:$PATH"
     - BACKEND=c,cpp
-  matrix:
-    - BACKEND=c
-    - BACKEND=cpp
+#   matrix:
+#     - BACKEND=c
+#     - BACKEND=cpp
 
 matrix:
   include:
@@ -78,6 +78,7 @@ before_install:
       for i in {1..10}; do travis_retry sudo apt-get update && travis_retry sudo apt-get install --yes gcc-8  $(if [ -z "${BACKEND##*cpp*}" ]; then echo -n "g++-8"; fi ) && break; sleep 2; done
       sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 60 $(if [ -z "${BACKEND##*cpp*}" ]; then echo " --slave /usr/bin/g++ g++ /usr/bin/g++-8"; fi)
       sudo update-alternatives --set gcc /usr/bin/gcc-8
+      sudo apt install g++
       export CC=gcc
       if [ -z "${BACKEND##*cpp*}" ]; then sudo update-alternatives --set g++ /usr/bin/g++-8; export CXX=g++; fi
     fi
