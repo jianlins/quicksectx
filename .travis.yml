@@ -113,6 +113,7 @@ before_script: ccache -s || true
 
 script:
   - pwd; ls;
+  - if [ ! -d "../wheelhouse" ]; mkdir ../wheelhouse; fi;
   - wheel ./ -w ../wheelhouse/; ls ../wheelhouse -l;
   - PYTHON_DBG="python$( python -c 'import sys; print("%d.%d" % sys.version_info[:2])' )-dbg"
   - if [ "$TEST_CODE_STYLE" = "1" ]; then
