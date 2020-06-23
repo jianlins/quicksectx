@@ -96,6 +96,9 @@ script:
         ls wheelhouse;
         for whl in wheelhouse/*.whl; do
             echo $whl;
+            if [[ $whl == wheelhouse/${PROJECT_NAME}* ]]; then
+                echo 'match..';
+            fi
         done;
         echo "after clean wheelhouse";
         ls wheelhouse;
