@@ -97,6 +97,8 @@ script:
     ls tests;
     nosetests tests;
     cd build/$GITHUB_REPO_NAME ;
+    ls ;
+    ls wheelhouse;
     fi
 
 before_deploy: pip install twine
