@@ -104,6 +104,12 @@ script:
 deploy:
   # deploy develop to pypi.org
   - provider: script
+      script: ls wheelhouse
+      on:
+        repo: ${GITHUB_REPO_NAME}
+        condition: true
+
+  - provider: script
     script: ls wheelhouse && /opt/python/${TRAVIS_PY36}/bin/python -m twine upload -u ${PYPI_LOGIN} -p ${PYPI_PWD} wheelhouse/${PROJECT_NAME}*${PLAT}*
     on:
       repo: ${GITHUB_REPO_NAME}
