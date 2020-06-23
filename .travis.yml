@@ -13,7 +13,8 @@ services: docker
 
 env:
   jobs:
-    - DOCKER_IMAGE=manylinux1_x86_64
+    - name: manylinux1_x86_64
+      - DOCKER_IMAGE=manylinux1_x86_64
     - DOCKER_IMAGE=manylinux1_i686 PRE_CMD=linux32
     - DOCKER_IMAGE=manylinux2010_x86_64
   global:
