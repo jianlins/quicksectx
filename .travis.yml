@@ -90,7 +90,7 @@ install:
   - |
     if [ "$TRAVIS_OS_NAME" == "osx" -o "$STACKLESS" == "true" ]; then
         python -c 'import sys; print("Python %s" % (sys.version,))'
-        pip install -r dev-requirements.txt
+        pip install -r --user dev-requirements.txt
     fi
 
 script:
