@@ -78,7 +78,6 @@ before_install:
       travis_retry wget -O miniconda.sh https://repo.continuum.io/miniconda/Miniconda$PY-latest-${CONDA_PLATFORM}-x86_64.sh || exit 1
       bash miniconda.sh -b -p $HOME/miniconda && rm miniconda.sh || exit 1
       conda --version || exit 1
-#       conda install --quiet --yes nomkl --file=dev-requirements.txt --file=dev-requirements.txt
       which clang && clang --version && export CC=clang || true
       which clang++ && clang++ --version && export CXX="clang++ -stdlib=libc++" || true
     fi
@@ -88,15 +87,8 @@ before_install:
 
 
 install:
-  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then
-        pip install -r dev-requirements.txt;
-        docker pull $DOCKER_IMAGE;
-    fi
-
-  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then
-        python -c 'import sys; print("Python %s" % (sys.version,))';
-        pip install --user -r dev-requirements.txt;
-    fi
+  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then  pip install -r dev-requirements.txt; docker pull $DOCKER_IMAGE; fi
+  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then  python -c 'import sys; print("Python %s" % (sys.version,))'; pip install --user -r dev-requirements.txt; fi
 
 script:
   - if [ "$TRAVIS_OS_NAME" == "linux" ]; then
