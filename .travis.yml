@@ -28,10 +28,6 @@ env:
     - DOCKER_IMAGE=manylinux2010_x86_64
 
 
-branches:
-  only:
-    - master
-
 jobs:
   include:
      - name: "Python 3.6 on macOS"
