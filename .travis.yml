@@ -99,6 +99,8 @@ script:
               rm $whl
             fi
         done
+        echo "after clean wheelhouse";
+        ls wheelhouse;
     fi
 
 before_deploy: pip install twine
