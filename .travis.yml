@@ -70,6 +70,7 @@ before_install:
   - |
     if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       echo "Installing Miniconda";
+      echo $TRAVIS_PYTHON_VERSION;
       CONDA_PLATFORM=MacOSX;
       travis_retry wget -O miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-latest-${CONDA_PLATFORM}-x86_64.sh;
       bash miniconda.sh -b -p $HOME/miniconda;
@@ -86,7 +87,7 @@ before_install:
 
 install:
   - if [ "$TRAVIS_OS_NAME" == "linux" ]; then  echo "dimg:$DOCKER_IMAGE"; travis_retry docker pull $DOCKER_IMAGE; fi
-  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then  conda activate test-environment; conda install --quiet --yes nomkl --file=travis/osx_dev-requirements.txt; fi
+  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then  conda activate test-environment; conda install --quiet --yes nomkl --file=travis/osx_dev_requirements.txt; fi
 
 before_script: ccache -s || true
 
