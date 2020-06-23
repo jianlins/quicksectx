@@ -4,6 +4,14 @@ os:
   - linux
 language: python
 
+
+addons:
+  apt:
+    packages:
+      - gdb
+      - python-dbg
+      - python3-dbg
+
 python:
 #   - 3.8
 #   - 3.7
@@ -61,26 +69,21 @@ matrix:
 
 before_install:
   - |
-    if [ "$TRAVIS_OS_NAME" == "osx" -o "$STACKLESS" == "true" ]; then
+    if [ "$TRAVIS_OS_NAME" == "osx" ]; then
       echo "Installing Miniconda"
       if [ "$TRAVIS_OS_NAME" == "osx" ]; then CONDA_PLATFORM=MacOSX; else CONDA_PLATFORM=Linux; fi
       travis_retry wget -O miniconda.sh https://repo.continuum.io/miniconda/Miniconda$PY-latest-${CONDA_PLATFORM}-x86_64.sh || exit 1
       bash miniconda.sh -b -p $HOME/miniconda && rm miniconda.sh || exit 1
-      conda --version || exit 1
-      conda install --quiet --yes nomkl --file=dev-requirements.txt --file=dev-requirements.txt
-      if [ "$TRAVIS_OS_NAME" == "osx" ]; then
-        which clang && clang --version && export CC=clang || true
-        which clang++ && clang++ --version && export CXX="clang++ -stdlib=libc++" || true
-      fi
+      $HOME/miniconda/bin/conda --version || exit 1
+      $HOME/miniconda/bin/conda install --quiet --yes nomkl --file=dev-requirements.txt --file=dev-requirements.txt
+      which clang && clang --version && export CC=clang || true
+      which clang++ && clang++ --version && export CXX="clang++ -stdlib=libc++" || true
     fi
 
   - if [ -n "$CC" ]; then which ${CC%% *}; $CC --version; fi
   - if [ -n "$CXX" ]; then which ${CXX%% *}; $CXX --version; fi
 
-  - if [ "$STACKLESS" == "true" ]; then
-      conda config --add channels stackless;
-      travis_retry conda install --quiet --yes stackless;
-    fi
+
 
 install:
   - |
@@ -96,7 +99,7 @@ install:
     fi
 
 script:
-  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then
+  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then;
         chmod 775 travis/build-wheels.sh;
         docker run --name "dk_${PLAT}_${TRAVIS_PYTHON_VERSION}" -v `pwd`:/io $DOCKER_IMAGE /bin/sh -c "/io/travis/build-wheels.sh ${PLAT} ${PROJECT_NAME} ${TRAVIS_PYTHON_VERSION}";
         pwd;
