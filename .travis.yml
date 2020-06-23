@@ -46,6 +46,12 @@ matrix:
       language: c
       compiler: clang
       cache: false
+    - python: 3.8
+      env: LIMITED_API=--limited-api EXCLUDE=--no-file
+    - python: 3.7
+      env: LIMITED_API=--limited-api EXCLUDE=--no-file
+    - python: 3.6
+      env: LIMITED_API=--limited-api EXCLUDE=--no-file
     - sudo: required
       services: manylinux1_x86_64
       services:
