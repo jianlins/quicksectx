@@ -27,3 +27,4 @@ services: docker
 Using miniconda to create different version of python in Travis CI macOS is the easiest way. Other ways are either not
 working or too slow (need compile python source code).
 
+

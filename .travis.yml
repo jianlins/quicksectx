@@ -24,7 +24,7 @@ env:
     - GITHUB_REPO_NAME=jianlins/quicksectx
     - CONDA_PKG_NAME_PY=quicksectx
     - PYPI_LOGIN=jianlins
-    - DEPLOY_TEST=false
+    - DEPLOY_TEST=true
     - secure: "N5VeOo+j9P8PEC2Qh/nBYniccWvrrzRw/AhR131c8qK4C6ZgUKGNa8zIfSp6syi0mQ16Z7rf57bsaPrcl6CXbRzUYaNs71xJexvqZHxs1FZXWqNDOdrM1VCuSE8msxzYhz8Gbt37KCJ1DIwFnZHH0860fTmLTmbjGSg/IK2AKH9Dewm81TkEzM6Yzu5saKasbfoR3wY0xsykubNFRJxEB4rseuZhjSfySfYHjiskjXFEfBIYHL6TjdnZcDdtuPnDuk9S0koB/enlGMqMhsKTe1ApZGvZcuYhmPhRydWxU2bjvwkkRcQEdTwOtiUBvi3D8i1FzNJoOWRWhDI5oAz81/bUAMYJSrZ1NpZ4JOOsD/HNfSO9r0DBJdEZAlKJ8uAJYa5IwJMAylSly+DL31k4VcG1unvHDDXMFG52rCLGzdtf/b7oVVh05lZxcvVFio31bfvjjZY8ugLOOywnwRyVgqWGNvJIld1PUGIjyyXKKxpFh7J8jOF8KsxfxU6l1dGEWRMnjTEPYdF1P1t+lOv8rFxRPYR1WIpZte7sGu2NSrJHGynWtx2uJOqMYFVAF3ZqXYtQ3QqbQTZAOZlzKCBXh+y4+lze8DKeGKc7TOtwC00R2E4A+KdxWG1OgePwrlxDUPz4pWYvS+4LLuxrkHgpMmY1fBLpAaXLQeSX1e+vcfg="
 
 
@@ -96,6 +96,7 @@ script:
     cd "$HOME";
     ls tests;
     nosetests tests;
+    cd build/$GITHUB_REPO_NAME ;
     fi
 
 before_deploy: pip install twine
@@ -103,25 +104,17 @@ before_deploy: pip install twine
 deploy:
   # deploy develop to pypi.org
   - provider: script
-    script: ls wheelhouse && python -m twine upload -u ${PYPI_LOGIN} -p ${PYPI_PWD} --skip-existing wheelhouse/${PROJECT_NAME}*;
+    script: pwd; ls wheelhouse; python -m twine upload --skip-existing -u ${PYPI_LOGIN} -p ${PYPI_PWD} wheelhouse/${PROJECT_NAME}*;
     on:
       repo: ${GITHUB_REPO_NAME}
       tags: true
-      condition: "$DEPLOY_TEST == false"
-
+      condition: "$DEPLOY_TEST == true"
 
   # deploy develop to test.pypi.org
   - provider: script
     script: pwd; ls wheelhouse; python -m twine upload --skip-existing -u ${PYPI_LOGIN} -p ${PYPI_PWD} --repository-url https://test.pypi.org/legacy/ wheelhouse/${PROJECT_NAME}*;
     on:
       repo: ${GITHUB_REPO_NAME}
-      tags: true
-      condition: "$TRAVIS_OS_NAME == linux && $DEPLOY_TEST == true"
+#       tags: true
+      condition: "$DEPLOY_TEST == true"
 
-  # deploy osx to test.pypi.org
-  - provider: script
-    script: pwd; ls ; cd build/$GITHUB_REPO_NAME ; python -m twine upload --skip-existing -u ${PYPI_LOGIN} -p ${PYPI_PWD} --repository-url https://test.pypi.org/legacy/ wheelhouse/${PROJECT_NAME}*;
-    on:
-      repo: ${GITHUB_REPO_NAME}
-      tags: true
-      condition: "$TRAVIS_OS_NAME == osx && $DEPLOY_TEST == true"
