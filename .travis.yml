@@ -95,8 +95,8 @@ script:
         cd build/$GITHUB_REPO_NAME ;
         ls wheelhouse;
         for whl in wheelhouse/*.whl; do
-            echo $whl
-        done
+            echo $whl;
+        done;
         echo "after clean wheelhouse";
         ls wheelhouse;
     fi
