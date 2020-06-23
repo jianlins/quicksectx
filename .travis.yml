@@ -23,13 +23,14 @@ env:
     - CCACHE_MAXSIZE=250M
     - PATH="/usr/lib/ccache:$HOME/miniconda/bin:$PATH"
 
+sudo: required
+services: docker
 
 env:
   - DOCKER_IMAGE=quay.io/pypa/manylinux1_x86_64  PLAT=manylinux1_x86_64
   - DOCKER_IMAGE=quay.io/pypa/manylinux1_i686 PRE_CMD=linux32 PLAT=manylinux1_i686
   - DOCKER_IMAGE=quay.io/pypa/manylinux2010_x86_64 PLAT=manylinux2010_x86_64
 
-services: docker
 
 branches:
   only:
@@ -82,6 +83,10 @@ install:
 before_script: ccache -s || true
 
 script:
+  - echo "TRAVIS_PYTHON_VERSION:$TRAVIS_PYTHON_VERSION";
+  - echo "DOCKER_IMAGE:$DOCKER_IMAGE";
+  - echo "$TRAVIS_OS_NAME:$TRAVIS_OS_NAME";
+
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
         chmod 775 travis/build-wheels.sh;
         echo "TRAVIS_PYTHON_VERSION:$TRAVIS_PYTHON_VERSION";
