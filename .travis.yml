@@ -104,9 +104,9 @@ script:
 before_deploy: pip install twine
 
 deploy:
-  skip_cleanup: true
   # deploy develop to pypi.org
   - provider: script
+    skip_cleanup: true
     script: pwd;ls; ls wheelhouse; python -m twine upload --skip-existing -u ${PYPI_LOGIN} -p ${PYPI_PWD} wheelhouse/${PROJECT_NAME}*;
     on:
       repo: ${GITHUB_REPO_NAME}
@@ -115,6 +115,7 @@ deploy:
 
   # deploy develop to test.pypi.org
   - provider: script
+    skip_cleanup: true
     script: pwd;ls; ls wheelhouse; python -m twine upload --skip-existing -u ${PYPI_LOGIN} -p ${PYPI_PWD} --repository-url https://test.pypi.org/legacy/ wheelhouse/${PROJECT_NAME}*;
     on:
       repo: ${GITHUB_REPO_NAME}
