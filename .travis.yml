@@ -87,7 +87,7 @@ script:
         pwd;
         ls;
     fi
-#
+
   - if [[ $TRAVIS_OS_NAME == osx ]]; then
     pip wheel ./ -w wheelhouse/; ls wheelhouse;
     pip install wheelhouse/$PROJECT_NAME*.whl --no-index -f
@@ -104,7 +104,7 @@ before_deploy: pip install twine
 deploy:
   # deploy develop to pypi.org
   - provider: script
-    script: pwd; ls wheelhouse; python -m twine upload --skip-existing -u ${PYPI_LOGIN} -p ${PYPI_PWD} wheelhouse/${PROJECT_NAME}*;
+    script: pwd;ls; ls wheelhouse; python -m twine upload --skip-existing -u ${PYPI_LOGIN} -p ${PYPI_PWD} wheelhouse/${PROJECT_NAME}*;
     on:
       repo: ${GITHUB_REPO_NAME}
       tags: true
@@ -112,7 +112,7 @@ deploy:
 
   # deploy develop to test.pypi.org
   - provider: script
-    script: pwd; ls wheelhouse; python -m twine upload --skip-existing -u ${PYPI_LOGIN} -p ${PYPI_PWD} --repository-url https://test.pypi.org/legacy/ wheelhouse/${PROJECT_NAME}*;
+    script: pwd;ls; ls wheelhouse; python -m twine upload --skip-existing -u ${PYPI_LOGIN} -p ${PYPI_PWD} --repository-url https://test.pypi.org/legacy/ wheelhouse/${PROJECT_NAME}*;
     on:
       repo: ${GITHUB_REPO_NAME}
 #       tags: true
