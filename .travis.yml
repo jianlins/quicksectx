@@ -75,7 +75,7 @@ before_install:
       travis_retry wget -O miniconda.sh https://repo.continuum.io/miniconda/Miniconda$PY-latest-${CONDA_PLATFORM}-x86_64.sh || exit 1
       bash miniconda.sh -b -p $HOME/miniconda && rm miniconda.sh || exit 1
       $HOME/miniconda/bin/conda --version || exit 1
-      $HOME/miniconda/bin/conda install --quiet --yes nomkl --file=dev-requirements.txt --file=dev-requirements.txt
+      $HOME/miniconda/bin/conda install --quiet --yes nomkl --user --file=dev-requirements.txt
       which clang && clang --version && export CC=clang || true
       which clang++ && clang++ --version && export CXX="clang++ -stdlib=libc++" || true
     fi
@@ -95,7 +95,7 @@ install:
   - |
     if [ "$TRAVIS_OS_NAME" == "osx" -o "$STACKLESS" == "true" ]; then
         python -c 'import sys; print("Python %s" % (sys.version,))'
-        pip install -r dev-requirements.txt
+#         pip install -r dev-requirements.txt
     fi
 
 script:
@@ -107,11 +107,11 @@ script:
     fi
 
 
-
-
-
 deploy:
   # deploy develop to pypi.org
+  - provider: script
+    script: ls wheelhouse
+
   - provider: script
     script: ls wheelhouse && /opt/python/${TRAVIS_PY36}/bin/python -m twine upload -u ${PYPI_LOGIN} -p ${PYPI_PWD} wheelhouse/${PROJECT_NAME}*${PLAT}*
     on:
