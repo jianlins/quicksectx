@@ -99,7 +99,7 @@ script:
             if [[ $whl == wheelhouse/${PROJECT_NAME}* ]]; then
                 echo 'match..';
             else
-                rm $whl
+                rm $whl;
             fi
         done;
         echo "after clean wheelhouse";
