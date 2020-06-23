@@ -22,11 +22,12 @@ fi
 # Compile wheels
 which python
 PYBIN="/opt/python/${PYBIN}/bin"
-echo "${PYBINS}"
+echo "PYBIN:$PYBIN"
 "${PYBIN}/pip" install -q -r /io/dev-requirements.txt
 "${PYBIN}/pip" wheel /io/ -w wheelhouse/
 
-
+pwd
+ls wheelhouse -l
 # Bundle external shared libraries into the wheels
 for whl in wheelhouse/*.whl; do
     if [[ $whl == wheelhouse/${PROJECT_NAME}* ]]; then
