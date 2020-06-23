@@ -67,61 +67,43 @@ matrix:
 #     - env: BACKEND=c EXCLUDE="--listfile=tests/pypy_bugs.txt --listfile=tests/pypy2_bugs.txt bugs"
 
 before_install:
-  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then
-    which clang && clang --version && export CC=clang || true;
-    which clang++ && clang++ --version && export CXX="clang++ -stdlib=libc++" || true;
+  - |
+    if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+      echo "Installing Miniconda";
+      CONDA_PLATFORM=MacOSX;
+      travis_retry wget -O miniconda.sh https://repo.continuum.io/miniconda/Miniconda$PY-latest-${CONDA_PLATFORM}-x86_64.sh;
+      bash miniconda.sh -b -p $HOME/miniconda;
+      source "$HOME/miniconda/etc/profile.d/conda.sh";
+      hash -r;
+      conda config --set always_yes yes --set changeps1 no;
+      conda update -q conda;
+      conda --version;
+      conda info -a;
+      conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION pip;
     fi
 
-  - if [ -n "$CC" ]; then which ${CC%% *}; $CC --version; fi
-  - if [ -n "$CXX" ]; then which ${CXX%% *}; $CXX --version; fi
-
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-    brew install swig;
-    curl -LO https://raw.githubusercontent.com/GiovanniBussi/macports-ci/master/macports-ci;
-    source ./macports-ci install;
-    fi
-
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-    yes | sudo port install python$PYTHON;
-    yes | sudo port install py$PYTHON-pip;
-    sudo port select --set python3 python$PYTHON;
-    sudo port select --set pip pip$PYTHON;
-    pip install pyinstaller --user;
-    export PATH=$PATH:/Users/travis/Library/Python/$PYTHON/bin;
-    fi
-
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-    python3 --version;
-    pip --version;
-    pyinstaller --version;
-    fi
-
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-    pip install -r requirements.txt --user;
-    fi
 
 
 install:
   - if [ "$TRAVIS_OS_NAME" == "linux" ]; then  echo "dimg:$DOCKER_IMAGE"; travis_retry docker pull $DOCKER_IMAGE; fi
-  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then  python -c 'import sys; print("Python %s" % (sys.version,))'; pip install --user -r travis/osx_dev-requirements.txt; fi
+  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then  conda activate test-environment; conda install --quiet --yes nomkl --file=travis/osx_dev-requirements.txt; fi
 
 before_script: ccache -s || true
 
 script:
-  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
         chmod 775 travis/build-wheels.sh;
         docker run --name "dk_${PLAT}_${TRAVIS_PYTHON_VERSION}" -v `pwd`:/io $DOCKER_IMAGE $PRE_CMD /bin/sh -c "/io/travis/build-wheels.sh ${PLAT} ${PROJECT_NAME} ${TRAVIS_PYTHON_VERSION}";
         pwd;
         ls;
     fi
 #
-#   - if [ "$TRAVIS_OS_NAME" == "osx" ]; then
-#         pwd; ls;
-#         pip wheel ./ -w wheelhouse/; ls wheelhouse;
-#         if [ "$TRAVIS_OS_NAME" == "linux" ]; then auditwheel repair wheelhouse/${PROJECT_NAME}*whl -w wheelhouse; ls wheelhouse; fi
-#         pip install ${PROJECT_NAME} --no-index -f wheelhouse
-#         cp -R tests "$HOME"/tests; cd "$HOME"; ls tests; nosetests tests;
-#     fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+    pwd; ls;
+    pip wheel ./ -w wheelhouse/; ls wheelhouse;
+    pip install ${PROJECT_NAME} --no-index -f wheelhouse
+    cp -R tests "$HOME"/tests; cd "$HOME"; ls tests; nosetests tests;
+    fi
 
 
 
