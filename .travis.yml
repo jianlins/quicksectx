@@ -6,7 +6,7 @@ language: python
 
 python:
 #   - 3.8
-  - 3.7
+#   - 3.7
   - 3.6
 
 env:
@@ -28,7 +28,21 @@ matrix:
   include:
     - os: osx
       osx_image: xcode10.3
-      env: MACOSX_DEPLOYMENT_TARGET=10.9
+      env: PY=3.6 MACOSX_DEPLOYMENT_TARGET=10.9
+      python: 3
+      language: c
+      compiler: clang
+      cache: false
+    - os: osx
+      osx_image: xcode10.3
+      env: PY=3.7 MACOSX_DEPLOYMENT_TARGET=10.9
+      python: 3
+      language: c
+      compiler: clang
+      cache: false
+    - os: osx
+      osx_image: xcode10.3
+      env: PY=3.8 MACOSX_DEPLOYMENT_TARGET=10.9
       python: 3
       language: c
       compiler: clang
@@ -89,9 +103,9 @@ script:
     fi
 #
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-    pwd; ls;
     pip wheel ./ -w wheelhouse/; ls wheelhouse;
-    pip install ${PROJECT_NAME} --no-index -f wheelhouse
+    pip install wheelhouse/${PROJECT_NAME}*.whl --no-index -f
+    pwd; ls;
     cp -R tests "$HOME"/tests;
     cd "$HOME";
     ls tests;
