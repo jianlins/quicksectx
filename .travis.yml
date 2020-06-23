@@ -116,7 +116,7 @@ deploy:
     on:
       repo: ${GITHUB_REPO_NAME}
       tags: true
-      condition: "$DEPLOY_TEST == true"
+      condition: "$DEPLOY_TEST == false"
 
   # deploy develop to test.pypi.org
   - provider: script
