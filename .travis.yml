@@ -1,8 +1,9 @@
-notifications:
-  email: false
 os:
   - linux
 language: python
+
+notifications:
+  email: false
 
 
 addons:
