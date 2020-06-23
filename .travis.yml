@@ -2,8 +2,13 @@ notifications:
   email: false
 os:
   - linux
+  - osx
 language: python
 
+compiler:
+  - gcc
+  - g++
+  - clang
 
 addons:
   apt:
@@ -14,7 +19,7 @@ addons:
 
 python:
 #   - 3.8
-#   - 3.7
+  - 3.7
   - 3.6
 
 cache:
@@ -38,30 +43,6 @@ env:
 # encrypt PYPI_PWD
 matrix:
   include:
-    - os: osx
-      osx_image: xcode10.3
-      env: PY=3.6 MACOSX_DEPLOYMENT_TARGET=10.9
-      python: 3.6
-      language: c
-      compiler: clang
-      cache: false
-
-    - os: osx
-      osx_image: xcode10.3
-      env: PY=3.7 MACOSX_DEPLOYMENT_TARGET=10.9
-      python: 3.7
-      language: c
-      compiler: clang
-      cache: false
-
-    - os: osx
-      osx_image: xcode10.3
-      env: PY=3.8 MACOSX_DEPLOYMENT_TARGET=10.9
-      python: 3.8
-      language: c
-      compiler: clang
-      cache: false
-
     - sudo: required
       services:
         - docker
