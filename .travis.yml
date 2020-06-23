@@ -60,6 +60,7 @@ before_install:
   - echo "TRAVIS_PYTHON_VERSION:$TRAVIS_PYTHON_VERSION";
   - echo "DOCKER_IMAGE:$DOCKER_IMAGE";
   - echo "$TRAVIS_OS_NAME:$TRAVIS_OS_NAME";
+  - echo "PROJECT_NAME:$PROJECT_NAME"
   - |
     if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       echo "Installing Miniconda";
@@ -85,7 +86,6 @@ install:
 before_script: ccache -s || true
 
 script:
-
   - if [[ $TRAVIS_OS_NAME == linux ]]; then
         chmod 775 travis/build-wheels.sh;
         echo "TRAVIS_PYTHON_VERSION:$TRAVIS_PYTHON_VERSION";
