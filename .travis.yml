@@ -74,6 +74,11 @@ before_install:
   - |
     if [ "$TRAVIS_OS_NAME" == "osx" ]; then
       echo "Installing Miniconda"
+      if [ "$TRAVIS_OS_NAME" == "osx" ]; then CONDA_PLATFORM=MacOSX; else CONDA_PLATFORM=Linux; fi
+      travis_retry wget -O miniconda.sh https://repo.continuum.io/miniconda/Miniconda$PY-latest-${CONDA_PLATFORM}-x86_64.sh || exit 1
+      bash miniconda.sh -b -p $HOME/miniconda && rm miniconda.sh || exit 1
+      conda --version || exit 1
+#       conda install --quiet --yes nomkl --file=dev-requirements.txt --file=dev-requirements.txt
       which clang && clang --version && export CC=clang || true
       which clang++ && clang++ --version && export CXX="clang++ -stdlib=libc++" || true
     fi
@@ -82,12 +87,13 @@ before_install:
   - if [ -n "$CXX" ]; then which ${CXX%% *}; $CXX --version; fi
 
 
-
 install:
   - if [ "$TRAVIS_OS_NAME" == "linux" ]; then
         pip install -r dev-requirements.txt;
         docker pull $DOCKER_IMAGE;
-    else
+    fi
+
+  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then
         python -c 'import sys; print("Python %s" % (sys.version,))';
         pip install --user -r dev-requirements.txt;
     fi
@@ -109,8 +115,8 @@ deploy:
   - provider: script
     script: ls wheelhouse
     on:
-      repo: ${GITHUB_REPO_NAME}
-      condition: true
+       repo: ${GITHUB_REPO_NAME}
+       condition: true
 
   - provider: script
     script: ls wheelhouse && /opt/python/${TRAVIS_PY36}/bin/python -m twine upload -u ${PYPI_LOGIN} -p ${PYPI_PWD} wheelhouse/${PROJECT_NAME}*${PLAT}*
