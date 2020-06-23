@@ -2,13 +2,7 @@ notifications:
   email: false
 os:
   - linux
-  - osx
 language: python
-
-compiler:
-  - gcc
-  - g++
-  - clang
 
 addons:
   apt:
@@ -43,6 +37,13 @@ env:
 # encrypt PYPI_PWD
 matrix:
   include:
+    - os: osx
+      osx_image: xcode10.3
+      env: PY=36 MACOSX_DEPLOYMENT_TARGET=10.9
+      python: 3
+      language: c
+      compiler: clang
+      cache: false
     - sudo: required
       services:
         - docker
@@ -76,7 +77,7 @@ before_install:
 
 
 install:
-  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then  pip install -r dev-requirements.txt; docker pull $DOCKER_IMAGE; fi
+  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then  pip install -r dev-requirements.txt; travis_retry docker pull $DOCKER_IMAGE; fi
   - if [ "$TRAVIS_OS_NAME" == "osx" ]; then  python -c 'import sys; print("Python %s" % (sys.version,))'; pip install --user -r dev-requirements.txt; fi
 
 script:
