@@ -47,18 +47,21 @@ matrix:
       compiler: clang
       cache: false
     - sudo: required
+      services: manylinux1_x86_64
       services:
         - docker
       env: DOCKER_IMAGE=quay.io/pypa/manylinux1_x86_64
         PLAT=manylinux1_x86_64
     - sudo: required
-      services:
+      name:
+      services: manylinux1_i686
         - docker
       env: DOCKER_IMAGE=quay.io/pypa/manylinux1_i686
         PRE_CMD=linux32
         PLAT=manylinux1_i686
     - sudo: required
-      services:
+      name:
+      services: manylinux2010_x86_64
         - docker
       env: DOCKER_IMAGE=quay.io/pypa/manylinux2010_x86_64
         PLAT=manylinux2010_x86_64
@@ -104,10 +107,10 @@ script:
 deploy:
   # deploy develop to pypi.org
   - provider: script
-      script: ls wheelhouse
-      on:
-        repo: ${GITHUB_REPO_NAME}
-        condition: true
+    script: ls wheelhouse
+    on:
+      repo: ${GITHUB_REPO_NAME}
+      condition: true
 
   - provider: script
     script: ls wheelhouse && /opt/python/${TRAVIS_PY36}/bin/python -m twine upload -u ${PYPI_LOGIN} -p ${PYPI_PWD} wheelhouse/${PROJECT_NAME}*${PLAT}*
