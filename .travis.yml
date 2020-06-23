@@ -40,8 +40,7 @@ matrix:
   include:
     - os: osx
       osx_image: xcode10.3
-      env: PY=3 MACOSX_DEPLOYMENT_TARGET=10.9
-      python: 3
+      env: MACOSX_DEPLOYMENT_TARGET=10.9
       language: c
       compiler: clang
       cache: false
@@ -97,15 +96,8 @@ script:
 
 
 
-
-
 deploy:
   # deploy develop to pypi.org
-  - provider: script
-    script: ls wheelhouse
-    on:
-       condition: true
-
   - provider: script
     script: ls wheelhouse && /opt/python/${TRAVIS_PY36}/bin/python -m twine upload -u ${PYPI_LOGIN} -p ${PYPI_PWD} wheelhouse/${PROJECT_NAME}*${PLAT}*
     on:
