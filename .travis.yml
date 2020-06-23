@@ -89,14 +89,14 @@ script:
   - if [[ $TRAVIS_OS_NAME == linux ]]; then
         chmod 775 travis/build-wheels.sh;
         echo "TRAVIS_PYTHON_VERSION:$TRAVIS_PYTHON_VERSION";
-        docker run --name "dk_${PLAT}_${TRAVIS_PYTHON_VERSION}" -v `pwd`:/io quay.io/pypa/$DOCKER_IMAGE $PRE_CMD /bin/sh -c "/io/travis/build-wheels.sh ${DOCKER_IMAGE} ${PROJECT_NAME} ${TRAVIS_PYTHON_VERSION}";
+        docker run --name "dk_$PLAT_$TRAVIS_PYTHON_VERSION" -v `pwd`:/io quay.io/pypa/$DOCKER_IMAGE $PRE_CMD /bin/sh -c "/io/travis/build-wheels.sh $DOCKER_IMAGE $PROJECT_NAME $TRAVIS_PYTHON_VERSION";
         pwd;
         ls;
     fi
 #
   - if [[ $TRAVIS_OS_NAME == osx ]]; then
     pip wheel ./ -w wheelhouse/; ls wheelhouse;
-    pip install wheelhouse/${PROJECT_NAME}*.whl --no-index -f
+    pip install wheelhouse/$PROJECT_NAME*.whl --no-index -f
     pwd; ls;
     cp -R tests "$HOME"/tests;
     cd "$HOME";
