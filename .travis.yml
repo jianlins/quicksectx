@@ -97,10 +97,10 @@ install:
 
 script:
   - if [ "$TRAVIS_OS_NAME" == "linux" ]; then
-        chmod 775 travis/build-wheels.sh
-        docker run --name "dk_${PLAT}_${TRAVIS_PYTHON_VERSION}" -v `pwd`:/io $DOCKER_IMAGE /bin/sh -c "/io/travis/build-wheels.sh ${PLAT} ${PROJECT_NAME} ${TRAVIS_PYTHON_VERSION}"
-        pwd
-        ls
+        chmod 775 travis/build-wheels.sh;
+        docker run --name "dk_${PLAT}_${TRAVIS_PYTHON_VERSION}" -v `pwd`:/io $DOCKER_IMAGE /bin/sh -c "/io/travis/build-wheels.sh ${PLAT} ${PROJECT_NAME} ${TRAVIS_PYTHON_VERSION}";
+        pwd;
+        ls;
     fi
 
 
