@@ -5,8 +5,8 @@ os:
 language: python
 
 python:
-#   - 3.8
-#   - 3.7
+  - 3.8
+  - 3.7
   - 3.6
 
 env:
@@ -18,7 +18,6 @@ env:
     - GITHUB_REPO_NAME=jianlins/quicksectx
     - CONDA_PKG_NAME_PY=quicksectx
     - PYPI_LOGIN=jianlins
-    - TRAVIS_PY36=3.6.7
     - DEPLOY_TEST=true
     - secure: "N5VeOo+j9P8PEC2Qh/nBYniccWvrrzRw/AhR131c8qK4C6ZgUKGNa8zIfSp6syi0mQ16Z7rf57bsaPrcl6CXbRzUYaNs71xJexvqZHxs1FZXWqNDOdrM1VCuSE8msxzYhz8Gbt37KCJ1DIwFnZHH0860fTmLTmbjGSg/IK2AKH9Dewm81TkEzM6Yzu5saKasbfoR3wY0xsykubNFRJxEB4rseuZhjSfySfYHjiskjXFEfBIYHL6TjdnZcDdtuPnDuk9S0koB/enlGMqMhsKTe1ApZGvZcuYhmPhRydWxU2bjvwkkRcQEdTwOtiUBvi3D8i1FzNJoOWRWhDI5oAz81/bUAMYJSrZ1NpZ4JOOsD/HNfSO9r0DBJdEZAlKJ8uAJYa5IwJMAylSly+DL31k4VcG1unvHDDXMFG52rCLGzdtf/b7oVVh05lZxcvVFio31bfvjjZY8ugLOOywnwRyVgqWGNvJIld1PUGIjyyXKKxpFh7J8jOF8KsxfxU6l1dGEWRMnjTEPYdF1P1t+lOv8rFxRPYR1WIpZte7sGu2NSrJHGynWtx2uJOqMYFVAF3ZqXYtQ3QqbQTZAOZlzKCBXh+y4+lze8DKeGKc7TOtwC00R2E4A+KdxWG1OgePwrlxDUPz4pWYvS+4LLuxrkHgpMmY1fBLpAaXLQeSX1e+vcfg="
 
