@@ -71,11 +71,6 @@ before_install:
   - |
     if [ "$TRAVIS_OS_NAME" == "osx" ]; then
       echo "Installing Miniconda"
-      if [ "$TRAVIS_OS_NAME" == "osx" ]; then CONDA_PLATFORM=MacOSX; else CONDA_PLATFORM=Linux; fi
-      travis_retry wget -O miniconda.sh https://repo.continuum.io/miniconda/Miniconda$PY-latest-${CONDA_PLATFORM}-x86_64.sh || exit 1
-      bash miniconda.sh -b -p $HOME/miniconda && rm miniconda.sh || exit 1
-      $HOME/miniconda/bin/conda --version || exit 1
-      $HOME/miniconda/bin/conda install --quiet --yes nomkl --file=dev-requirements.txt --user
       which clang && clang --version && export CC=clang || true
       which clang++ && clang++ --version && export CXX="clang++ -stdlib=libc++" || true
     fi
