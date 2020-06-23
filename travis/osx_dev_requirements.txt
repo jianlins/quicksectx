@@ -1,3 +1,2 @@
 cython>=0.29
 nose
-twine
