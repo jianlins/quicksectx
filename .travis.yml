@@ -96,9 +96,6 @@ script:
         ls wheelhouse;
         for whl in wheelhouse/*.whl; do
             echo $whl
-            if [[ $whl != wheelhouse/${PROJECT_NAME}* ]]; then
-              rm $whl
-            fi
         done
         echo "after clean wheelhouse";
         ls wheelhouse;
