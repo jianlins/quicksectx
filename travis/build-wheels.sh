@@ -16,6 +16,7 @@ elif [ PYBIN ==  '3.8' ]; then
   PYBIN='cp37-cp37m'
 else
   PYBIN='cp36-cp36m'
+fi
 
 # Compile wheels
 which python
@@ -36,5 +37,5 @@ done
 
 ls /io/wheelhouse -l
 "${PYBIN}/pip" install ${PROJECT_NAME} --no-index -f /io/wheelhouse
-(cd "$HOME";ls -l; "${PYBIN}/nosetests" ${PROJECT_NAME})
+(cp -R /io/tests "$HOME"/tests; cd "$HOME"; ls tests; "${PYBIN}/nosetests" tests;)
 # Install packages and test
