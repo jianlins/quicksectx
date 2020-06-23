@@ -56,6 +56,6 @@ on_success:
   - echo %BUILT_PACKAGE%
   - dir dist
   - # If this build is because of a tag make the conda package and upload it to test.pypi.org
-  - cmd: if "%DEPLOY_TEST%"=="true" (if "%APPVEYOR_REPO_TAG%"=="true" (%PYTHON%\\python.exe  -m twine upload -u %PYPI_LOGIN% -p %PYPI_PWD% --repository-url https://test.pypi.org/legacy/ dist/*.whl) else (echo "Not deploying because not a tagged commit.")) else (echo 'Not test deploy, not upload to test.pypi.org')
+  - cmd: if "%DEPLOY_TEST%"=="true" (if "%APPVEYOR_REPO_TAG%"=="true" (%PYTHON%\\python.exe  -m twine upload --skip-existing -u %PYPI_LOGIN% -p %PYPI_PWD% --repository-url https://test.pypi.org/legacy/ dist/*.whl) else (echo "Not deploying because not a tagged commit.")) else (echo 'Not test deploy, not upload to test.pypi.org')
   - # deploy to pypi.org
-  - cmd: if "%DEPLOY_TEST%"=="false" (if "%APPVEYOR_REPO_TAG%"=="true" (%PYTHON%\\python.exe  -m twine upload -u %PYPI_LOGIN% -p %PYPI_PWD% dist/*.whl) else (echo "Not deploying because not a tagged commit.")) else (echo 'test deploy, not upload to pypi.org')
+  - cmd: if "%DEPLOY_TEST%"=="false" (if "%APPVEYOR_REPO_TAG%"=="true" (%PYTHON%\\python.exe  -m twine upload --skip-existing -u %PYPI_LOGIN% -p %PYPI_PWD% dist/*.whl) else (echo "Not deploying because not a tagged commit.")) else (echo 'test deploy, not upload to pypi.org')
