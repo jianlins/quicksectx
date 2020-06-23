@@ -112,14 +112,13 @@ script:
     nosetests tests;
     fi
 
-
-
-
+before_deploy:
+  - script: pip install twine
 
 deploy:
   # deploy develop to pypi.org
   - provider: script
-    script: ls wheelhouse && python -m twine upload -u ${PYPI_LOGIN} -p ${PYPI_PWD} --skip-existing wheelhouse/${PROJECT_NAME}*
+    script: ls wheelhouse && python -m twine upload -u ${PYPI_LOGIN} -p ${PYPI_PWD} --skip-existing wheelhouse/${PROJECT_NAME}*;
     on:
       repo: ${GITHUB_REPO_NAME}
       tags: true
@@ -128,7 +127,8 @@ deploy:
 
   # deploy develop to test.pypi.org
   - provider: script
-    script: python -m twine upload --skip-existing -u ${PYPI_LOGIN} -p ${PYPI_PWD} --repository-url https://test.pypi.org/legacy/ wheelhouse/${PROJECT_NAME}*
+    script: pwd; ls wheelhouse; python -m twine upload --skip-existing -u ${PYPI_LOGIN} -p ${PYPI_PWD} --repository-url https://test.pypi.org/legacy/ wheelhouse/${PROJECT_NAME}*;
     on:
       repo: ${GITHUB_REPO_NAME}
+#       tags: true
       condition: "$DEPLOY_TEST == true"
