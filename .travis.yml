@@ -35,6 +35,7 @@ env:
 branches:
   only:
     - master
+
 jobs:
   include:
      - name: "Python 3.6 on macOS"
@@ -58,6 +59,9 @@ jobs:
 #     - env: BACKEND=c EXCLUDE="--listfile=tests/pypy_bugs.txt --listfile=tests/pypy2_bugs.txt bugs"
 
 before_install:
+  - echo "TRAVIS_PYTHON_VERSION:$TRAVIS_PYTHON_VERSION";
+  - echo "DOCKER_IMAGE:$DOCKER_IMAGE";
+  - echo "$TRAVIS_OS_NAME:$TRAVIS_OS_NAME";
   - |
     if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       echo "Installing Miniconda";
@@ -83,11 +87,8 @@ install:
 before_script: ccache -s || true
 
 script:
-  - echo "TRAVIS_PYTHON_VERSION:$TRAVIS_PYTHON_VERSION";
-  - echo "DOCKER_IMAGE:$DOCKER_IMAGE";
-  - echo "$TRAVIS_OS_NAME:$TRAVIS_OS_NAME";
 
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+  - if [[ $TRAVIS_OS_NAME == linux ]]; then
         chmod 775 travis/build-wheels.sh;
         echo "TRAVIS_PYTHON_VERSION:$TRAVIS_PYTHON_VERSION";
         docker run --name "dk_${PLAT}_${TRAVIS_PYTHON_VERSION}" -v `pwd`:/io $DOCKER_IMAGE $PRE_CMD /bin/sh -c "/io/travis/build-wheels.sh ${PLAT} ${PROJECT_NAME} ${TRAVIS_PYTHON_VERSION}";
@@ -95,7 +96,7 @@ script:
         ls;
     fi
 #
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+  - if [[ $TRAVIS_OS_NAME == osx ]]; then
     pip wheel ./ -w wheelhouse/; ls wheelhouse;
     pip install wheelhouse/${PROJECT_NAME}*.whl --no-index -f
     pwd; ls;
