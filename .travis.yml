@@ -82,12 +82,11 @@ before_install:
 
 install:
   - if [ "$TRAVIS_OS_NAME" == "linux" ]; then
-        pip install twine
-        pip install -r dev-requirements.txt
-        docker pull $DOCKER_IMAGE
+        pip install -r dev-requirements.txt;
+        docker pull $DOCKER_IMAGE;
     else
-        python -c 'import sys; print("Python %s" % (sys.version,))'
-        pip install --user -r dev-requirements.txt
+        python -c 'import sys; print("Python %s" % (sys.version,))';
+        pip install --user -r dev-requirements.txt;
     fi
 
 script:
