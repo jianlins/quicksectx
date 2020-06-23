@@ -1,8 +1,14 @@
 notifications:
   email: false
-
+os:
+  - linux
+  - os
 language: python
 
+python:
+  - 3.8
+  - 3.7
+  - 3.6
 
 env:
   global:
@@ -16,39 +22,31 @@ env:
     - DEPLOY_TEST=true
     - secure: "N5VeOo+j9P8PEC2Qh/nBYniccWvrrzRw/AhR131c8qK4C6ZgUKGNa8zIfSp6syi0mQ16Z7rf57bsaPrcl6CXbRzUYaNs71xJexvqZHxs1FZXWqNDOdrM1VCuSE8msxzYhz8Gbt37KCJ1DIwFnZHH0860fTmLTmbjGSg/IK2AKH9Dewm81TkEzM6Yzu5saKasbfoR3wY0xsykubNFRJxEB4rseuZhjSfySfYHjiskjXFEfBIYHL6TjdnZcDdtuPnDuk9S0koB/enlGMqMhsKTe1ApZGvZcuYhmPhRydWxU2bjvwkkRcQEdTwOtiUBvi3D8i1FzNJoOWRWhDI5oAz81/bUAMYJSrZ1NpZ4JOOsD/HNfSO9r0DBJdEZAlKJ8uAJYa5IwJMAylSly+DL31k4VcG1unvHDDXMFG52rCLGzdtf/b7oVVh05lZxcvVFio31bfvjjZY8ugLOOywnwRyVgqWGNvJIld1PUGIjyyXKKxpFh7J8jOF8KsxfxU6l1dGEWRMnjTEPYdF1P1t+lOv8rFxRPYR1WIpZte7sGu2NSrJHGynWtx2uJOqMYFVAF3ZqXYtQ3QqbQTZAOZlzKCBXh+y4+lze8DKeGKc7TOtwC00R2E4A+KdxWG1OgePwrlxDUPz4pWYvS+4LLuxrkHgpMmY1fBLpAaXLQeSX1e+vcfg="
 
-os:
-  - linux
-  - osx
-
-python:
-  - 3.8
-  - 3.7
-  - 3.6
 
 # encrypt PYPI_PWD
 matrix:
   include:
-#     - os: osx
-#       osx_image: xcode10.3
-#       env: PY=3.6 MACOSX_DEPLOYMENT_TARGET=10.9
-#       python: 3
-#       language: c
-#       compiler: clang
-#       cache: false
-#     - os: osx
-#       osx_image: xcode10.3
-#       env: PY=3.7 MACOSX_DEPLOYMENT_TARGET=10.9
-#       python: 3
-#       language: c
-#       compiler: clang
-#       cache: false
-#     - os: osx
-#       osx_image: xcode10.3
-#       env: PY=3.8 MACOSX_DEPLOYMENT_TARGET=10.9
-#       python: 3
-#       language: c
-#       compiler: clang
-#       cache: false
+    - os: osx
+      osx_image: xcode10.3
+      env: PY=3.6 MACOSX_DEPLOYMENT_TARGET=10.9
+      python: 3
+      language: c
+      compiler: clang
+      cache: false
+    - os: osx
+      osx_image: xcode10.3
+      env: PY=3.7 MACOSX_DEPLOYMENT_TARGET=10.9
+      python: 3
+      language: c
+      compiler: clang
+      cache: false
+    - os: osx
+      osx_image: xcode10.3
+      env: PY=3.8 MACOSX_DEPLOYMENT_TARGET=10.9
+      python: 3
+      language: c
+      compiler: clang
+      cache: false
 
     - sudo: required
       services:
@@ -75,7 +73,6 @@ before_install:
   - |
     if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       echo "Installing Miniconda";
-      echo "TRAVIS_PYTHON_VERSION:$TRAVIS_PYTHON_VERSION";
       CONDA_PLATFORM=MacOSX;
       travis_retry wget -O miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-latest-${CONDA_PLATFORM}-x86_64.sh;
       bash miniconda.sh -b -p $HOME/miniconda;
@@ -100,6 +97,7 @@ before_script: ccache -s || true
 script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
         chmod 775 travis/build-wheels.sh;
+        echo "TRAVIS_PYTHON_VERSION:$TRAVIS_PYTHON_VERSION";
         docker run --name "dk_${PLAT}_${TRAVIS_PYTHON_VERSION}" -v `pwd`:/io $DOCKER_IMAGE $PRE_CMD /bin/sh -c "/io/travis/build-wheels.sh ${PLAT} ${PROJECT_NAME} ${TRAVIS_PYTHON_VERSION}";
         pwd;
         ls;
