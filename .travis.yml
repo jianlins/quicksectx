@@ -77,7 +77,7 @@ before_install:
       if [ "$TRAVIS_OS_NAME" == "osx" ]; then CONDA_PLATFORM=MacOSX; else CONDA_PLATFORM=Linux; fi
       travis_retry wget -O miniconda.sh https://repo.continuum.io/miniconda/Miniconda$PY-latest-${CONDA_PLATFORM}-x86_64.sh || exit 1
       bash miniconda.sh -b -p $HOME/miniconda && rm miniconda.sh || exit 1
-      conda --version || exit 1
+      $HOME/miniconda/bin/conda --version || exit 1
       which clang && clang --version && export CC=clang || true
       which clang++ && clang++ --version && export CXX="clang++ -stdlib=libc++" || true
     fi
@@ -107,7 +107,6 @@ deploy:
   - provider: script
     script: ls wheelhouse
     on:
-       repo: ${GITHUB_REPO_NAME}
        condition: true
 
   - provider: script
