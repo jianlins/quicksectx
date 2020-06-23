@@ -10,10 +10,11 @@ PROJECT_NAME=${ARGS[1]}
 PYBIN=${ARGS[2]}
 if [ PYBIN ==  '3.5' ]; then
   PYBIN='cp35-cp35m'
-elif [ PYBIN ==  '3.7' ]; then
-  PYBIN='cp38-cp38'
 elif [ PYBIN ==  '3.8' ]; then
+  PYBIN='cp38-cp38'
+elif [ PYBIN ==  '3.7' ]; then
   PYBIN='cp37-cp37m'
+#  sudo apt-get install libssl-dev
 else
   PYBIN='cp36-cp36m'
 fi
