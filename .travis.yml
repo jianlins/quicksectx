@@ -129,12 +129,13 @@ deploy:
     script: pwd; ls wheelhouse; python -m twine upload --skip-existing -u ${PYPI_LOGIN} -p ${PYPI_PWD} --repository-url https://test.pypi.org/legacy/ wheelhouse/${PROJECT_NAME}*;
     on:
       repo: ${GITHUB_REPO_NAME}
-      tags: true
-      condition: "$TRAVIS_OS_NAME" == "linux" && "$DEPLOY_TEST == true"
+#       tags: true
+      condition: "$TRAVIS_OS_NAME == linux && $DEPLOY_TEST == true"
 
+  # deploy osx to test.pypi.org
   - provider: script
-    script: ls; cd build/$GITHUB_REPO_NAME; pwd; ls wheelhouse; python -m twine upload --skip-existing -u ${PYPI_LOGIN} -p ${PYPI_PWD} --repository-url https://test.pypi.org/legacy/ wheelhouse/${PROJECT_NAME}*;
+    script: pwd; ls ; cd build/$GITHUB_REPO_NAME ; python -m twine upload --skip-existing -u ${PYPI_LOGIN} -p ${PYPI_PWD} --repository-url https://test.pypi.org/legacy/ wheelhouse/${PROJECT_NAME}*;
     on:
       repo: ${GITHUB_REPO_NAME}
 #       tags: true
-      condition: "$TRAVIS_OS_NAME" == "osx" && "$DEPLOY_TEST == true"
+      condition: "$TRAVIS_OS_NAME == osx && $DEPLOY_TEST == true"
