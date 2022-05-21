@@ -37,6 +37,8 @@ extensions = [
     )
 ]
 
+
+
 setup(name='quicksectx',
       version=get_version(),
       description="fast, simple interval intersection",
@@ -47,11 +49,11 @@ setup(name='quicksectx',
       # cmdclass={'build_ext': Cython.Build.build_ext},
       package_dir={'quicksectx': 'quicksectx'},
       packages=['quicksectx'],
-      ext_modules=cythonize(extensions, language_level=3, language='c++'),
+      ext_modules=cythonize(extensions, compiler_directives={'language_level': "3"}),
       license='The MIT License',
       zip_safe=False,
-      setup_requires=['cython>=0.24.1'],
-      install_requires=['cython>=0.24.1'],
+      setup_requires=['cython>=0.29'],
+      install_requires=['cython>=0.29'],
       test_suite='nose.collector',
       tests_require='nose',
       package_data={'': ['*.pyx', '*.pxd', '*.so', '*.dll', '*.lib', '*.cpp', '*.c']},
