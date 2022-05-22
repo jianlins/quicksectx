@@ -112,7 +112,9 @@ jobs:
           ls -R
 
       - name: Build and publish
-        run: twine upload --verbose -r dist/*
+        run: |
+          cat ~/.pypirc
+          twine upload --verbose -r dist/*
         env:
           TWINE_REPOSITORY: testpypi
           TWINE_USERNAME: __token__
