@@ -113,7 +113,6 @@ jobs:
 
       - name: Build and publish
         run: |
-          ls ~/.py* -l
           twine upload --verbose -r dist/*
         env:
           TWINE_REPOSITORY: testpypi
