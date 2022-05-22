@@ -29,7 +29,7 @@ jobs:
 #         - [macos-10.15, macosx_*]
 #         - [windows-2019, win_amd64]
 #         - [windows-2019, win32]
-        python: ["cp36", "cp37", "cp38", "cp39", "cp310"] # Note: Wheels not needed for PyPy
+        python: ["cp36", ] # Note: Wheels not needed for PyPy
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -60,7 +60,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.python }}-${{ startsWith(matrix.buildplat[1], 'macosx') && 'macosx' || matrix.buildplat[1] }}
-          path: ./wheelhouse/*.whl
+          path: ./dist/*.whl
   build_sdist:
     name: Build sdist
     runs-on: ubuntu-latest
