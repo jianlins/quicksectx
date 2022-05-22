@@ -29,7 +29,7 @@ jobs:
 #         - [macos-10.15, macosx_*]
 #         - [windows-2019, win_amd64]
 #         - [windows-2019, win32]
-        python: ["cp36", "cp37", "cp38", "cp39", "cp310"] # Note: Wheels not needed for PyPy
+        python: ["cp36", ] # Note: Wheels not needed for PyPy
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -53,9 +53,10 @@ jobs:
           # TODO: Cython tests take a long time to complete
           # consider running a subset in the future?
           #CIBW_TEST_COMMAND: python {project}/runtests.py -vv --no-refnanny
-#        run: |
-#          python -m pip install --upgrade pip
-#          pip install -r requirements.txt
+
+      - name: check build
+        run: |
+          ls wheelhouse
 
       - uses: actions/upload-artifact@v3
         with:
@@ -76,13 +77,14 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+
       - name: Build sdist
         run: |
           python setup.py sdist
       - uses: actions/upload-artifact@v3
         with:
           name: sdist
-          path: ./dist/*
+          path: ./dist/*.tar.gz
 
   upload_pypi:
     needs: [build_wheels, build_sdist]
