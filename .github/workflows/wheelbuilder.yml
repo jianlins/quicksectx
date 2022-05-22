@@ -102,8 +102,8 @@ jobs:
       - name: check downloaded
         run: |
           mv ./dist/**/* ./dist/
-          rm dist/cp*
-          rm dist/sdist
+          rm -rf dist/cp*
+          rm -rf dist/sdist
           ls -R
 
       - uses: pypa/gh-action-pypi-publish@v1.5.0
