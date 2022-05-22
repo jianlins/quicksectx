@@ -29,7 +29,8 @@ jobs:
 #         - [macos-10.15, macosx_*]
 #         - [windows-2019, win_amd64]
 #         - [windows-2019, win32]
-        python: ["cp36", ] # Note: Wheels not needed for PyPy
+#        -         python: ["cp36", "cp37", "cp38", "cp39", "cp310"] # Note: Wheels not needed for PyPy
+        python: ["cp36"] # Note: Wheels not needed for PyPy
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -100,7 +101,7 @@ jobs:
 
       - name: check downloaded
         run: |
-          ls dist -l
+          ls -R
 
       - uses: pypa/gh-action-pypi-publish@v1.5.0
         with:
