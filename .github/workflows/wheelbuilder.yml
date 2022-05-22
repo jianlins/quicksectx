@@ -100,7 +100,9 @@ jobs:
           path: dist
 
       - name: check downloaded
-        run: cp **/* ./ & ls -R
+        run: |
+          cp **/* ./
+          ls -R
 
       - uses: pypa/gh-action-pypi-publish@v1.5.0
         with:
