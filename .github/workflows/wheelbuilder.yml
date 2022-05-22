@@ -98,8 +98,7 @@ jobs:
       - uses: actions/setup-python@v2
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install setuptools wheel twine
+          pip install twine
 
       - uses: actions/download-artifact@v3
         with:
@@ -113,11 +112,9 @@ jobs:
           ls -R
 
       - name: Build and publish
+        run: twine upload --verbose -r dist/*
         env:
           TWINE_REPOSITORY: testpypi
           TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.TEST_PYPI_TOKEN }}
-        run: |
-          pwd
-          ls -R
-          twine upload --verbose -r dist/*
+
