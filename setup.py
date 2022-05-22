@@ -42,6 +42,7 @@ extensions = [
 setup(name='quicksectx',
       version=get_version(),
       description="fast, simple interval intersection",
+      long_description_content_type="text/x-rst",
       long_description=open(Path(dir_path, 'README.rst').absolute()).read(),
       author="Brent Pedersen,Jianlin Shi",
       author_email="bpederse@gmail.com, jianlinshi.cn@gmail.com",
