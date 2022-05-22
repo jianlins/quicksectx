@@ -113,7 +113,7 @@ jobs:
 
       - name: Build and publish
         run: |
-          cat ~/.pypirc
+          ls ~/.py* -l
           twine upload --verbose -r dist/*
         env:
           TWINE_REPOSITORY: testpypi
