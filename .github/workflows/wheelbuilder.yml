@@ -113,7 +113,7 @@ jobs:
 
       - name: Build and publish
         run: |
-          twine upload --verbose -r dist/*
+          twine upload --verbose -r ./dist/*
         env:
           TWINE_REPOSITORY: testpypi
           TWINE_USERNAME: __token__
