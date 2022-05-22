@@ -106,12 +106,16 @@ jobs:
           rm -rf dist/sdist
           ls -R
 
-      - uses: pypa/gh-action-pypi-publish@v1.5.0
-        with:
-          user: __token__
-#          password: ${{ secrets.PYPI_PASSWORD }}
-          password: ${{ secrets.TEST_PYPI_TOKEN }}
-          repository_url: https://test.pypi.org/legacy/
-          verbose: true
-          skip_existing: true
-          # To test: repository_url: https://test.pypi.org/legacy/
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v2
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install setuptools wheel twine
+    - name: Build and publish
+      env:
+        TWINE_REPOSITORY: testpypi
+        TWINE_USERNAME: __token__
+        TWINE_PASSWORD: ${{ secrets.TEST_PYPI_TOKEN }}
+      run: |
+        twine upload dist/*
