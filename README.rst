@@ -60,12 +60,12 @@ Most common use will be via IntervalTree:
     >>> tree.search(44, 56)
     [Interval(55, 66), Interval(23, 45)]
 
-    >>> tree.insert(Interval(88, 444))
-    >>> res = tree.find(Interval(99, 100))
+    >>> tree.insert(Interval(88, 444, 'a'))
+    >>> res = tree.find(Interval(99, 100, 'b'))
     >>> res
     [Interval(88, 444)]
-    >>> res[0].start, res[0].end
-    (88, 444)
+    >>> res[0].start, res[0].end, res[0].data
+    (88, 444, 'a')
 
 Thats pretty much everything you need to know about the tree.
 
