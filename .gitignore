@@ -6,3 +6,4 @@ build
 *.pkl
 *.egg-info
 *.cpp
+dist
