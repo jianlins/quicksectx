@@ -44,16 +44,13 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install --pre PyRuSH nose
+          pip install --pre quicksectx pytest
 
-      - name: nose tests
+      - name: run pytest
         run: |                            
-          # ls /opt/hostedtoolcache/Python/3*/x64/lib/python*/site-packages/conf
-          python -c "import shutil;shutil.rmtree('PyRuSH')"
-          python -c "import shutil;shutil.rmtree('conf')"
           ls
           python --version
-          nosetests
+          pytest tests
 
 
   
