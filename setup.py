@@ -1,6 +1,6 @@
 from Cython.Build import cythonize, build_ext
 from setuptools.extension import Extension
-from setuptools import setup
+from setuptools import setup, find_packages
 # from distutils.core import setup
 
 import os
@@ -47,9 +47,7 @@ setup(name='quicksectx',
       author="Brent Pedersen,Jianlin Shi",
       author_email="bpederse@gmail.com, jianlinshi.cn@gmail.com",
       url='https://github.com/jianlins/quicksectx',
-      # cmdclass={'build_ext': Cython.Build.build_ext},
-      package_dir={'quicksectx': 'quicksectx'},
-      packages=['quicksectx','quicksect'],
+      packages=find_packages(),
       ext_modules=cythonize(extensions, compiler_directives={'language_level': "3"}),
       license='The MIT License',
       zip_safe=False,
