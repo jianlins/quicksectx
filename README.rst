@@ -13,6 +13,8 @@ with his improvements.
 I have brought this project back from the dead because I want a fast, simple, no-dependencies Interval
 tree.
 
+(https://github.com/brentp/quicksect)
+
 Extended with removal operations and allows pretty print to display tree structure (By Jianlin)
 
 
