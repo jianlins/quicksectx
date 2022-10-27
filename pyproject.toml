@@ -1,0 +1,2 @@
+[build-system]
+requires = ["setuptools>=65.5.0", 'Cython>=0.25,<3.0']
