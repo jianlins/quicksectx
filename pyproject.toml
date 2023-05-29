@@ -1,2 +1,24 @@
 [build-system]
 requires = ["setuptools", 'Cython>=0.25,<3.0']
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "quicksectx"
+dynamic = ["version","dependencies","readme"]
+authors = [{name = "Jianlin", email="jianlinshi.cn@gmail.com"}]
+description = "Quicksect is a fast python / cython implementation of interval search."
+keywords=['quicksectx', 'interval search', 'interval tree']
+requires-python = ">=3.6"
+license = { file = "LICENSE" }
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+version={file = "quicksectx/VERSION"}
+readme={file = ['README.rst']}
+
+[project.urls]
+Source = "https://github.com/jianlins/quicksectx"
