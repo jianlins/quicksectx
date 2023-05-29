@@ -18,7 +18,7 @@ def get_version():
 
     """
     try:
-        return open(os.path.join(os.path.dirname(__file__), 'PyRuSH', 'VERSION')).read().strip()
+        return open(os.path.join(os.path.dirname(__file__), 'quicksectx', 'VERSION')).read().strip()
     except IOError:
         return "0.0.0a1"
 
