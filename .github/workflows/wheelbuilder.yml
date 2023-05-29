@@ -63,9 +63,11 @@ jobs:
         with:
           name: ${{ matrix.python }}-${{ startsWith(matrix.buildplat[1], 'macosx') && 'macosx' || matrix.buildplat[1] }}
           path: ./wheelhouse/*.whl
+          
   build_sdist:
     name: Build sdist
     runs-on: ubuntu-latest
+    if: false
     steps:
       - name: Checkout quicksectx
         uses: actions/checkout@v3

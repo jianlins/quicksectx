@@ -37,22 +37,27 @@ extensions = [
 ]
 
 
+def run_build():
+ 
+    from quicksectx import __version__ as version
+    setup(name='quicksectx',
+        version=version,
+        description="fast, simple interval intersection",
+        long_description_content_type="text/x-rst",
+        long_description=open(Path(dir_path, 'README.rst').absolute()).read(),
+        author="Brent Pedersen,Jianlin Shi",
+        author_email="bpederse@gmail.com, jianlinshi.cn@gmail.com",
+        url='https://github.com/jianlins/quicksectx',
+        packages=find_packages(),
+        ext_modules=cythonize(extensions, compiler_directives={'language_level': "3"}),
+        license='The MIT License',
+        zip_safe=False,
+        setup_requires=['Cython>=0.25,<3.0'],
+        install_requires=['Cython>=0.25,<3.0'],
+        test_suite='nose.collector',
+        tests_require='nose',
+        package_data={'': ['*.pyx', '*.pxd', '*.so', '*.dll', '*.lib', '*.cpp', '*.c']},
+        )
 
-setup(name='quicksectx',
-      version=get_version(),
-      description="fast, simple interval intersection",
-      long_description_content_type="text/x-rst",
-      long_description=open(Path(dir_path, 'README.rst').absolute()).read(),
-      author="Brent Pedersen,Jianlin Shi",
-      author_email="bpederse@gmail.com, jianlinshi.cn@gmail.com",
-      url='https://github.com/jianlins/quicksectx',
-      packages=find_packages(),
-      ext_modules=cythonize(extensions, compiler_directives={'language_level': "3"}),
-      license='The MIT License',
-      zip_safe=False,
-      setup_requires=['Cython>=0.25,<3.0'],
-      install_requires=['Cython>=0.25,<3.0'],
-      test_suite='nose.collector',
-      tests_require='nose',
-      package_data={'': ['*.pyx', '*.pxd', '*.so', '*.dll', '*.lib', '*.cpp', '*.c']},
-      )
+if __name__ == '__main__':
+    run_build()
