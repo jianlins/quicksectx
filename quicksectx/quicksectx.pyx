@@ -79,6 +79,7 @@ cpdef int positioning(Interval f1, Interval f2):
         return -1
     return 0
 
+
 cpdef int overlaps(Interval f1, Interval f2):
     if f1.end < f2.start or f2.end < f1.start:
         return 1
@@ -224,6 +225,24 @@ cdef class IntervalTree:
                 break
         fh.close()
 
+    def loads(self, intervals):
+        for inv in intervals:
+            self.insert(inv)
+
+    def dumps(self):
+        intervals = []
+        a = intervals.append
+        self.root.traverse(a)
+        return intervals
+
+    @staticmethod
+    def _reconstruct(intervals):
+        obj=IntervalTree.__new__(IntervalTree)
+        obj.loads(intervals)
+        return obj
+    def __reduce__(self):
+        intervals=self.dumps()
+        return (IntervalTree._reconstruct, (intervals,))
     @property
     def root(self):
         return self.root
@@ -267,56 +286,6 @@ cdef inline int imin2(int a, int b):
 cdef float nlog = -1.0 / log(0.5)
 
 cdef class IntervalNode:
-    """\
-    Data structure for performing intersect and neighbor queries on a
-    set of intervals. Algorithm uses a segment/interval tree to perform
-    efficient queries.
-
-    Usage
-    =====
-    >>> from quicksectx import IntervalNode, Interval
-    >>> tree = IntervalNode(Interval(0, 10))
-
-    Add intervals, the only requirement is that the interval have integer
-    start and end attributes. Optional arguments are strand, name, and info.
-
-    >>> Interval(1, 22, info={'chr':12, 'anno': 'anything'})
-
-
-    >>> tree = tree.insert(Interval(3, 7, 1))
-    >>> tree = tree.insert(Interval(3, 40, -1))
-    >>> tree = tree.insert(Interval(13, 50, 1))
-
-    Queries
-    -------
-
-    find
-    ++++
-
-    >>> tree.find(2, 5)
-    [Interval(3, 7), Interval(3, 40), Interval(0, 10)]
-    >>> tree.find(11, 100)
-    [Interval(13, 50), Interval(3, 40)]
-    >>> tree.find(100, 200)
-    []
-
-    left/right
-    ++++++++++
-    the left method finds features that are strictly to the left of
-    the query feature. overlapping features are not considered:
-
-    >>> tree.left(Interval(0, 1))
-    []
-    >>> tree.left(Interval(11, 12))
-    [Interval(0, 10)]
-
-    """
-    # cdef int priority
-    # cdef public Interval interval
-    # cdef public int start, end
-    # cdef int minstop, maxstop, minstart
-    # cdef IntervalNode cleft, cright, croot
-
     @property
     def left_node(self):
         return self.cleft if self.cleft is not EmptyNode else None
@@ -569,5 +538,6 @@ cdef class IntervalNode:
 
     def __str__(self):
         return self._str()
+
 
 cdef IntervalNode EmptyNode = IntervalNode(Interval(0, 0))

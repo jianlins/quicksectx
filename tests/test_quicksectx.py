@@ -314,7 +314,7 @@ class SpecialTestCase(unittest.TestCase):
         tree = IntervalTree()
         tree.add(1, 3, 1.0)
         tree.add(1, 3, 1.0)
-        self.assertEqual(len(tree.search(1, 1.5)), 2)
+        self.assertEqual(len(tree.search(1, 2)), 2)
 
 
 class RemovalTestCases(unittest.TestCase):
