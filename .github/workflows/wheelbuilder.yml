@@ -1,4 +1,4 @@
-name: Wheel Builder
+name: test build
 on:
   workflow_dispatch
 
@@ -9,11 +9,6 @@ concurrency:
 jobs:
   build_wheels:
     name: Build ${{ matrix.python }}-${{ matrix.buildplat[1] }}
-    if: >-
-      github.event_name == 'schedule' ||
-      github.event_name == 'workflow_dispatch' ||
-      (github.event_name == 'pull_request' &&
-      contains(github.event.pull_request.labels.*.name, 'Build System'))
     runs-on: ${{ matrix.buildplat[0] }}
     strategy:
       # Ensure that a wheel builder finishes even if another fails
@@ -22,47 +17,51 @@ jobs:
         # Github Actions doesn't support pairing matrix values together, let's improvise
         # https://github.com/github/feedback/discussions/7835#discussioncomment-1769026
         buildplat:
-        - [ubuntu-latest, manylinux_x86_64]
-        # - [ubuntu-latest, manylinux_i686]
-        # - [ubuntu-latest, musllinux_x86_64]
-        # - [macos-11, macosx_*]
-        # - [windows-2019, win_amd64]
-        # - [windows-2019, win32]
-        python: ["cp38"] # Note: Wheels not needed for PyPy
-        # python: ["cp37", "cp38", "cp39", "cp310","cp311"] # Note: Wheels not needed for PyPy
+          - [ubuntu-latest, manylinux_x86_64]
+          - [ubuntu-latest, musllinux_x86_64]
+          - [macos-latest, macosx_x86_64]
+          - [windows-latest, win_amd64]
+          - [windows-2019, win32]
+        python: ["cp38", "cp39", "cp310", "cp311"]
+        # python: ["cp38"]
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-
-      - name: Set up QEMU
-        if: contains(matrix.buildplat[1], '_aarch64')
-        uses: docker/setup-qemu-action@v1
+    
+      - name: Cache cibuild
+        id: cache-npm
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-cibuilds
         with:
-          platforms: all
+          # npm cache files are stored in `~/.npm` on Linux/macOS
+          path: /var/lib/docker/
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
 
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.11.4
+        uses: pypa/cibuildwheel@v2.13.0
         env:
           # TODO: Build Cython with the compile-all flag?
           # Unfortunately, there is no way to modify cibuildwheel's build command
           # so there is no way to pass this in directly.
           # This would require modifying cython's setup.py to look for these flags
           # in env vars.
-          CIBW_BEFORE_BUILD: 'pip install --upgrade pip; pip install -r requirements.txt; python setup.py build_ext --inplace'
+          CIBW_BEFORE_BUILD: "pip install -r requirements.txt"
+          # CIBW_BEFORE_BUILD: "python setup.py build_ext --inplace"
           CIBW_BUILD: ${{ matrix.python }}-${{ matrix.buildplat[1] }}
           CIBW_ENVIRONMENT: CFLAGS='-O3 -g0 -mtune=generic -pipe -fPIC' LDFLAGS='-fPIC'
-          # TODO: Cython tests take a long time to complete
-          # consider running a subset in the future?
-          #CIBW_TEST_COMMAND: python {project}/runtests.py -vv --no-refnanny
+          CIBW_TEST_REQUIRES: pytest
+          CIBW_TEST_COMMAND: pytest {package}/tests
 
       - name: check build
         run: |
-          ls wheelhouse
-
-      - uses: actions/upload-artifact@v3
-        with:
-          name: ${{ matrix.python }}-${{ startsWith(matrix.buildplat[1], 'macosx') && 'macosx' || matrix.buildplat[1] }}
-          path: ./wheelhouse/*.whl
+          python --version
+          ls -l wheelhouse
 
   build_sdist:
     name: Build sdist
@@ -113,11 +112,11 @@ jobs:
           rm -rf dist/sdist
           ls -R
 
-#       - name: Build and publish
-#         run: |
-#           twine upload --skip-existing --verbose dist/*
-#         env:
-# #          TWINE_REPOSITORY: testpypi
-#           TWINE_USERNAME: __token__
-#           TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
+      - name: Build and publish
+        run: |
+          twine upload --skip-existing --verbose dist/*
+        env:
+#          TWINE_REPOSITORY: testpypi
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
 
