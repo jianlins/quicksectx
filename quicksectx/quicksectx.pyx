@@ -235,14 +235,14 @@ cdef class IntervalTree:
         self.root.traverse(a)
         return intervals
 
-    @staticmethod
-    def _reconstruct(intervals):
-        obj=IntervalTree.__new__(IntervalTree)
+    @classmethod
+    def _reconstruct(cls, intervals):
+        obj=cls()
         obj.loads(intervals)
         return obj
     def __reduce__(self):
         intervals=self.dumps()
-        return (IntervalTree._reconstruct, (intervals,))
+        return (self._reconstruct, (intervals,))
     @property
     def root(self):
         return self.root
