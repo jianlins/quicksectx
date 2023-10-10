@@ -3,8 +3,14 @@ import unittest
 from quicksectx import IntervalNode, IntervalTree, Interval
 import operator
 from pickle import dumps, loads,dump,load
+from pathlib import Path
 
 class SerialTestCase(unittest.TestCase):
+    def setUp(self):
+        if not Path('tmp').exists():
+            Path('tmp').mkdir()
+        
+
     def test_left(self):
         interval = Interval(start=1, end=5, data="sample data")
         with open('tmp/interval.pkl', 'wb') as file:
