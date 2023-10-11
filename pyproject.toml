@@ -4,8 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "quicksectx"
-version='0.3.7'
-dynamic = ["dependencies","readme"]
+dynamic = ["dependencies","readme","version"]
 authors = [{name = "Jianlin", email="jianlinshi.cn@gmail.com"}]
 description = "Quicksect is a fast python / cython implementation of interval search."
 keywords=['quicksectx', 'interval search', 'interval tree']
@@ -19,6 +18,7 @@ classifiers = [
 [tool.setuptools.dynamic]
 dependencies = {file = ["requirements.txt"]}
 readme={file = ['README.rst']}
+version={file = "quicksectx/VERSION"}
 
 [project.urls]
 Source = "https://github.com/jianlins/quicksectx"
