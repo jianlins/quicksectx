@@ -29,6 +29,7 @@ def parse_requirements(requirements_file):
     requirements=[r for r in requirements if len(r)>0 and not r.startswith('#')]
     return requirements
 
+build_version=get_version()
 install_reqs = parse_requirements('requirements.txt')
 extensions = [
     Extension(
@@ -46,7 +47,7 @@ extensions = [
 
 
 setup(name='quicksectx',
-      version="0.3.6b1",
+      version=build_version,
       description="fast, simple interval intersection",
       long_description_content_type="text/x-rst",
       long_description=open(Path(dir_path, 'README.rst').absolute()).read(),
