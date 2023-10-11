@@ -19,7 +19,7 @@ def get_version():
 
     """
     try:
-        return open(os.path.join(os.path.dirname(__file__), 'quicksectx', 'version.py')).read().split('=')[1].strip()[1:-1]
+        return open(os.path.join(os.path.dirname(__file__), 'quicksectx', 'version')).read().strip()
     except IOError:
         return "0.0.0a1"
         
