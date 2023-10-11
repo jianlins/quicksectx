@@ -1,7 +1,6 @@
 from Cython.Build import cythonize, build_ext
 from setuptools.extension import Extension
 from setuptools import setup, find_packages
-from pip.req import parse_requirements
 # from distutils.core import setup
 
 import os
@@ -9,7 +8,7 @@ from pathlib import Path
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 include_dirs = [dir_path + "/quicksectx", dir_path, dir_path + "/quicksect"]
-install_reqs = parse_requirements('requirements.txt', session='hack')
+
 
 
 def get_version():
@@ -23,8 +22,13 @@ def get_version():
         return open(os.path.join(os.path.dirname(__file__), 'quicksectx', 'version.py')).read().split('=')[1].strip()[1:-1]
     except IOError:
         return "0.0.0a1"
+def parse_requirements(requirements_file):
+    requirements=open(os.path.join(os.path.dirname(__file__), requirements_file)).read().split('\n')
+    requirements=[r.strip() for r in requirements]
+    requirements=[r for r in requirements if len(r)>0 and not r.startswith('#')]
+    return requirements
 
-
+install_reqs = parse_requirements('requirements.txt')
 extensions = [
     Extension(
         'quicksect.quicksect',
