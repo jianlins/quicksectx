@@ -5,16 +5,6 @@ on:
       environment:
         type: environment
         description: Select the environment
-      boolean:
-        type: boolean
-        description: True or False
-      choice:
-        type: choice
-        description: Make a choice
-        options:
-        - foo
-        - bar
-        - baz
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
@@ -31,7 +21,7 @@ jobs:
         # Github Actions doesn't support pairing matrix values together, let's improvise
         # https://github.com/github/feedback/discussions/7835#discussioncomment-1769026
         buildplat:
-          - [${{ github.event.inputs.os_type }}-latest, ${{ github.event.inputs.os_type }}]
+          - [ubuntu-latest, ubuntu]
         python: ["cp38"]
 
     steps:
