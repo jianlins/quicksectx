@@ -17,7 +17,7 @@ concurrency:
 
 jobs:
   build_wheels:
-    name: Build ${{ matrix.python }}-${{ matrix.buildplat[1] }}
+    name: Build ${{ matrix.python }}-${{ inputs.chosen-os }}
     runs-on: "${{ inputs.chosen-os }}-latest"
     strategy:
       # Ensure that a wheel builder finishes even if another fails
@@ -26,7 +26,7 @@ jobs:
         # Github Actions doesn't support pairing matrix values together, let's improvise
         # https://github.com/github/feedback/discussions/7835#discussioncomment-1769026
         buildplat:
-          - [ubuntu-latest, ubuntu]
+          - ["${{ inputs.chosen-os }}-latest", ${{ inputs.chosen-os }}]
         python: ["cp38"]
 
     steps:
