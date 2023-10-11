@@ -1,14 +1,20 @@
 name: test single os
 on:
-  workflow_dispatch
+  workflow_dispatch:
     inputs:
-      os_type:
-            type: choice
-            description: Choose an os type to build
-            options:
-            - ubuntu
-            - macos
-            - windows
+      environment:
+        type: environment
+        description: Select the environment
+      boolean:
+        type: boolean
+        description: True or False
+      choice:
+        type: choice
+        description: Make a choice
+        options:
+        - foo
+        - bar
+        - baz
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
