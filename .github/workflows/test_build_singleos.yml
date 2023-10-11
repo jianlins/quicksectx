@@ -2,9 +2,14 @@ name: test single os
 on:
   workflow_dispatch:
     inputs:
-      environment:
-        type: environment
-        description: Select the environment
+      chosen-os:
+        required: true
+        type: choice
+        options:
+        - ubuntu
+        - macos
+        - windows
+
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
@@ -21,7 +26,7 @@ jobs:
         # Github Actions doesn't support pairing matrix values together, let's improvise
         # https://github.com/github/feedback/discussions/7835#discussioncomment-1769026
         buildplat:
-          - [ubuntu-latest, ubuntu]
+          - [${{ inputs.chosen-os }}-latest, ${{ inputs.chosen-os }}]
         python: ["cp38"]
 
     steps:
