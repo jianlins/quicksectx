@@ -1,6 +1,7 @@
 from Cython.Build import cythonize, build_ext
 from setuptools.extension import Extension
 from setuptools import setup, find_packages
+from pip.req import parse_requirements
 # from distutils.core import setup
 
 import os
@@ -8,6 +9,7 @@ from pathlib import Path
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 include_dirs = [dir_path + "/quicksectx", dir_path, dir_path + "/quicksect"]
+install_reqs = parse_requirements('requirements.txt', session='hack')
 
 
 def get_version():
@@ -50,8 +52,8 @@ setup(name='quicksectx',
       ext_modules=cythonize(extensions, compiler_directives={'language_level': "3"}),
       license='The MIT License',
       zip_safe=False,
-      setup_requires=['Cython>=0.25,<3.0'],
-      install_requires=['Cython>=0.25,<3.0'],
+      setup_requires=install_reqs,
+      install_requires=install_reqs,
       test_suite='nose.collector',
       tests_require='nose',
       package_data={'': ['*.pyx', '*.pxd', '*.so', '*.dll', '*.lib', '*.cpp', '*.c']},
