@@ -25,7 +25,7 @@ jobs:
         # Github Actions doesn't support pairing matrix values together, let's improvise
         # https://github.com/github/feedback/discussions/7835#discussioncomment-1769026
         buildplat:
-          - [${{ github.event.inputs.choice }}-latest, ${{ github.event.inputs.choice }}]
+          - [${{ github.event.inputs.os_type }}-latest, ${{ github.event.inputs.os_type }}]
         python: ["cp38"]
 
     steps:
