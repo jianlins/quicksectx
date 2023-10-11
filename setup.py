@@ -22,6 +22,7 @@ def get_version():
         return open(os.path.join(os.path.dirname(__file__), 'quicksectx', 'version.py')).read().split('=')[1].strip()[1:-1]
     except IOError:
         return "0.0.0a1"
+        
 def parse_requirements(requirements_file):
     requirements=open(os.path.join(os.path.dirname(__file__), requirements_file)).read().split('\n')
     requirements=[r.strip() for r in requirements]
