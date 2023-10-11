@@ -1,14 +1,14 @@
 name: test single os
 on:
   workflow_dispatch
-  inputs:
-    os_type:
-          type: choice
-          description: Choose an os type to build
-          options:
-          - ubuntu
-          - macos
-          - windows
+    inputs:
+      os_type:
+            type: choice
+            description: Choose an os type to build
+            options:
+            - ubuntu
+            - macos
+            - windows
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
