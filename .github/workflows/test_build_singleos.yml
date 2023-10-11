@@ -17,9 +17,9 @@ concurrency:
 
 jobs:
   build_on_ubuntu:
-    name: Build ${{ matrix.python }}-${{ matrix.buildplat[1] }}
-    runs-on: "${{ inputs.chosen-os }}-latest"
     if: ${{ inputs.chosen-os }} == 'ubuntu'
+    name: Build ${{ matrix.python }}-${{ matrix.buildplat[1] }}
+    runs-on: "${{ inputs.chosen-os }}-latest"    
     strategy:
       # Ensure that a wheel builder finishes even if another fails
       fail-fast: false
@@ -69,9 +69,9 @@ jobs:
           ls -l wheelhouse
 
   build_on_windows:
-    name: Build ${{ matrix.python }}-${{ matrix.buildplat[1] }}
-    runs-on: "${{ inputs.chosen-os }}-latest"
     if: ${{ inputs.chosen-os }} == 'windows'
+    name: Build ${{ matrix.python }}-${{ matrix.buildplat[1] }}
+    runs-on: "${{ inputs.chosen-os }}-latest"    
     strategy:
       # Ensure that a wheel builder finishes even if another fails
       fail-fast: false
@@ -121,9 +121,9 @@ jobs:
           ls -l wheelhouse
   
   build_on_macos:
-    name: Build ${{ matrix.python }}-${{ matrix.buildplat[1] }}
-    runs-on: "${{ inputs.chosen-os }}-latest"
     if: ${{ inputs.chosen-os }} == 'macos'
+    name: Build ${{ matrix.python }}-${{ matrix.buildplat[1] }}
+    runs-on: "${{ inputs.chosen-os }}-latest"    
     strategy:
       # Ensure that a wheel builder finishes even if another fails
       fail-fast: false
