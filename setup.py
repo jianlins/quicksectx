@@ -10,18 +10,14 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 include_dirs = [dir_path + "/quicksectx", dir_path, dir_path + "/quicksect"]
 
 
-
 def get_version():
-    """Load the version from version.py, without importing it.
+    for line in open(os.path.join(os.path.dirname(__file__), 'quicksectx', '__init__.py')).read().splitlines():
+        if line.startswith('__version__'):
+            delim = '"' if '"' in line else "'"
+            return line.split(delim)[1]
+    else:
+        raise RuntimeError("Unable to find version string.")
 
-    This function assumes that the last line in the file contains a variable defining the
-    version string with single quotes.
-
-    """
-    try:
-        return open(os.path.join(os.path.dirname(__file__), 'quicksectx', 'version.py')).read().split('=')[1].strip()[1:-1]
-    except IOError:
-        return "0.0.0a1"
         
 def parse_requirements(requirements_file):
     requirements=open(os.path.join(os.path.dirname(__file__), requirements_file)).read().split('\n')
