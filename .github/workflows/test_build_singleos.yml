@@ -17,7 +17,7 @@ concurrency:
 
 jobs:
   build_on_ubuntu:
-    if: ${{ inputs.chosen-os }} == 'ubuntu'
+    if: inputs.chosen-os == 'ubuntu'
     name: Build ${{ matrix.python }}-${{ matrix.buildplat[1] }}
     runs-on: "${{ inputs.chosen-os }}-latest"    
     strategy:
@@ -69,7 +69,7 @@ jobs:
           ls -l wheelhouse
 
   build_on_windows:
-    if: ${{ inputs.chosen-os }} == 'windows'
+    if:  inputs.chosen-os == 'windows'
     name: Build ${{ matrix.python }}-${{ matrix.buildplat[1] }}
     runs-on: "${{ inputs.chosen-os }}-latest"    
     strategy:
@@ -121,7 +121,7 @@ jobs:
           ls -l wheelhouse
   
   build_on_macos:
-    if: ${{ inputs.chosen-os }} == 'macos'
+    if: inputs.chosen-os == 'macos'
     name: Build ${{ matrix.python }}-${{ matrix.buildplat[1] }}
     runs-on: "${{ inputs.chosen-os }}-latest"    
     strategy:
