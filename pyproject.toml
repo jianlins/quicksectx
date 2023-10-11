@@ -18,7 +18,7 @@ classifiers = [
 [tool.setuptools.dynamic]
 dependencies = {file = ["requirements.txt"]}
 readme={file = ['README.rst']}
-version={file = "quicksectx/VERSION"}
+version=version = {attr = "quicksectx.__version__"}
 
 [project.urls]
 Source = "https://github.com/jianlins/quicksectx"
