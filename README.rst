@@ -96,7 +96,7 @@ the nodes of the tree:
 
 
 Since 0.3.7, you can use python's native pickle to pickle an IntervalTree object. For details, check 
-`test_serialization.py <https://github.com/jianlins/quicksectx/blob/master/tests/test_serialization.py/>`__ 
+test_serialization.py
 
 For Dev
 ----
