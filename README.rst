@@ -101,4 +101,4 @@ Since 0.3.7, you can use python's native pickle to pickle an IntervalTree object
 For Dev
 ----
 
-Now the version specification has been integrated with setup.py and pyproject.toml. To updating versions, only need to change the __version__ in quicksectx/__init__.py
+Now the version specification has been integrated with setup.py and pyproject.toml. To update versions, only need to change the __version__ in quicksectx/__init__.py
