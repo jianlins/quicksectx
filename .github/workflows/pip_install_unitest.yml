@@ -45,12 +45,13 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v3
-        
+
       - name: remove source code
         run: |
           pwd
           ls
           python -c "import shutil;shutil.rmtree('quicksectx')"
+          python -c "import shutil;shutil.rmtree('quicksect')"
           ls
 
 
