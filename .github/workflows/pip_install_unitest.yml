@@ -38,6 +38,11 @@ jobs:
         # python-version: [ "3.7"]
     timeout-minutes: 45
     steps:
+      - name: set up python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
       - name: Checkout
         uses: actions/checkout@v3
         run: |
@@ -46,10 +51,7 @@ jobs:
           python -c "import shutil;shutil.rmtree('quicksectx')"
           ls
 
-      - name: set up python
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ matrix.python-version }}
+
 
       - name: Install pre-release
         if: ${{ github.event.inputs.install_prerelease == 'true' }} 
