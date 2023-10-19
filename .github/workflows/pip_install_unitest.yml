@@ -40,6 +40,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        run: |
+          pwd
+          ls
+          python -c "import shutil;shutil.rmtree('quicksectx')"
+          ls
+
       - name: set up python
         uses: actions/setup-python@v4
         with:
