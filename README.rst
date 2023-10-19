@@ -96,9 +96,9 @@ the nodes of the tree:
 
 
 Since 0.3.7, you can use python's native pickle to pickle an IntervalTree object. For details, check 
-test_serialization.py
+`test_serialization.py <https://github.com/jianlins/quicksectx/blob/master/tests/test_serialization.py>`__
 
 For Dev
-----
+-------
 
-Now the version specification has been integrated with setup.py and pyproject.toml. To update versions, only need to change the __version__ in quicksectx/__init__.py
+Now the version specification has been integrated with setup.py and pyproject.toml. To update versions, only need to change the __version__ in `quicksectx/__init__.py <https://github.com/jianlins/quicksectx/blob/master/quicksectx/__init__.py>`__
