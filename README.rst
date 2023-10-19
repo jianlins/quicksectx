@@ -94,3 +94,10 @@ the nodes of the tree:
     >>> inter.right(Interval(34, 35), n=1)
     [Interval(44, 55)]
 
+
+Since 0.3.7, you can use python's native pickle to pickle an IntervalTree object. For details, check `test_serialization.py<https://github.com/jianlins/quicksectx/blob/master/tests/test_serialization.py>`.
+
+For Dev
+----
+
+Now the version specification has been integrated with setup.py and pyproject.toml. To updating versions, only need to change the __version__ in quicksectx/__init__.py
