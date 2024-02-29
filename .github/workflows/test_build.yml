@@ -19,7 +19,7 @@ jobs:
         buildplat:
           - [ubuntu-latest, manylinux_x86_64]
           # - [ubuntu-latest, musllinux_x86_64]
-          - [macos-latest, macosx_universal2]
+          - [macos-latest, macosx_universal2:x86_64]
           - [windows-latest, win_amd64]
           # - [windows-2019, win32]
         python: ["cp38", "cp39", "cp310", "cp311"]
