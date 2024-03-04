@@ -67,10 +67,10 @@ jobs:
           ls -l wheelhouse
           
 
-      # - uses: actions/upload-artifact@v3
-      #   with:
-      #     name: ${{ matrix.python }}-${{ matrix.os }}
-      #     path: ./wheelhouse/*.whl
+      - uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.python }}-${{ matrix.os }}
+          path: ./wheelhouse/*.whl
 
 
 
