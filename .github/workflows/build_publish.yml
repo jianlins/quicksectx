@@ -2,7 +2,6 @@ name: build_publish
 
 on:
   push:
-    branches: [ master]
     tags:        # Trigger on tag pushes
       - 'v*'     # Adjust the pattern to match your version tags
 
@@ -39,7 +38,7 @@ jobs:
           python -m pip install cibuildwheel==2.21.3
 
       - name: Build wheels
-        run: python -m cibuildwheel --output-dir dist
+        run: python -m cibuildwheel --output-dir wheelhouse
         env:
           CIBW_BUILD: ${{ matrix.python.py_ver }}-${{ matrix.buildplat[1] }}
           CIBW_ARCHS_MACOS: universal2
@@ -50,11 +49,14 @@ jobs:
             CFLAGS='-O3 -g0 -mtune=generic -pipe -fPIC'
             LDFLAGS='-fPIC'
 
+      - name: check build
+        run:  ls -l wheelhouse
+
       - name: Upload distributions
         uses: actions/upload-artifact@v4
         with:
           name: dist
-          path: dist/*
+          path: wheelhouse/*.whl
 
   build_sdist:
     name: Build Source Distribution
@@ -82,7 +84,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: dist
-          path: dist/*
+          path: dist/*.tar.gz
 
   publish_to_pypi:
     name: Publish to PyPI
@@ -92,7 +94,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download distributions
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: dist
           path: dist/
