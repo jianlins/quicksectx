@@ -8,3 +8,5 @@ build
 *.cpp
 dist
 tests/tmp
+.eggs
+.pytest_cache
