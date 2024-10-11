@@ -25,6 +25,7 @@ jobs:
           - { py_ver: cp39, py_version: '3.9' }
           - { py_ver: cp310, py_version: '3.10' }
           - { py_ver: cp311, py_version: '3.11' }
+          - { py_ver: cp312, py_version: '3.12' }
 
     steps:
       - name: Checkout
@@ -52,8 +53,3 @@ jobs:
 
       - name: Check build
         run: ls -l wheelhouse
-
-      - uses: actions/upload-artifact@v3
-        with:
-          name: ${{ matrix.python.py_ver }}-${{ matrix.buildplat[1] }}
-          path: ./wheelhouse/*.whl
