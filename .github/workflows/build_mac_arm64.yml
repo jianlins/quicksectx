@@ -1,5 +1,4 @@
-# .github/workflows/build_mac_arm64.yml
-name: Build macOS ARM64 Wheels
+name: Build Universal macOS Wheels
 on:
   push:
     branches: [ master, dev ]
@@ -7,46 +6,42 @@ on:
     branches: [ master, dev ]
 
 jobs:
-  build_macos_arm64:
-    name: Build macOS ARM64 Wheels
+  build_universal_wheels:
+    name: Build ${{ matrix.python.py_ver }}-macosx_universal2
     runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python:
+          - { py_ver: cp38, py_version: '3.8' }
+          - { py_ver: cp39, py_version: '3.9' }
+          - { py_ver: cp310, py_version: '3.10' }
+          - { py_ver: cp311, py_version: '3.11' }
+          - { py_ver: cp312, py_version: '3.12' }
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Install QEMU
-        run: brew install qemu
+      - name: Set Up Python ${{ matrix.python.py_version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python.py_version }}
+          check-latest: true
 
-      - name: Set Up ARM64 Emulation
+      - name: Install Dependencies
         run: |
-          git clone https://github.com/cylance/macos-arm64-emulation.git
-          cd macos-arm64-emulation
-          ./setup.sh
-        shell: bash
+          python -m pip install --upgrade pip
+          python -m pip install cibuildwheel==2.23.0
 
-      - name: Run Build in Emulated Environment
+      - name: Build Universal Wheels
+        run: python -m cibuildwheel --output-dir wheelhouse
         env:
-          GITHUB_WORKSPACE: ${{ github.workspace }}
+          CIBW_BUILD: ${{ matrix.python.py_ver }}-macosx_universal2
+          CIBW_ARCHS_MACOS: universal2
           CIBW_BEFORE_BUILD: "pip install -r requirements.txt"
-          CIBW_BUILD: cp38-macosx_arm64 cp39-macosx_arm64 cp310-macosx_arm64 cp311-macosx_arm64 cp312-macosx_arm64
+          CIBW_TEST_REQUIRES: pytest
+          CIBW_TEST_COMMAND: pytest {project}/tests
           CIBW_ENVIRONMENT: |
             CFLAGS='-O3 -g0 -mtune=generic -pipe -fPIC'
             LDFLAGS='-fPIC'
-          CIBW_TEST_REQUIRES: pytest
-          CIBW_TEST_COMMAND: pytest {project}/tests
-          CIBW_ARCHS_MACOS: arm64
-        run: |
-          cd macos-arm64-emulation
-          ./run-arm64.sh 'bash -c "
-            cd $GITHUB_WORKSPACE &&
-            python -m pip install --upgrade pip &&
-            python -m pip install cibuildwheel==2.23.0 &&
-            python -m cibuildwheel --output-dir wheelhouse
-          "'
-        shell: bash
-
-      - name: Upload Wheels
-        uses: actions/upload-artifact@v3
-        with:
-          name: macos_arm64_wheels
-          path: wheelhouse/*.whl
