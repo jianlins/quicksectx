@@ -76,8 +76,5 @@ jobs:
         run: |
           python -m build --sdist --outdir dist/
 
-      - name: Upload sdist
-        uses: actions/upload-artifact@v3
-        with:
-          name: source-dist
-          path: dist/*.tar.gz
+      - name: Check build
+        run: ls -l dist
