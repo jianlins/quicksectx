@@ -1,6 +1,9 @@
 name: test build
 on:
-  workflow_dispatch
+  push:
+    branches: [ master, dev ]
+  pull_request:
+    branches: [ master, dev ]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
