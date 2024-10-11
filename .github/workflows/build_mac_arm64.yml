@@ -1,0 +1,52 @@
+# .github/workflows/build_mac_arm64.yml
+name: Build macOS ARM64 Wheels
+on:
+  push:
+    branches: [ master, dev ]
+  pull_request:
+    branches: [ master, dev ]
+
+jobs:
+  build_macos_arm64:
+    name: Build macOS ARM64 Wheels
+    runs-on: macos-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Install QEMU
+        run: brew install qemu
+
+      - name: Set Up ARM64 Emulation
+        run: |
+          git clone https://github.com/cylance/macos-arm64-emulation.git
+          cd macos-arm64-emulation
+          ./setup.sh
+        shell: bash
+
+      - name: Run Build in Emulated Environment
+        env:
+          GITHUB_WORKSPACE: ${{ github.workspace }}
+          CIBW_BEFORE_BUILD: "pip install -r requirements.txt"
+          CIBW_BUILD: cp38-macosx_arm64 cp39-macosx_arm64 cp310-macosx_arm64 cp311-macosx_arm64 cp312-macosx_arm64
+          CIBW_ENVIRONMENT: |
+            CFLAGS='-O3 -g0 -mtune=generic -pipe -fPIC'
+            LDFLAGS='-fPIC'
+          CIBW_TEST_REQUIRES: pytest
+          CIBW_TEST_COMMAND: pytest {project}/tests
+          CIBW_ARCHS_MACOS: arm64
+        run: |
+          cd macos-arm64-emulation
+          ./run-arm64.sh 'bash -c "
+            cd $GITHUB_WORKSPACE &&
+            python -m pip install --upgrade pip &&
+            python -m pip install cibuildwheel==2.23.0 &&
+            python -m cibuildwheel --output-dir wheelhouse
+          "'
+        shell: bash
+
+      - name: Upload Wheels
+        uses: actions/upload-artifact@v3
+        with:
+          name: macos_arm64_wheels
+          path: wheelhouse/*.whl
