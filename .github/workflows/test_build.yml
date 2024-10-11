@@ -1,13 +1,9 @@
-name: test build
+name: Build and Test Wheels
 on:
   push:
     branches: [ master, dev ]
   pull_request:
     branches: [ master, dev ]
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
-  cancel-in-progress: true
 
 jobs:
   build_wheels:
@@ -18,7 +14,7 @@ jobs:
       matrix:
         buildplat:
           - [ubuntu-latest, manylinux_x86_64]
-          - [macos-latest, macosx_x86_64]
+          - [macos-latest, macosx_universal2]
           - [windows-latest, win_amd64]
         python:
           - { py_ver: cp38, py_version: '3.8' }
@@ -35,6 +31,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python.py_version }}
+          check-latest: true
 
       - name: Install cibuildwheel
         run: |
@@ -44,14 +41,43 @@ jobs:
       - name: Build wheels
         run: python -m cibuildwheel --output-dir wheelhouse
         env:
-          CIBW_BEFORE_BUILD: "pip install -r requirements.txt"
           CIBW_BUILD: ${{ matrix.python.py_ver }}-${{ matrix.buildplat[1] }}
+          CIBW_ARCHS_MACOS: universal2
+          CIBW_BEFORE_BUILD: "pip install -r requirements.txt"
+          CIBW_TEST_REQUIRES: pytest
+          CIBW_TEST_COMMAND: pytest {project}/tests
           CIBW_ENVIRONMENT: |
             CFLAGS='-O3 -g0 -mtune=generic -pipe -fPIC'
             LDFLAGS='-fPIC'
-          CIBW_TEST_REQUIRES: pytest
-          CIBW_TEST_COMMAND: pytest {package}/tests
-          CIBW_ARCHS_MACOS: x86_64  # Specify architecture for macOS
 
       - name: Check build
         run: ls -l wheelhouse
+
+
+  build_sdist:
+    name: Build Source Distribution
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.8'
+          check-latest: true
+
+      - name: Install build tool
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install build
+
+      - name: Build sdist
+        run: |
+          python -m build --sdist --outdir dist/
+
+      - name: Upload sdist
+        uses: actions/upload-artifact@v3
+        with:
+          name: source-dist
+          path: dist/*.tar.gz
