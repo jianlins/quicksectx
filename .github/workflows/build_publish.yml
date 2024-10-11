@@ -2,7 +2,6 @@ name: build_publish
 
 on:
   push:
-    branches: [ master]
     tags:        # Trigger on tag pushes
       - 'v*'     # Adjust the pattern to match your version tags
 
@@ -92,7 +91,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download distributions
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: dist
           path: dist/
