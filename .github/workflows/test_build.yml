@@ -29,15 +29,17 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Python ${{ matrix.python.py_version }}
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python.py_version }}
 
       - name: Install cibuildwheel
-        run: python -m pip install cibuildwheel==2.21.3
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install cibuildwheel==2.21.3
 
       - name: Build wheels
         run: python -m cibuildwheel --output-dir wheelhouse
