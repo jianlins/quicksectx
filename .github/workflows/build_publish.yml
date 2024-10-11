@@ -58,7 +58,7 @@ jobs:
       - name: Upload distributions
         uses: actions/upload-artifact@v4
         with:
-          name: dist
+          name: wheels-${{ matrix.os }}-py${{ matrix.python-version }}
           path: wheelhouse/*.whl
 
   build_sdist:
@@ -86,7 +86,7 @@ jobs:
       - name: Upload distributions
         uses: actions/upload-artifact@v4
         with:
-          name: dist
+          name: sdist
           path: dist/*.tar.gz
 
   publish_to_pypi_N_release:
@@ -96,11 +96,16 @@ jobs:
       - build_sdist
     runs-on: ubuntu-latest
     steps:
-      - name: Download distributions
-        uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v4.1.7
         with:
-          name: dist
-          path: dist/
+          path: dist
+
+      - name: check downloaded
+        run: |
+          mv ./dist/**/PyRuSH* ./dist/
+          rm -rf dist/cp*
+          rm -rf dist/sdist
+          ls -R
 
       - name: Set up Python
         uses: actions/setup-python@v5
