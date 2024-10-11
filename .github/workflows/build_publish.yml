@@ -1,9 +1,12 @@
 name: build_publish
 
 on:
-  push:
-    tags:        # Trigger on tag pushes
-      - 'v*'     # Adjust the pattern to match your version tags
+  workflow_dispatch
+
+# on:
+#   push:
+#     tags:        # Trigger on tag pushes
+#       - 'v*'     # Adjust the pattern to match your version tags
 
 jobs:
   build_wheels:
@@ -86,7 +89,7 @@ jobs:
           name: dist
           path: dist/*.tar.gz
 
-  publish_to_pypi:
+  publish_to_pypi_N_release:
     name: Publish to PyPI
     needs:
       - build_wheels
@@ -110,10 +113,54 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install twine
 
-      - name: Publish to PyPI
-        env:
-          TWINE_USERNAME: __token__
-          TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
-        run: |
-          twine upload  --skip-existing --verbose dist/*
+      # - name: Publish to PyPI
+      #   env:
+      #     TWINE_USERNAME: __token__
+      #     TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
+      #   run: |
+      #     twine upload  --skip-existing --verbose dist/*
 
+      - name: Extract Version
+        id: extract_version
+        run: |
+          VERSION=$(python setup.py --version)
+          echo "VERSION=${VERSION}" >> $GITHUB_ENV
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: softprops/action-gh-release@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          name: Release ${{ env.MAVEN_VERSION }}
+          files: |
+            dist/*
+
+        
+
+  cleanup_artifacts:
+      name: Cleanup All Artifacts
+      needs: publish_to_pypi_N_release
+      runs-on: ubuntu-latest
+      steps:
+        - name: Delete all artifacts
+          uses: actions/github-script@v7
+          with:
+            github-token: ${{ secrets.GITHUB_TOKEN }}
+            script: |
+              const { repo } = context;
+              // No need to getOctokit, directly use the github object provided
+              const listArtifacts = await github.rest.actions.listArtifactsForRepo({
+                owner: repo.owner,
+                repo: repo.repo,
+              });
+              const artifactIds = listArtifacts.data.artifacts.map(artifact => artifact.id);
+              
+              for (const artifactId of artifactIds) {
+                await github.rest.actions.deleteArtifact({
+                  owner: repo.owner,
+                  repo: repo.repo,
+                  artifact_id: artifactId,
+                });
+                console.log(`Deleted artifact ${artifactId}`);
+              }
