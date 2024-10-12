@@ -52,16 +52,7 @@ jobs:
           CIBW_TEST_COMMAND: pytest {project}/tests
           CIBW_ENVIRONMENT: |
             CFLAGS='-O3 -g0 -mtune=generic -pipe -fPIC'
-            LDFLAGS='-fPIC'
-      
-      - name: Extract Version 
-        id: extract_version
-        run: |
-          pip install Cython setuptools
-          python setup.py --version
-          VERSION=$(python setup.py --version)
-          echo "VERSION: ${VERSION}"
-          echo "VERSION=${VERSION}" >> $GITHUB_ENV      
+            LDFLAGS='-fPIC'    
 
       - name: check build
         run:  ls -l wheelhouse
@@ -89,6 +80,14 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m pip install build
+
+      - name: Extract Version 
+        id: extract_version
+        run: |
+          pip install -r requirements.txt
+          VERSION=$(python setup.py --version)
+          echo "VERSION: ${VERSION}"
+          echo "VERSION=${VERSION}" >> $GITHUB_ENV            
 
       - name: Build sdist
         run: |
