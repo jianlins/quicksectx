@@ -1,12 +1,12 @@
 name: build_publish
 
-on:
-  workflow_dispatch
-
 # on:
-#   push:
-#     tags:        # Trigger on tag pushes
-#       - 'v*'     # Adjust the pattern to match your version tags
+#   workflow_dispatch
+
+on:
+  push:
+    tags:        # Trigger on tag pushes
+      - 'v*'     # Adjust the pattern to match your version tags
 
 jobs:
   build_wheels:
@@ -58,7 +58,9 @@ jobs:
         id: extract_version
         run: |
           pip install Cython
+          python setup.py --version
           VERSION=$(python setup.py --version)
+          echo "VERSION: ${VERSION}"
           echo "VERSION=${VERSION}" >> $GITHUB_ENV      
 
       - name: check build
@@ -138,6 +140,7 @@ jobs:
       - name: Create GitHub Release
         id: create_release
         uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
