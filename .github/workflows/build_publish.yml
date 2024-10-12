@@ -58,7 +58,7 @@ jobs:
       - name: Upload distributions
         uses: actions/upload-artifact@v4
         with:
-          name: wheels-${{ matrix.os }}-py${{ matrix.python-version }}
+          name: wheels-${{ matrix.python.py_ver }}-${{ matrix.buildplat[1] }}
           path: wheelhouse/*.whl
 
   build_sdist:
