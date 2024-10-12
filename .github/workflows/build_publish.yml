@@ -1,12 +1,12 @@
 name: build_publish
 
-on:
-  workflow_dispatch
-
 # on:
-#   push:
-#     tags:        # Trigger on tag pushes
-#       - 'v*'     # Adjust the pattern to match your version tags
+#   workflow_dispatch
+
+on:
+  push:
+    tags:        # Trigger on tag pushes
+      - 'v*'     # Adjust the pattern to match your version tags
 
 jobs:
   build_wheels:
