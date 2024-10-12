@@ -102,7 +102,7 @@ jobs:
 
       - name: check downloaded
         run: |
-          mv ./dist/**/PyRuSH* ./dist/
+          mv ./dist/**/quicksectx* ./dist/
           rm -rf dist/cp*
           rm -rf dist/sdist
           ls -R
