@@ -85,6 +85,7 @@ jobs:
         id: extract_version
         run: |
           pip install -r requirements.txt
+          pip install -U setuptools
           VERSION=$(python setup.py --version)
           echo "VERSION: ${VERSION}"
           echo "VERSION=${VERSION}" >> $GITHUB_ENV            
