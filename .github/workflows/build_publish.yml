@@ -6,7 +6,7 @@ name: build_publish
 on:
   push:
     tags:        # Trigger on tag pushes
-      - 'v*'     # Adjust the pattern to match your version tags
+      - '*.*.*'   # Adjust the pattern to match your version tags
 
 jobs:
   build_wheels:
@@ -57,7 +57,7 @@ jobs:
       - name: Extract Version 
         id: extract_version
         run: |
-          pip install Cython
+          pip install Cython setuptools
           python setup.py --version
           VERSION=$(python setup.py --version)
           echo "VERSION: ${VERSION}"
@@ -145,6 +145,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           name: Release ${{ env.VERSION }}
+          tag_name: ${{ env.VERSION }}
           files: |
             dist/*
 
