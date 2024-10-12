@@ -60,7 +60,7 @@ jobs:
           pip install Cython
           python setup.py --version
           VERSION=$(python setup.py --version)
-          echo "${VERSION}""
+          echo "VERSION: ${VERSION}"
           echo "VERSION=${VERSION}" >> $GITHUB_ENV      
 
       - name: check build
