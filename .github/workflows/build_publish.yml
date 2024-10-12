@@ -74,15 +74,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.8'
-          check-latest: true
-
-      - name: Extract Version 
-        id: extract_version
-        run: |
-          python -m pip install --upgrade pip build
-          VERSION=$(python -c "import os; vl=[line for line in open(os.path.join('quicksectx', '__init__.py')).read().splitlines() if line.startswith('__version__')][0]; delim = '\"' if '\"' in vl else '\''; print(vl.split(delim)[1]);")
-          echo "VERSION: ${VERSION}"
-          echo "VERSION=${VERSION}" >> $GITHUB_ENV           
+          check-latest: true       
 
       - name: Build sdist
         run: |
@@ -101,6 +93,24 @@ jobs:
       - build_sdist
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.8'
+          check-latest: true
+
+      - name: Extract Version 
+        id: extract_version
+        run: |
+          python -m pip install --upgrade pip build
+          VERSION=$(python -c "import os; vl=[line for line in open(os.path.join('quicksectx', '__init__.py')).read().splitlines() if line.startswith('__version__')][0]; delim = '\"' if '\"' in vl else '\''; print(vl.split(delim)[1]);")
+          echo "VERSION: ${VERSION}"
+          echo "VERSION=${VERSION}" >> $GITHUB_ENV  
+          echo "env VERSION: "+ ${{ env.VERSION }}    
+
       - uses: actions/download-artifact@v4.1.7
         with:
           path: dist
